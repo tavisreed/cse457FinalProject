@@ -70,11 +70,15 @@ for year, fids in tqdm(fetch.items()):
     undergrad_enroll = 'none'
     graduate_enroll = 'none'
     description = 'none'
-    teaching_tenure = 'none'
+    freshmen_enroll_table = 'none'
+    sophomore_enroll_table = 'none'
+    junior_enroll_table = 'none'
+    senior_enroll_table = 'none'
+    teaching_tenure_table = 'none'
     tuition = 'none'
     sat_scores = 'none'
     act_scores = 'none'
-    enrollment = 'none'
+    degree_table = 'none'
     
     # extract attributes
     name = soup.find('h1').text[:-7]
@@ -95,10 +99,22 @@ for year, fids in tqdm(fetch.items()):
       description = soup.find('p', class_='highlighted', text='Engineering College Description and Special Characteristics').find_next_sibling('p').text
     except AttributeError:
       print('bad description for {}'.format(name))
+
+    try:
+      freshmen_table = soup.find('p', class_='highlighted', text='Freshmen').find_next_sibling('table')
+      sophomore_table = soup.find('p', class_='highlighted', text='Sophomores').find_next_sibling('table')
+      junior_table = soup.find('p', class_='highlighted', text='Juniors').find_next_sibling('table')
+      senior_table = soup.find('p', class_='highlighted', text='Seniors').find_next_sibling('table')
+      freshmen_enroll_table = parse_table(freshmen_table)
+      sophomore_enroll_table = parse_table(sophomore_table)
+      junior_enroll_table = parse_table(junior_table)
+      senior_enroll_table = parse_table(senior_table)
+    except AttributeError:
+      print('bad enrollment tables for {}'.format(name))
         
     try: 
-      teaching_tenure_table = soup.find('p', class_='highlighted', text='Teaching, Tenure-Track: Full Professor Profiles').find_next_sibling('table')
-      teaching_tenure = parse_table(teaching_tenure_table)
+      teaching_tenure = soup.find('p', class_='highlighted', text='Teaching, Tenure-Track: Full Professor Profiles').find_next_sibling('table')
+      teaching_tenure_table = parse_table(teaching_tenure)
     except AttributeError:
       print('bad teaching_tenure for {}'.format(name))
 
@@ -117,11 +133,11 @@ for year, fids in tqdm(fetch.items()):
       print('bad test_scores for {}'.format(name))
 
     try: 
-      enrollment_table = soup.find('p', class_='highlighted', text='Degrees By Ethnicity & Gender').find_next_sibling('table')
-      enrollment = parse_table(enrollment_table)
-      enrollment = [e for e in enrollment if ('Note' not in e[0])]
+      degrees = soup.find('p', class_='highlighted', text='Degrees By Ethnicity & Gender').find_next_sibling('table')
+      degrees = parse_table(degrees)
+      degree_table = [e for e in degrees if ('Note' not in e[0])]
     except AttributeError:
-      print('bad enrollment for {}'.format(name))
+      print('bad degree table for {}'.format(name))
 
     year_data.append({
       'name': name,
@@ -129,11 +145,15 @@ for year, fids in tqdm(fetch.items()):
       'undergrad_enroll': undergrad_enroll,
       'graduate_enroll': graduate_enroll,
       'description': description,
-      'teaching_tenure': teaching_tenure,
+      'freshmen_enroll_table': freshmen_enroll_table,
+      'sophomore_enroll_table': sophomore_enroll_table,
+      'junior_enroll_table': junior_enroll_table,
+      'senior_enroll_table': senior_enroll_table,
+      'teaching_tenure_table': teaching_tenure_table,
       'tuition': tuition,
       'sat_scores': sat_scores,
       'act_scores': act_scores,
-      'enrollment': enrollment
+      'degree_table': degree_table
     })
 
   with open('{}data.json'.format(year), 'w') as outfile:
