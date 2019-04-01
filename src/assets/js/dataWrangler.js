@@ -5,11 +5,13 @@ function Wrangle(data) {
     self.wrangleData();
 };
 
-console.log(typeof self.data[1])
+
+
+
 
 Wrangle.prototype.wrangleData=function(){
     var self=this;
-    //console.log(self.data)
+    console.log(self.data)
 
     //console.log(typeof self.data[1])
     //consolidate names
@@ -20,17 +22,7 @@ Wrangle.prototype.wrangleData=function(){
             step1.push(self.data[i]);
             addedNames.push(self.data[i].school_name)
         }
-
-        if (self.data[i].school_name == "University of Arizona") {
-          console.log(self.data[i]);
-        }
     }
-
-    //console.log(step1);
-
-    // consolidate data for each school
-    for (let j=0;j<step1.length;j++){
-        for (let i=0;i<self.data.length;i++) {
 
     //consolidate data for each school
     for (var j=0;j<step1.length;j++){
@@ -482,10 +474,10 @@ Wrangle.prototype.wrangleData=function(){
         }
         step2.push(school)
     }
-    console.log(step2)
+
 
     self.processData=step2;
-    // console.log(self.processData)
+    console.log(self.processData)
 
 }
 
