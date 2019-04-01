@@ -37,6 +37,14 @@ function load_data() {
     });
     console.log(data);
 
+    // Be able to select a specific school
+    var select = document.getElementById("selection");
+    for(var k=0; k<schools.length;k++)  {
+      select.options[select.options.length] = new Option(schools[k], k);
+    };
+
+//Be able to select year
+
   });
 
   // start visualizations
