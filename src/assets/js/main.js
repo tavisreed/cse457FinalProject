@@ -36,6 +36,7 @@ function load_data() {
       data[years[i]] = parse_data(slice);
     });
     console.log(data);
+    self.data=data;
 
     // Be able to select a specific school
     var select = document.getElementById("selection");
@@ -43,7 +44,10 @@ function load_data() {
       select.options[select.options.length] = new Option(schools[k], k);
     };
 
-//Be able to select year
+
+
+
+
 
   });
 
@@ -52,12 +56,14 @@ function load_data() {
 }
 
 function parse_data(data) {
-  return data.map(function(d) {
-    return {
-      'undergrad_enroll': +d.undergrad_enroll,
-      'graduate_enroll': +d.graduate_enroll
-    }
-  });
+  return data;
+  // data.map(function(d) {
+  //   return {
+  //     'undergrad_enroll': +d.undergrad_enroll,
+  //     'graduate_enroll': +d.graduate_enroll
+  //   }
+  //}
+  //);
 }
 
 function start(data) {
@@ -65,3 +71,22 @@ function start(data) {
 }
 
 load_data();
+
+//monitor drop down
+d3.select("#dropDown").on("change", function(){
+  var selection=d3.select("#selection").property("value");
+  console.log(selection)
+  var school_data=[]
+  var data=self.data;
+
+    for (var k=1999; k<2018;k++) {
+      for (var j=0; j<data[k].length;j++){
+        if (j==selection){
+          school_data.push(data[k][j])
+        }
+      }
+    }
+
+  console.log(school_data)
+
+});
