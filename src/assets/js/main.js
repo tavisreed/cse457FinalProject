@@ -1,9 +1,8 @@
 function load_data() {
-  // initialize queue, years
   let q = queue();
   let data = {};
-
   let years = [];
+
   for (let i=1999; i<2019; i++) {
     years.push(i)
   }
@@ -29,22 +28,32 @@ function load_data() {
 
     // unwrap schools
     schools = schools.map(function(d) { return d.name; });
-    console.log(schools);
 
     file_data.forEach(function(d,i) {
-      // get common schools
       let slice = d.filter(function(e) {
         return schools.includes(e.name);
       });
-
       data[years[i]] = parse_data(slice);
-    })
+    });
     console.log(data);
+
+  });
+
+  // start visualizations
+  //start(data);
+}
+
+function parse_data(data) {
+  return data.map(function(d) {
+    return {
+      'undergrad_enroll': +d.undergrad_enroll,
+      'graduate_enroll': +d.graduate_enroll
+    }
   });
 }
 
-function parse_data(d) {
-  return d;
+function start(data) {
+  let enrollment = new Historgram('enrollment', data);
 }
 
 load_data();
