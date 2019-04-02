@@ -36,24 +36,37 @@ function load_data() {
       data[years[i]] = parse_data(slice);
     });
     console.log(data);
-
+    
+    // start visualizations
+    start(data);
   });
-
-  // start visualizations
-  //start(data);
 }
 
 function parse_data(data) {
   return data.map(function(d) {
-    return {
+    let entry = {
+      'name': d.name,
+      'type': d.type,
       'undergrad_enroll': +d.undergrad_enroll,
-      'graduate_enroll': +d.graduate_enroll
+      'graduate_enroll': +d.graduate_enroll,
+      'description': d.description,
+      'freshmen_enroll_table': 'none',
+      'sophomore_enroll_table': 'none',
+      'junior_enroll_table': 'none',
+      'senior_enroll_table': 'none',
+      'teaching_tenure_table': 'none',
+      'tuition': parse_tuition(d.tuition),
+      'sat_scores': 'none',
+      'act_scores': 'none',
+      'degree_table': 'none',
     }
+
+    return entry;
   });
 }
 
 function start(data) {
-  let enrollment = new Historgram('enrollment', data);
+  let enrollment = new Histogram('test', data);
 }
 
 load_data();
