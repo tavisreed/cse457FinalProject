@@ -5,7 +5,7 @@ class Line {
     this.init();
   }
 
-  init(argument) {
+  init() {
     let self = this;
 
     // initialize plot

@@ -5,14 +5,15 @@ class Pie {
         this.init();
     }
 
-    init(argument) {
+    init() {
         let self = this;
 
         // initialize plot
         self.margin = {top: 30, right: 30, bottom: 30, left: 60};
         self.width = window.innerWidth/2.2 - self.margin.left - self.margin.right;
         self.height = 200 - self.margin.top - self.margin.bottom;
-        self.radius= Math.min(self.width, self.height)/2
+        self.radius= Math.min(self.width, self.height)/2;
+
         // set data
         let pie_data = [self.data.graduate_enroll,self.data.undergrad_enroll];
 
@@ -47,17 +48,17 @@ class Pie {
         g.append("path")
             .attr("d", arc)
             .style("fill", function(d) { return color(d.data); });
+
         g.append("text")
             .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
             .attr("dy", ".35em")
             .text(function(d,i) {
-                if (d.data==0){
+                if (d.data==0) {
                     return "";
                 }
-                else if (i==0){
+                else if (i==0) {
                     return "G: "+d.data;
-                }
-                else{
+                } else {
                     return "U: "+d.data;
                 }
                  });
