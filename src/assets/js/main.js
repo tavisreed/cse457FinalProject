@@ -1,11 +1,7 @@
 function load_data() {
   let q = queue();
   let data = {};
-  let years = [];
-
-  for (let i=1999; i<2019; i++) {
-    years.push(i)
-  }
+  let years = create_years(1999,2018);
 
   // queue all year files
   years.forEach(function(d) {
@@ -66,7 +62,7 @@ function parse_data(data) {
 
 function start(data) {
   let profile = new Profile('profiles', data);
-  let enrollment = new Histogram('test', data);
+  //let enrollment = new Histogram('test', data);
 }
 
 load_data();

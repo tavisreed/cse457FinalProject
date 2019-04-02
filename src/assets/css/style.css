@@ -5,3 +5,11 @@ body {
 #profiles {
   margin: 1em;
 }
+
+#profiles #content {
+  margin-top: 1em;
+}
+
+#line_charts > div {
+  display: inline-block;
+}

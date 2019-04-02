@@ -30,6 +30,28 @@ class Profile {
     document.querySelector('#profiles #name').innerHTML = name;
     document.querySelector('#profiles #description').innerHTML = description;
 
+    // parse data for line charts
+    let parse_time = d3.timeParse("%Y");
+    let years = create_years(1999,2018);
+
+    let tuition_data = years.map(function(d) {
+      return {
+        'date': parse_time(d),
+        'value': self.data[d][school_idx].tuition[0]
+      }
+    });
+
+    let enroll_data = years.map(function(d) {
+      return {
+        'date': parse_time(d),
+        'value': self.data[d][school_idx].undergrad_enroll
+      }
+    });
+
+    // create tuition line charts
+    let tuition_line = new Line('tuition_line', tuition_data);
+    let enroll_line = new Line('enroll_line', enroll_data);
+
     // make profile content visible
     document.querySelector('#profiles #content').style.display = 'block';
   }

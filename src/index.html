@@ -31,8 +31,18 @@
           <!-- school page content -->
           <div id='content' style='display: none'>
             <h1 id='name'></h1>
-            <h3>Description</h3>
+            <h4>Description</h4>
             <p id='description'></p>
+            <div id='line_charts'>
+              <div>
+                <h2>Tuition over time</h2>
+                <svg id='tuition_line'></svg>
+              </div>
+              <div>
+                <h2>Enrollment over time</h2>
+                <svg id='enroll_line'></svg>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -47,9 +57,14 @@
     <script src='assets/js/jquery.min.js'></script>
     <script src='assets/js/popper.min.js'></script>
     <script src='assets/js/bootstrap.min.js'></script>
-    <script src='assets/js/histogram.js'></script>
-    <script src='assets/js/school_profile.js'></script>
+
     <script src='assets/js/utils/parse.js'></script>
+    <script src='assets/js/utils/years.js'></script>
+    
+    <script src='assets/js/histogram.js'></script>
+    <script src='assets/js/line.js'></script>
+
+    <script src='assets/js/school_profile.js'></script>
     <script src='assets/js/main.js'></script>
   </body>
 </html>

@@ -16,6 +16,5 @@ function parse_tuition(t) {
   } else {
     tuition = 'none';
   }
-
   return tuition;
 }
