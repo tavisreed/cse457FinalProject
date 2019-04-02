@@ -11,12 +11,12 @@ class Profile {
     // initialize dropdown menu
     let select = document.querySelector('#selection');
     let schools = self.data['2018'].map(function(d) { return d.name; })
-    for (let k=0; k<schools.length; k++)  {
+    for (let k=0; k<schools.length; k++) {
       select.options[select.options.length] = new Option(schools[k], k);
     }
 
     // initialize dropdown event listener
-    document.querySelector('#dropdown').addEventListener('change', function() {
+    select.addEventListener('change', function() {
       let school_idx = select.value;
       self.load_profile(school_idx);
     });
@@ -29,5 +29,8 @@ class Profile {
 
     document.querySelector('#profiles #name').innerHTML = name;
     document.querySelector('#profiles #description').innerHTML = description;
+
+    // make profile content visible
+    document.querySelector('#profiles #content').style.display = 'block';
   }
 }
