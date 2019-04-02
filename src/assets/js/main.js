@@ -35,8 +35,7 @@ function load_data() {
       });
       data[years[i]] = parse_data(slice);
     });
-    console.log(data);
-    
+
     // start visualizations
     start(data);
   });
@@ -66,6 +65,7 @@ function parse_data(data) {
 }
 
 function start(data) {
+  let profile = new Profile('profiles', data);
   let enrollment = new Histogram('test', data);
 }
 
