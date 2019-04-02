@@ -67,10 +67,10 @@ class Profile {
       }
     });
 
-    var pie_data = [];
-    var year = parseInt(year_idx)+1999;
-    var current_year = self.data[year];
-    for (var i=0; i<current_year.length; i++) {
+    let pie_data = [];
+    let year = parseInt(year_idx)+1999;
+    let current_year = self.data[year];
+    for (let i=0; i<current_year.length; i++) {
       if (school_idx == i) {
         pie_data = current_year[i];
       }

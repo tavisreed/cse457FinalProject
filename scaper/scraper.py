@@ -109,6 +109,10 @@ for year, fids in tqdm(fetch.items()):
       sophomore_enroll_table = parse_table(sophomore_table)
       junior_enroll_table = parse_table(junior_table)
       senior_enroll_table = parse_table(senior_table)
+      freshmen_enroll_table = [e for e in freshmen_enroll_table if ('Note' not in e[0])]
+      sophomore_enroll_table = [e for e in sophomore_enroll_table if ('Note' not in e[0])]
+      junior_enroll_table = [e for e in junior_enroll_table if ('Note' not in e[0])]
+      senior_enroll_table = [e for e in senior_enroll_table if ('Note' not in e[0])]
     except AttributeError:
       print('bad enrollment tables for {}'.format(name))
         
