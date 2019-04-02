@@ -1,19 +1,3 @@
-//monitor drop down
-/*d3.select("#dropDown").on("change", function(){
-  var selection=d3.select("#selection").property("value");
-  console.log(selection)
-  var school_data=[]
-  var data=self.data;
-
-    for (var k=1999; k<2018;k++) {
-      for (var j=0; j<data[k].length;j++){
-        if (j==selection){
-          school_data.push(data[k][j])
-        }
-      }
-    }
-});*/
-
 class Profile {
   constructor(parent, data) {
     this.parent = parent;
@@ -40,6 +24,10 @@ class Profile {
 
   load_profile(school_idx) {
     let self = this;
-    document.querySelector('#profiles #name').innerHTML = self.data['2018'][school_idx].name;
+    let name = self.data['2018'][school_idx].name;
+    let description = self.data['2018'][school_idx].description;
+
+    document.querySelector('#profiles #name').innerHTML = name;
+    document.querySelector('#profiles #description').innerHTML = description;
   }
 }
