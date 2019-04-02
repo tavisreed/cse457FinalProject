@@ -34,6 +34,9 @@ class Profile {
       let year_idx=year_select.value;
       self.load_profile(school_idx, year_idx);
     });
+
+    // update message, data done loading
+    document.querySelector('#message').innerHTML = 'Select a school to get started';
   }
 
   load_profile(school_idx, year_idx) {
