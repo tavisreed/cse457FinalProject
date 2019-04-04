@@ -5,22 +5,22 @@ class Pie {
         this.init();
     }
 
-    init() {
+    init(argument) {
         let self = this;
 
         // initialize plot
         self.margin = {top: 30, right: 30, bottom: 30, left: 60};
         self.width = window.innerWidth/2.2 - self.margin.left - self.margin.right;
         self.height = 200 - self.margin.top - self.margin.bottom;
-        self.radius= Math.min(self.width, self.height)/2;
 
+        self.radius= Math.min(self.width, self.height)*.75;
         // set data
         let pie_data = [self.data.graduate_enroll,self.data.undergrad_enroll];
 
         var svg = d3.select('#' + self.parent).html('')
                 .attr("width", self.width + self.margin.left + self.margin.right)
                 .attr("height", self.height + self.margin.top + self.margin.bottom)
-                .append("g").attr("transform", "translate(" + self.width/2 + "," + self.height/2 + ")");
+                .append("g").attr("transform", "translate(" + self.width*.3 + "," + self.height*.7 + ")");
 
 
         //source:https://bl.ocks.org/santi698/f3685ca8a1a7f5be1967f39f367437c0
@@ -33,8 +33,8 @@ class Pie {
             .innerRadius(0);
 
         var labelArc = d3.arc()
-            .outerRadius(self.radius - 40)
-            .innerRadius(self.radius - 40);
+            .outerRadius(self.radius+10)
+            .innerRadius(self.radius+10);
 
         var pie = d3.pie()
             .sort(null)
