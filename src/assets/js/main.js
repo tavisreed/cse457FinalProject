@@ -62,6 +62,7 @@ function parse_data(data) {
 
 function start(data) {
   let profile = new Profile('profiles', data);
+  let cluster = new Cluster('home_cluster', data);
   //let enrollment = new Histogram('test', data);
 }
 

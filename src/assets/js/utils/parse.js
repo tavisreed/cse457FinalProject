@@ -18,3 +18,7 @@ function parse_tuition(t) {
   }
   return tuition;
 }
+
+function parse_table(t) {
+  return;  
+}
