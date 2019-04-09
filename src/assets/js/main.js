@@ -60,8 +60,9 @@ function parse_data(data) {
 }
 
 function start(data) {
+  console.log(data);
   let profile = new Profile('profiles', data);
-  let cluster = new Cluster('home_cluster', data);
+  let cluster = new Cluster('cluster', data);
   //let enrollment = new Histogram('test', data);
 }
 

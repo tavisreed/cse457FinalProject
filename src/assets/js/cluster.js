@@ -10,11 +10,14 @@ class Cluster {
 
     // initialize plot
     self.margin = {top: 30, right: 30, bottom: 30, left: 60};
-    self.width = window.innerWidth - self.margin.left - self.margin.right;
-    self.height = window.innerHeight - self.margin.top - self.margin.bottom;
+    self.width = window.innerWidth/1.5 - self.margin.left - self.margin.right;
+    self.height = window.innerHeight/1.5 - self.margin.top - self.margin.bottom;
     self.padding = 1.5, // separation between same-color nodes
     self.clusterPadding = 6, // separation between different-color nodes
     self.maxRadius = 12;
+
+    // update message, data done loading
+    document.querySelector('#home-message').style.display = 'none';
 
     // svg setup
     let svg = d3.select('#' + self.parent).html('')
@@ -33,7 +36,14 @@ class Cluster {
     var nodes = self.data['2018'].map(function(e) {
       var i = Math.floor(Math.random() * m),
           r = Math.sqrt((i + 1) / m * -Math.log(Math.random())) * self.maxRadius,
-          d = {
+          pub = 0;
+
+      if (e.type != 'none') {
+        pub = e.type == 'PUBLIC' ? 0 : 1;
+      }
+      i=pub;
+
+      let d = {
             data: e,
             cluster: i,
             radius: e.tuition != 'none' ? e.tuition[0]/5000 : 1,
