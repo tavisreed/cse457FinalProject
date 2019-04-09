@@ -66,7 +66,7 @@ class Profile {
         'value': self.data[d][school_idx].undergrad_enroll
       }
     });
-
+    //get bar char data from a certain year
     let sbar_data = [];
     let year = parseInt(year_idx)+1999;
     let current_year = self.data[year];
@@ -75,10 +75,22 @@ class Profile {
         sbar_data = current_year[i];
       }
     }
+    //Get enrollment data for grad and under grad over the years;
+    // get enrollment data over years
+    let ug_g_enroll_data = years.map(function(d) {
+      return {
+        'date': parse_time(d),
+        'value': self.data[d][school_idx]
+      }
+    });
 
     // create tuition line charts
     let tuition_line = new Line('tuition_line', tuition_data);
     let enroll_line = new Line('enroll_line', enroll_data);
+
+
+    //Create stacked Area charts
+    //let ug_g_enrollment_chart = new Sarea('GvU_chart', ug_g_enroll_data);
 
     // create Stacked Bar
     if (sbar_data.graduate_enroll!=0 || sbar_data.undergrad_enroll!=0 ){
