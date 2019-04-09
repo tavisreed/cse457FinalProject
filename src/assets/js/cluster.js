@@ -30,22 +30,19 @@ class Cluster {
     // The largest node for each cluster.
     var clusters = new Array(m);
 
-    console.log(self.data);
-
     var nodes = self.data['2018'].map(function(e) {
       var i = Math.floor(Math.random() * m),
           r = Math.sqrt((i + 1) / m * -Math.log(Math.random())) * self.maxRadius,
           d = {
+            data: e,
             cluster: i,
-            radius: e.tuition != 'none' ? e.tuition[0]/10000 : 1,
+            radius: e.tuition != 'none' ? e.tuition[0]/5000 : 1,
             x: Math.cos(i / m * 2 * Math.PI) * 100 + self.width / 2 + Math.random(),
             y: Math.sin(i / m * 2 * Math.PI) * 100 + self.height / 2 + Math.random()
           };
       if (!clusters[i] || (r > clusters[i].radius)) clusters[i] = d;
       return d;
     });
-
-    console.log(nodes);
       
     var force = d3.forceSimulation()
       // keep entire simulation balanced around screen center
@@ -66,6 +63,9 @@ class Cluster {
         .data(nodes)
       .enter().append("circle")
         .style("fill", function(d) { return color(d.cluster/10); });
+
+    node.append('svg:title')
+      .text(function(d) { return d.data.name; })
 
     // ramp up collision strength to provide smooth transition
     var transitionTime = 3000;

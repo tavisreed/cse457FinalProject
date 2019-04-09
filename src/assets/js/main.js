@@ -55,7 +55,6 @@ function parse_data(data) {
       'act_scores': 'none',
       'degree_table': 'none',
     }
-
     return entry;
   });
 }
