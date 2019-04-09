@@ -67,12 +67,12 @@ class Profile {
       }
     });
 
-    let pie_data = [];
+    let sbar_data = [];
     let year = parseInt(year_idx)+1999;
     let current_year = self.data[year];
     for (let i=0; i<current_year.length; i++) {
       if (school_idx == i) {
-        pie_data = current_year[i];
+        sbar_data = current_year[i];
       }
     }
 
@@ -80,9 +80,9 @@ class Profile {
     let tuition_line = new Line('tuition_line', tuition_data);
     let enroll_line = new Line('enroll_line', enroll_data);
 
-    // create Pie chart
-    if (pie_data.graduate_enroll!=0 || pie_data.undergrad_enroll!=0 ){
-      let pie_chart = new Pie('GvU_chart', pie_data);
+    // create Stacked Bar
+    if (sbar_data.graduate_enroll!=0 || sbar_data.undergrad_enroll!=0 ){
+      let sbar_chart = new Sbar('GvU_chart', sbar_data);
     }
 
     // make profile content visible
