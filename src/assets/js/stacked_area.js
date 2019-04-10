@@ -15,7 +15,7 @@ class Sarea {
         vis.colorScale = d3.scaleOrdinal(d3.schemeCategory10);
         vis.colorScale.domain(d3.keys(vis.catagories).filter(function(d){ return d != "date"; }))
        // vis.colorScale.domain(vis.catagories);
-        console.log(vis.catagories)
+
         // initialize plot
         vis.margin = {top: 30, right: 30, bottom: 30, left: 60};
         vis.width = window.innerWidth/2.2 - vis.margin.left - vis.margin.right;
@@ -23,7 +23,6 @@ class Sarea {
 
         // set data
         let data =vis.data;
-        console.log(data);
 
         var max_enroll=0;
 
@@ -78,23 +77,17 @@ class Sarea {
 
 
         var dataCategories = vis.catagories;
-        console.log(dataCategories)
         var stack=d3.stack().keys(dataCategories);
         var stackedData = stack(this.data);
         vis.displayData =stackedData;
-        console.log(stackedData)
 
-        // console.log(stackedData)
-        // console.log(dataCategories)
 
         vis.area = d3.area()
             .x(function(d) {
                 return vis.x(d.data.date); })
             .y0(function(d) { return vis.y(d[0]); })
             .y1(function(d) { return vis.y(d[1]); });
-        //	...
-        //console.log(vis.displayData);
-        //console.log(stackedData);
+
 
 
         vis.updateVis();
@@ -112,11 +105,10 @@ class Sarea {
         ]);
 
         var dataCategories = vis.catagories;
-
+        var selection= "#" + vis.parent+'_selection';
         // Draw the layers
         var categories = vis.svg.selectAll(".area")
             .data(vis.displayData);
-        categories.exit().remove();
 
         categories.enter().append("path")
             .attr("class", "area")
@@ -128,10 +120,14 @@ class Sarea {
                 return vis.area(d);
             })
             .on("mouseover", function(d,i){
-                vis.svg.select(".currentText")
-                    .text(dataCategories[i]);
+                $( selection ).html(dataCategories[i]);
+                return;
+            } )
+            .on("mouseout", function(d){
+                $( selection ).html("");
                 return;
             } );
+        categories.exit().remove();
 
 
         // Call axis functions with the new domain
