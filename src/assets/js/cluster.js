@@ -1,5 +1,5 @@
 class Cluster {
-  constructor(_parent, _data, _profile) {
+  constructor(_parent, _data) {
     this.parent = _parent;
     this.data = _data;
     this.profile = _profile;
