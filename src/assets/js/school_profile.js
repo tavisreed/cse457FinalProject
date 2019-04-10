@@ -23,13 +23,13 @@ class Profile {
     }
 
     // initialize dropdown event listener
-    select.addEventListener('change', function() {
+      $("#selection").change(function() {
       let school_idx = select.value;
       let year_idx = year_select.value;
       self.load_profile(school_idx, year_idx);
     });
 
-    year_select.addEventListener('change', function() {
+    $("#year_selection").change( function() {
       let school_idx = select.value;
       let year_idx = year_select.value;
       self.load_profile(school_idx, year_idx);

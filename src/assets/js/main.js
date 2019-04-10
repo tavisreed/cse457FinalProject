@@ -38,10 +38,11 @@ function load_data() {
 }
 
 function parse_data(data) {
-  return data.map(function(d) {
+  return data.map(function(d,i) {
     let entry = {
       'name': d.name,
       'type': d.type,
+      'index': i,
       'undergrad_enroll': +d.undergrad_enroll,
       'graduate_enroll': +d.graduate_enroll,
       'description': d.description,
@@ -62,7 +63,7 @@ function parse_data(data) {
 function start(data) {
   console.log(data);
   let profile = new Profile('profiles', data);
-  let cluster = new Cluster('cluster', data);
+  let cluster = new Cluster('cluster', data, profile);
   //let enrollment = new Histogram('test', data);
 }
 

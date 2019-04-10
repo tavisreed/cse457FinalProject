@@ -1,7 +1,8 @@
 class Cluster {
-  constructor(_parent, _data) {
+  constructor(_parent, _data, _profile) {
     this.parent = _parent;
     this.data = _data;
+    this.profile = _profile;
     this.init();
   }
 
@@ -73,6 +74,12 @@ class Cluster {
         .data(nodes)
       .enter().append("circle")
         .style("fill", function(d) { return color(d.cluster/10); });
+
+    node.on("click", function(d){
+      //self.profile.load_profile(d.data.name, '2018');
+      $("#selection").val(d.data.index).trigger('change');
+      $('#nav-profile-tab').trigger('click');
+    })
 
     node.append('svg:title')
       .text(function(d) { return d.data.name; })
