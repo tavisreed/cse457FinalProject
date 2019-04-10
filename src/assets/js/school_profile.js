@@ -80,7 +80,8 @@ class Profile {
     let ug_g_enroll_data = years.map(function(d) {
       return {
         'date': parse_time(d),
-        'value': self.data[d][school_idx]
+        'graduate_enroll': self.data[d][school_idx].graduate_enroll,
+        'undergrad_enroll': self.data[d][school_idx].undergrad_enroll
       }
     });
 
@@ -90,12 +91,12 @@ class Profile {
 
 
     //Create stacked Area charts
-    //let ug_g_enrollment_chart = new Sarea('GvU_chart', ug_g_enroll_data);
+    let ug_g_enrollment_chart = new Sarea('GvU_chart', ug_g_enroll_data, ['graduate_enroll','undergrad_enroll'] );
 
     // create Stacked Bar
-    if (sbar_data.graduate_enroll!=0 || sbar_data.undergrad_enroll!=0 ){
-      let sbar_chart = new Sbar('GvU_chart', sbar_data);
-    }
+    // if (sbar_data.graduate_enroll!=0 || sbar_data.undergrad_enroll!=0 ){
+    //   let sbar_chart = new Sbar('GvU_chart', sbar_data);
+    // }
 
     // make profile content visible
     document.querySelector('#profiles #content').style.display = 'block';
