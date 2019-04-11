@@ -50,6 +50,7 @@ class Profile {
     // parse data for line charts
     let parse_time = d3.timeParse("%Y");
     let years = create_years(1999,2018);
+
     // get tuition data over years
     let tuition_data = years.map(function(d) {
       return {
@@ -80,14 +81,10 @@ class Profile {
     let tuition_line = new Line('tuition_line', tuition_data);
     let enroll_line = new Line('enroll_line', enroll_data);
 
-
-
-    //Create stacked Area charts
+    // create stacked Area charts
     let ug_g_enrollment_chart = new Sarea('GvU_chart', ug_g_enroll_data, ['graduate_enroll','undergrad_enroll'] );
 
-
-
-    //Create Year chart for brushing
+    // create Year chart for brushing
     var dates=[];
     for (let i=0; i<enroll_data.length; i++) {
       dates.push(enroll_data[i].date);
