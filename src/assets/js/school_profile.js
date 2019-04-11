@@ -18,28 +18,20 @@ class Profile {
       select.options[select.options.length] = new Option(schools[k], k);
     }
 
-    for (let p=0; p<years.length; p++) {
-      year_select.options[year_select.options.length] = new Option(years[p], p);
-    }
 
     // initialize dropdown event listener
-    select.addEventListener('change', function() {
+      $("#selection").change(function() {
       let school_idx = select.value;
-      let year_idx = year_select.value;
-      self.load_profile(school_idx, year_idx);
+      self.load_profile(school_idx);
     });
 
-    year_select.addEventListener('change', function() {
-      let school_idx = select.value;
-      let year_idx = year_select.value;
-      self.load_profile(school_idx, year_idx);
-    });
+
 
     // update message, data done loading
     document.querySelector('#message').innerHTML = 'Select a school to get started';
   }
 
-  load_profile(school_idx, year_idx) {
+  load_profile(school_idx) {
     let self = this;
     let name = self.data['2018'][school_idx].name;
     let description = self.data['2018'][school_idx].description;
