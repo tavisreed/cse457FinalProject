@@ -2,7 +2,6 @@ class Cluster {
   constructor(_parent, _data) {
     this.parent = _parent;
     this.data = _data;
-  
     this.init();
   }
 
@@ -98,7 +97,6 @@ class Cluster {
     node.on("click", function(d){
     
       $("#selection").val(d.data.index).trigger('change');
-      $("#year_selection").val(year).trigger('change');
       $('#nav-profile-tab').trigger('click');
     })
 

@@ -18,28 +18,20 @@ class Profile {
       select.options[select.options.length] = new Option(schools[k], k);
     }
 
-    for (let p=0; p<years.length; p++) {
-      year_select.options[year_select.options.length] = new Option(years[p], years[p]);
-    }
 
     // initialize dropdown event listener
       $("#selection").change(function() {
       let school_idx = select.value;
-      let year_idx = year_select.value;
-      self.load_profile(school_idx, year_idx);
+      self.load_profile(school_idx);
     });
 
-    $("#year_selection").change( function() {
-      let school_idx = select.value;
-      let year_idx = year_select.value;
-      self.load_profile(school_idx, year_idx);
-    });
+
 
     // update message, data done loading
     document.querySelector('#message').innerHTML = 'Select a school to get started';
   }
 
-  load_profile(school_idx, year_idx) {
+  load_profile(school_idx) {
     let self = this;
     let name = self.data['2018'][school_idx].name;
     let description = self.data['2018'][school_idx].description;
@@ -50,7 +42,6 @@ class Profile {
     // parse data for line charts
     let parse_time = d3.timeParse("%Y");
     let years = create_years(1999,2018);
-
     // get tuition data over years
     let tuition_data = years.map(function(d) {
       return {
@@ -67,23 +58,41 @@ class Profile {
       }
     });
 
-    let sbar_data = [];
-    let year = +year_idx;
-    let current_year = self.data[year];
-    for (let i=0; i<current_year.length; i++) {
-      if (school_idx == i) {
-        sbar_data = current_year[i];
+    //Get enrollment data for grad and under grad over the years;
+    // get enrollment data over years
+    let ug_g_enroll_data = years.map(function(d) {
+      return {
+        'date': parse_time(d),
+        'graduate_enroll': self.data[d][school_idx].graduate_enroll,
+        'undergrad_enroll': self.data[d][school_idx].undergrad_enroll
       }
-    }
+    });
 
     // create tuition line charts
     let tuition_line = new Line('tuition_line', tuition_data);
     let enroll_line = new Line('enroll_line', enroll_data);
 
-    // create Stacked Bar
-    if (sbar_data.graduate_enroll!=0 || sbar_data.undergrad_enroll!=0 ){
-      let sbar_chart = new Sbar('GvU_chart', sbar_data);
+
+
+    //Create stacked Area charts
+    let ug_g_enrollment_chart = new Sarea('GvU_chart', ug_g_enroll_data, ['graduate_enroll','undergrad_enroll'] );
+
+    //Create event handler
+    var MyEventHandler = {};
+
+    //Create Year chart for brushing
+    var dates=[];
+    for (let i=0; i<enroll_data.length; i++) {
+      dates.push(enroll_data[i].date);
     }
+    let year_chart= new YearChart('Year_chart', dates, MyEventHandler);
+
+    //Bind event handler
+    $(MyEventHandler).bind("selectionChanged", function(event, selectionStart, selectionEnd){
+      ug_g_enrollment_chart.onSelectionChange(selectionStart, selectionEnd);
+      // year_chart.onSelectionChange(selectionStart, selectionEnd);
+    });
+
 
     // make profile content visible
     document.querySelector('#profiles #content').style.display = 'block';

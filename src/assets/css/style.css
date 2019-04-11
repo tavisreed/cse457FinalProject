@@ -15,6 +15,15 @@ body {
   display: inline-block;
 }
 
+#area_charts> div{
+  width: 50%;
+  margin: 0 auto;
+}
+
+.area_chart_title{
+  text-align: center;
+}
+
 .arc text {
   font: 10px sans-serif;
   text-anchor: middle;
@@ -22,4 +31,29 @@ body {
 
 .arc path {
   stroke: #fff;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.browser text {
+  text-anchor: end;
+}
+
+.area {
+  opacity: 0.7;
+  clip-path: url(#clip);
+}
+.area:hover {
+  opacity: 1;
+}
+
+.brush .extent {
+  stroke: #fff;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
 }

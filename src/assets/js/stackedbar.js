@@ -1,4 +1,4 @@
-// Source: https://bl.ocks.org/Andrew-Reid/0aedd5f3fb8b099e3e10690bd38bd458
+// Source: Assignment 2
 
 class Sbar {
     constructor(_parent, _data) {
