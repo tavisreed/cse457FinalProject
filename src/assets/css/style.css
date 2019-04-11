@@ -15,12 +15,12 @@ body {
   display: inline-block;
 }
 
-#area_charts> div{
+#year_chart_div > div{
   width: 50%;
   margin: 0 auto;
 }
 
-.area_chart_title{
+.chart_title{
   text-align: center;
 }
 

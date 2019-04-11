@@ -90,7 +90,8 @@ class Profile {
     //Bind event handler
     $(MyEventHandler).bind("selectionChanged", function(event, selectionStart, selectionEnd){
       ug_g_enrollment_chart.onSelectionChange(selectionStart, selectionEnd);
-      // year_chart.onSelectionChange(selectionStart, selectionEnd);
+      tuition_line.onSelectionChange(selectionStart, selectionEnd);
+      enroll_line.onSelectionChange(selectionStart, selectionEnd);
     });
 
 
