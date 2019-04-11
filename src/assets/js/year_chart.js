@@ -1,9 +1,10 @@
 //Source studio 6
 
 class YearChart {
-    constructor(_parent, _data) {
+    constructor(_parent, _data, MyEventHandler) {
         this.parent = _parent;
         this.data = _data;
+        this.eventHandler=MyEventHandler;
         this.init();
     }
 
@@ -61,14 +62,21 @@ class YearChart {
             .on("brush", brushed);
 
         function brushed() {
-            // Set new domain if brush (user selection) is not empty
-            ug_g_enrollment_chart.x.domain(
-                d3.event.selection === null ?  vis.x .domain() : d3.event.selection.map(vis.x .invert)
-            );
-            // Update focus chart (detailed information)
-            //console.log();
-            ug_g_enrollment_chart.updateVis();
-
+            // // Set new domain if brush (user selection) is not empty
+            // ug_g_enrollment_chart.x.domain(
+            //     d3.event.selection === null ?  vis.x .domain() : d3.event.selection.map(vis.x .invert)
+            // );
+            // // Update focus chart (detailed information)
+            // //console.log();
+            // ug_g_enrollment_chart.updateVis();
+            if(d3.event.selection == null) {
+                // No region selected (brush inactive)
+                $(vis.eventHandler).trigger("x", vis.x.domain());
+            } else {
+                // User selected specific region
+                $(vis.eventHandler).trigger("selectionChanged", d3.event.selection.map(vis.x.invert));
+            }
+            // vis.wrangleData();
         }
         //Append brush component
         vis.svg.append("g")

@@ -103,7 +103,7 @@ class Sarea {
             });
         })
         ]);
-
+        // console.log(vis.displayData)
         var dataCategories = vis.catagories;
         var selection= "#" + vis.parent+'_selection';
         // Draw the layers
@@ -143,6 +143,36 @@ class Sarea {
         vis.svg.select(".x-axis").call(vis.xAxis);
         vis.svg.select(".y-axis").call(vis.yAxis);
     }
+
+    onSelectionChange(selectionStart, selectionEnd){
+        var vis = this;
+
+
+        vis.temp_data=vis.data.filter(function(d){
+            if (d.date >= selectionStart && d.date<=selectionEnd){
+                return true;
+            }
+            else{
+                return false;
+            }
+        });
+
+        var dataCategories = vis.catagories;
+        var stack=d3.stack().keys(dataCategories);
+        var stackedData = stack(vis.temp_data);
+        vis.displayData =stackedData;
+
+        vis.x.domain(d3.extent(vis.temp_data, function(d) { return d.date; }));
+        vis.xAxis = d3.axisBottom()
+            .scale(vis.x);
+        vis.updateVis();
+
+    }
+
+
+
+
+
 }
 
 

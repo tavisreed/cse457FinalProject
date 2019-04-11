@@ -18,28 +18,20 @@ class Profile {
       select.options[select.options.length] = new Option(schools[k], k);
     }
 
-    for (let p=0; p<years.length; p++) {
-      year_select.options[year_select.options.length] = new Option(years[p], p);
-    }
 
     // initialize dropdown event listener
-    select.addEventListener('change', function() {
+      $("#selection").change(function() {
       let school_idx = select.value;
-      let year_idx = year_select.value;
-      self.load_profile(school_idx, year_idx);
+      self.load_profile(school_idx);
     });
 
-    year_select.addEventListener('change', function() {
-      let school_idx = select.value;
-      let year_idx = year_select.value;
-      self.load_profile(school_idx, year_idx);
-    });
+
 
     // update message, data done loading
     document.querySelector('#message').innerHTML = 'Select a school to get started';
   }
 
-  load_profile(school_idx, year_idx) {
+  load_profile(school_idx) {
     let self = this;
     let name = self.data['2018'][school_idx].name;
     let description = self.data['2018'][school_idx].description;
@@ -84,12 +76,22 @@ class Profile {
     // create stacked Area charts
     let ug_g_enrollment_chart = new Sarea('GvU_chart', ug_g_enroll_data, ['graduate_enroll','undergrad_enroll'] );
 
-    // create Year chart for brushing
+    //Create event handler
+    var MyEventHandler = {};
+
+    //Create Year chart for brushing
     var dates=[];
     for (let i=0; i<enroll_data.length; i++) {
       dates.push(enroll_data[i].date);
     }
-    let year_chart= new YearChart('Year_chart', dates);
+    let year_chart= new YearChart('Year_chart', dates, MyEventHandler);
+
+    //Bind event handler
+    $(MyEventHandler).bind("selectionChanged", function(event, selectionStart, selectionEnd){
+      ug_g_enrollment_chart.onSelectionChange(selectionStart, selectionEnd);
+      // year_chart.onSelectionChange(selectionStart, selectionEnd);
+    });
+
 
     // make profile content visible
     document.querySelector('#profiles #content').style.display = 'block';
