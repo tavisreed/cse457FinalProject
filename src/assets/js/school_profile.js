@@ -19,7 +19,7 @@ class Profile {
     }
 
     for (let p=0; p<years.length; p++) {
-      year_select.options[year_select.options.length] = new Option(years[p], p);
+      year_select.options[year_select.options.length] = new Option(years[p], years[p]);
     }
 
     // initialize dropdown event listener
@@ -68,7 +68,7 @@ class Profile {
     });
 
     let sbar_data = [];
-    let year = parseInt(year_idx)+1999;
+    let year = +year_idx;
     let current_year = self.data[year];
     for (let i=0; i<current_year.length; i++) {
       if (school_idx == i) {

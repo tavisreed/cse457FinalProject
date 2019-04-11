@@ -2,7 +2,7 @@ class Cluster {
   constructor(_parent, _data) {
     this.parent = _parent;
     this.data = _data;
-    this.profile = _profile;
+  
     this.init();
   }
 
@@ -34,7 +34,85 @@ class Cluster {
     // The largest node for each cluster.
     var clusters = new Array(m);
 
-    var nodes = self.data['2018'].map(function(e) {
+    
+    
+   
+      
+    var force = d3.forceSimulation()
+      // keep entire simulation balanced around screen center
+      .force('center', d3.forceCenter(self.width/2, self.height/2))
+
+      // cluster by section
+      // .force('cluster', cluster()
+      //   .strength(0.2))
+
+      // apply collision with padding
+      .force('collide', d3.forceCollide(d => d.radius + self.padding)
+        .strength(0))
+
+      .on('tick', layoutTick)
+      
+
+    var node = g.selectAll("circle");
+    
+    update(getNodes(2018),2018);
+    d3.interval(function(){
+      var lastDigit = Math.floor(Math.random() * 9);
+      var nodes = getNodes(('201' + lastDigit));
+     console.log("sense at all")
+      update(nodes,("201"+lastDigit))
+
+    }, 10000);
+
+    // var nodes = getNodes(2018);
+    
+    //function update(data){
+    function update(sedon,year){
+    
+    var s = d3.transition()
+          .duration(750);
+
+      // Apply the general update pattern to the nodes.
+      node = node.data(sedon);
+
+      node.exit()
+          .style("fill", "#b26745")
+        .transition(s)
+          .attr("r", 1e-6)
+          .remove();
+
+      node
+          .transition(s)
+          .style("fill", function(d) { return color(d.cluster/10); })
+          .attr("r", function(d){ return d.radius});
+
+      node = node.enter().append("circle")
+      .style("fill", function(d) { return color(d.cluster/10); })
+      .attr("r", function(d){ return d.radius })
+      .merge(node);
+
+    node.on("click", function(d){
+    
+      $("#selection").val(d.data.index).trigger('change');
+      $("#year_selection").val(year).trigger('change');
+      $('#nav-profile-tab').trigger('click');
+    })
+
+    node.append('svg:title')
+      .text(function(d) { return d.data.name; })
+
+    force.nodes(sedon);
+    //ramp up collision strength to provide smooth transition
+    var transitionTime = 3000;
+    var t = d3.timer(function (elapsed) {
+      var dt = elapsed / transitionTime;
+      force.force('collide').strength(Math.pow(dt, 2) * 0.7);
+      if (dt >= 1.0) t.stop();
+    });
+  }
+
+  function getNodes(year){
+    return self.data[year].map(function(e) {
       var i = Math.floor(Math.random() * m),
           r = Math.sqrt((i + 1) / m * -Math.log(Math.random())) * self.maxRadius,
           pub = 0;
@@ -54,44 +132,8 @@ class Cluster {
       if (!clusters[i] || (r > clusters[i].radius)) clusters[i] = d;
       return d;
     });
-      
-    var force = d3.forceSimulation()
-      // keep entire simulation balanced around screen center
-      .force('center', d3.forceCenter(self.width/2, self.height/2))
-
-      // cluster by section
-      .force('cluster', cluster()
-        .strength(0.2))
-
-      // apply collision with padding
-      .force('collide', d3.forceCollide(d => d.radius + self.padding)
-        .strength(0))
-
-      .on('tick', layoutTick)
-      .nodes(nodes);
-
-    var node = g.selectAll("circle")
-        .data(nodes)
-      .enter().append("circle")
-        .style("fill", function(d) { return color(d.cluster/10); });
-
-    node.on("click", function(d){
-      //self.profile.load_profile(d.data.name, '2018');
-      $("#selection").val(d.data.index).trigger('change');
-      $('#nav-profile-tab').trigger('click');
-    })
-
-    node.append('svg:title')
-      .text(function(d) { return d.data.name; })
-
-    // ramp up collision strength to provide smooth transition
-    var transitionTime = 3000;
-    var t = d3.timer(function (elapsed) {
-      var dt = elapsed / transitionTime;
-      force.force('collide').strength(Math.pow(dt, 2) * 0.7);
-      if (dt >= 1.0) t.stop();
-    });
-      
+  }
+  
     function layoutTick(e) {
       node
           .attr("cx", function(d) { return d.x; })
