@@ -41,12 +41,13 @@ class Cluster {
       if (e.type != 'none') {
         pub = e.type == 'PUBLIC' ? 0 : 1;
       }
-      i=pub;
+      i = pub;
+      //console.log(e.undergrad_enroll != NaN ? e.undergrad_enroll/10000 : 1);
 
       let d = {
             data: e,
             cluster: i,
-            radius: e.tuition != 'none' ? e.tuition[0]/5000 : 1,
+            radius: isNaN(e.undergrad_enroll) ? 1 : e.undergrad_enroll/3000,
             x: Math.cos(i / m * 2 * Math.PI) * 100 + self.width / 2 + Math.random(),
             y: Math.sin(i / m * 2 * Math.PI) * 100 + self.height / 2 + Math.random()
           };
