@@ -50,7 +50,7 @@ class Sarea {
 
         // Scales and axes
         vis.x = d3.scaleTime()
-            .range([0, vis.width*.95])
+            .range([0, vis.width])
             .domain(d3.extent(vis.data, function(d) { return d.date; }));
         // .domain([data[0].date.getFullYear(),data[data.length-1].date.getFullYear()]);
         vis.y = d3.scaleLinear()
@@ -120,7 +120,16 @@ class Sarea {
                 return vis.area(d);
             })
             .on("mouseover", function(d,i){
-                $( selection ).html(dataCategories[i]);
+                var selection_text=dataCategories[i];
+                if (dataCategories[i]=="graduate_enroll"){
+                    selection_text="Graduate Student Enrollment";
+                }
+                else if(dataCategories[i]=="undergrad_enroll"){
+                    selection_text="Undergraduate Student Enrollment";
+                }
+
+
+                $( selection ).html(selection_text);
                 return;
             } )
             .on("mouseout", function(d){

@@ -50,7 +50,6 @@ class Profile {
     // parse data for line charts
     let parse_time = d3.timeParse("%Y");
     let years = create_years(1999,2018);
-
     // get tuition data over years
     let tuition_data = years.map(function(d) {
       return {
@@ -66,15 +65,7 @@ class Profile {
         'value': self.data[d][school_idx].undergrad_enroll
       }
     });
-    //get bar char data from a certain year
-    let sbar_data = [];
-    let year = parseInt(year_idx)+1999;
-    let current_year = self.data[year];
-    for (let i=0; i<current_year.length; i++) {
-      if (school_idx == i) {
-        sbar_data = current_year[i];
-      }
-    }
+
     //Get enrollment data for grad and under grad over the years;
     // get enrollment data over years
     let ug_g_enroll_data = years.map(function(d) {
@@ -90,13 +81,18 @@ class Profile {
     let enroll_line = new Line('enroll_line', enroll_data);
 
 
+
     //Create stacked Area charts
     let ug_g_enrollment_chart = new Sarea('GvU_chart', ug_g_enroll_data, ['graduate_enroll','undergrad_enroll'] );
 
-    // create Stacked Bar
-    // if (sbar_data.graduate_enroll!=0 || sbar_data.undergrad_enroll!=0 ){
-    //   let sbar_chart = new Sbar('GvU_chart', sbar_data);
-    // }
+
+
+    //Create Year chart for brushing
+    var dates=[];
+    for (let i=0; i<enroll_data.length; i++) {
+      dates.push(enroll_data[i].date);
+    }
+    let year_chart= new YearChart('Year_chart', dates);
 
     // make profile content visible
     document.querySelector('#profiles #content').style.display = 'block';
