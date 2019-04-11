@@ -85,14 +85,22 @@ class Profile {
     //Create stacked Area charts
     let ug_g_enrollment_chart = new Sarea('GvU_chart', ug_g_enroll_data, ['graduate_enroll','undergrad_enroll'] );
 
-
+    //Create event handler
+    var MyEventHandler = {};
 
     //Create Year chart for brushing
     var dates=[];
     for (let i=0; i<enroll_data.length; i++) {
       dates.push(enroll_data[i].date);
     }
-    let year_chart= new YearChart('Year_chart', dates);
+    let year_chart= new YearChart('Year_chart', dates, MyEventHandler);
+
+    //Bind event handler
+    $(MyEventHandler).bind("selectionChanged", function(event, selectionStart, selectionEnd){
+      ug_g_enrollment_chart.onSelectionChange(selectionStart, selectionEnd);
+      // year_chart.onSelectionChange(selectionStart, selectionEnd);
+    });
+
 
     // make profile content visible
     document.querySelector('#profiles #content').style.display = 'block';
