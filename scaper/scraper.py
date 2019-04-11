@@ -160,7 +160,7 @@ for year, fids in tqdm(fetch.items()):
       'degree_table': degree_table
     })
 
-  with open('data/{}data.json'.format(year), 'w') as outfile:
+  with open('datanew/{}data.json'.format(year), 'w') as outfile:
     json.dump(year_data, outfile)
 
 loop.close()
