@@ -34,38 +34,43 @@ class Cluster {
     // The largest node for each cluster.
     var clusters = new Array(m);
 
-    
-    
-   
-      
     var force = d3.forceSimulation()
       // keep entire simulation balanced around screen center
-      .force('center', d3.forceCenter(self.width/2, self.height/2))
+      .force('center', d3.forceCenter(self.width/2, self.height/2));
 
       // cluster by section
       // .force('cluster', cluster()
       //   .strength(0.2))
 
       // apply collision with padding
-      .force('collide', d3.forceCollide(d => d.radius + self.padding)
-        .strength(0))
-
-      .on('tick', layoutTick)
+      
+      
       
 
     var node = g.selectAll("circle");
     
     update(getNodes(2018),2018);
-    d3.interval(function(){
-      var lastDigit = Math.floor(Math.random() * 9);
-      var nodes = getNodes(('201' + lastDigit));
-     console.log("sense at all")
-      update(nodes,("201"+lastDigit))
+    // d3.interval(function(){
+    //   var lastDigit = Math.floor(Math.random() * 9);
+    //   var nodes = getNodes(('201' + lastDigit));
+    //  console.log("sense at all")
+    //   update(nodes,("201"+lastDigit))
 
-    }, 10000);
+    // }, 10000);
 
+
+    for(var i = 1999; i<2019; ++i){
+      var b = document.getElementById("home").appendChild(document.createElement("button"));
+      b.innerHTML = i;
+      b.setAttribute("id", "yearButton");
+      b.setAttribute("value", i);
+      
+    }
     // var nodes = getNodes(2018);
     
+    d3.selectAll("#yearButton").on("click", function(){
+      update(getNodes(d3.select(this).text()),d3.select(this).text());
+    })
     //function update(data){
     function update(sedon,year){
     
@@ -76,7 +81,6 @@ class Cluster {
       node = node.data(sedon);
 
       node.exit()
-          .style("fill", "#b26745")
         .transition(s)
           .attr("r", 1e-6)
           .remove();
@@ -84,11 +88,11 @@ class Cluster {
       node
           .transition(s)
           .style("fill", function(d) { return color(d.cluster/10); })
-          .attr("r", function(d){ return d.radius});
+          .attr("r", function(d){ return d.radius;});
 
       node = node.enter().append("circle")
       .style("fill", function(d) { return color(d.cluster/10); })
-      .attr("r", function(d){ return d.radius })
+      .attr("r", function(d){ return d.radius; })
       .merge(node);
 
     node.on("click", function(d){
@@ -101,14 +105,16 @@ class Cluster {
     node.append('svg:title')
       .text(function(d) { return d.data.name; })
 
-    force.nodes(sedon);
+    force.nodes(sedon)
+    .force('collide', d3.forceCollide(d => d.radius + self.padding).strength(1))
+    .on('tick', layoutTick);
     //ramp up collision strength to provide smooth transition
-    var transitionTime = 3000;
-    var t = d3.timer(function (elapsed) {
-      var dt = elapsed / transitionTime;
-      force.force('collide').strength(Math.pow(dt, 2) * 0.7);
-      if (dt >= 1.0) t.stop();
-    });
+    // var transitionTime = 3000;
+    // var t = d3.timer(function (elapsed) {
+    //   var dt = elapsed / transitionTime;
+    //   force.force('collide').strength(Math.pow(dt, 2) * 0.7);
+    //   if (dt >= 1.0) t.stop();
+    // });
   }
 
   function getNodes(year){
