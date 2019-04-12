@@ -4,14 +4,13 @@ class YearChart {
     constructor(_parent, _data, MyEventHandler) {
         this.parent = _parent;
         this.data = _data;
-        this.eventHandler=MyEventHandler;
+        this.eventHandler = MyEventHandler;
         this.init();
     }
 
-
-    init(argument)
-    {
+    init(argument) {
         var vis = this;
+
         // initialize plot
         vis.margin = {top: 30, right: 30, bottom: 30, left: 60};
         vis.width = window.innerWidth/2.2 - vis.margin.left - vis.margin.right;
@@ -21,8 +20,6 @@ class YearChart {
         let data =vis.data;
 
         var max_enroll=0;
-
-
 
         //Clear out old table
         d3.select("#" + vis.parent)
@@ -36,17 +33,13 @@ class YearChart {
             .append("g")
             .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
-
-
         // Scales and axes
         vis.x = d3.scaleTime()
             .range([0, vis.width])
             .domain([data[0], data[data.length-1]]);
 
-
         vis.xAxis = d3.axisBottom()
             .scale(vis.x);
-
 
         //Draw the rectangle
         vis.svg.append("g").append("rect")
@@ -56,7 +49,7 @@ class YearChart {
             .attr("height", vis.height)
             .attr("fill","#d6d4d3")
 
-        //initalizeing bruch component
+        // initalizing brush component
         var brush = d3.brushX()
             .extent([[0, 0], [vis.width, vis.height]])
             .on("brush", brushed);

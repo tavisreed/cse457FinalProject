@@ -124,7 +124,7 @@ for year, fids in tqdm(fetch.items()):
 
     try:
       tuition_list = parse_table(soup.find('h3', text='Expenses & Financial Aid').find_next_sibling('table'))[1]
-      tuition = tuition_list[1:3] if len(tuition_list) > 2 else tuition_list[1]
+      tuition = tuition_list[1:3] if len(tuition_list) > 2 else [tuition_list[1]]
       tuition = [t.replace('$','').replace(',','') for t in tuition]
     except AttributeError:
       print('bad tuition for {}'.format(name))
