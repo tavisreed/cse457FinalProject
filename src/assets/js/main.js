@@ -46,7 +46,7 @@ function parse_data(data) {
       'undergrad_enroll': +d.undergrad_enroll,
       'graduate_enroll': +d.graduate_enroll,
       'description': d.description,
-      'freshmen_enroll_table': 'none',
+      'freshmen_enroll_table': d.freshmen_enroll_table,
       'sophomore_enroll_table': 'none',
       'junior_enroll_table': 'none',
       'senior_enroll_table': 'none',

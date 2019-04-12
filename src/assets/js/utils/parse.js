@@ -20,5 +20,31 @@ function parse_tuition(t) {
 }
 
 function parse_table(t) {
-  return;  
+  let header2009 = [
+    "Group",
+    "African-American",
+    "Asian-American",
+    "Hispanic",
+    "Native American",
+    "Caucasian",
+    "Foreign National",
+    "Other",
+    "Total"
+  ];
+
+  let header2010 = [
+    "Group",
+    "Nonresident Alien",
+    "Unknown",
+    "Hispanic",
+    "American Indian",
+    "Asian",
+    "Black",
+    "Pacific Islander",
+    "White",
+    "Two or More",
+    "Total"
+  ];
+  
+  return;
 }
