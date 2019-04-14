@@ -101,6 +101,58 @@ class Profile {
       }
     });
 
+    // get ethnicity by gender data
+    let ethnicity_data = years.map(function(d) {
+      var asian=0;
+      var black=0;
+      var hispanic=0;
+      var native_american=0;
+      var other=0;
+      var white=0;
+
+      if (self.data[d][school_idx].freshmen_enroll_table !="none"){
+        asian=asian+self.data[d][school_idx].freshmen_enroll_table.ethnicity.asian;
+        black=black+self.data[d][school_idx].freshmen_enroll_table.ethnicity.black;
+        hispanic=hispanic+self.data[d][school_idx].freshmen_enroll_table.ethnicity.hispanic;
+        native_american=native_american+self.data[d][school_idx].freshmen_enroll_table.ethnicity["native-american"];
+        other=other+self.data[d][school_idx].freshmen_enroll_table.ethnicity.other;
+        white=white+self.data[d][school_idx].freshmen_enroll_table.ethnicity.white;
+      }
+      if (self.data[d][school_idx].sophomore_enroll_table !="none"){
+        asian=asian+self.data[d][school_idx].sophomore_enroll_table.ethnicity.asian;
+        black=black+self.data[d][school_idx].sophomore_enroll_table.ethnicity.black;
+        hispanic=hispanic+self.data[d][school_idx].sophomore_enroll_table.ethnicity.hispanic;
+        native_american=native_american+self.data[d][school_idx].sophomore_enroll_table.ethnicity["native-american"];
+        other=other+self.data[d][school_idx].sophomore_enroll_table.ethnicity.other;
+        white=white+self.data[d][school_idx].sophomore_enroll_table.ethnicity.white;
+      }
+      if (self.data[d][school_idx].junior_enroll_table !="none"){
+        asian=asian+self.data[d][school_idx].junior_enroll_table.ethnicity.asian;
+        black=black+self.data[d][school_idx].junior_enroll_table.ethnicity.black;
+        hispanic=hispanic+self.data[d][school_idx].junior_enroll_table.ethnicity.hispanic;
+        native_american=native_american+self.data[d][school_idx].junior_enroll_table.ethnicity["native-american"];
+        other=other+self.data[d][school_idx].junior_enroll_table.ethnicity.other;
+        white=white+self.data[d][school_idx].junior_enroll_table.ethnicity.white;
+      }
+      if (self.data[d][school_idx].senior_enroll_table !="none"){
+        asian=asian+self.data[d][school_idx].senior_enroll_table.ethnicity.asian;
+        black=black+self.data[d][school_idx].senior_enroll_table.ethnicity.black;
+        hispanic=hispanic+self.data[d][school_idx].senior_enroll_table.ethnicity.hispanic;
+        native_american=native_american+self.data[d][school_idx].senior_enroll_table.ethnicity["native-american"];
+        other=other+self.data[d][school_idx].senior_enroll_table.ethnicity.other;
+        white=white+self.data[d][school_idx].senior_enroll_table.ethnicity.white;
+      }
+
+      return {
+        'date': parse_time(d),
+        'asian': asian,
+        'black': black,
+        'hispanic': hispanic,
+        'native_american': native_american,
+        'other': other,
+        'white': white
+      }
+    });
 
     // parse year data
     let dates = years.map(function(d) {
@@ -113,8 +165,8 @@ class Profile {
     // create year chart for brushing
     let year_chart = new YearChart('year_chart', dates, event_handler);
 
-    // create tuition line chart
-    let tuition_line = new Line('tuition_line', tuition_data);
+    // create tuition area chart chart
+    let tuition_chart = new StackedArea('tuition_line', tuition_data, ['value']);
 
     // create enrollment stacked area chart
     let enrollment_chart = new StackedArea('enroll_area', enroll_data, ['graduate_enroll', 'undergrad_enroll']);
@@ -122,11 +174,15 @@ class Profile {
     //Create enrollment by gender area chart
     let gender_chart = new StackedArea('Gender_chart', gender_data, ['freshM', 'freshF','sophM','sophF','juM','juF','senM','senF']);
 
+    //Create enrollment by ethnicity area chart
+    let ethnicity_chart = new StackedArea('Ethnicity_chart', ethnicity_data, ['asian', 'black','hispanic','native_american','other','white']);
+
     // bind brush event to event handler
     $(event_handler).bind("selectionChanged", function(event, selectionStart, selectionEnd) {
       enrollment_chart.onSelectionChange(selectionStart, selectionEnd);
-      tuition_line.onSelectionChange(selectionStart, selectionEnd)
+      tuition_chart.onSelectionChange(selectionStart, selectionEnd)
       gender_chart.onSelectionChange(selectionStart, selectionEnd)
+      ethnicity_chart.onSelectionChange(selectionStart, selectionEnd)
     });
 
     // make profile content visible

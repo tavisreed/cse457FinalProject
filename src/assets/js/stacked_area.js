@@ -149,6 +149,24 @@ class StackedArea {
                 else if(dataCategories[i]=="senF"){
                     selection_text="Senior Females";
                 }
+                else if(dataCategories[i]=="asian"){
+                    selection_text="Asian Students";
+                }
+                else if(dataCategories[i]=="black"){
+                    selection_text="Black Students";
+                }
+                else if(dataCategories[i]=="hispanic"){
+                    selection_text="Hispanic Students";
+                }
+                else if(dataCategories[i]=="other"){
+                    selection_text="Other Students";
+                }
+                else if(dataCategories[i]=="white"){
+                    selection_text="White Students";
+                }
+                else if(dataCategories[i]=="value"){
+                    selection_text="Tuition"
+                }
 
 
                 $( selection ).html("Selection: "+selection_text);
