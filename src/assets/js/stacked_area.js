@@ -1,20 +1,18 @@
-//Source studio 6
+// source: studio 6
 
-
-class Sarea {
-    constructor(_parent, _data, _catagories) {
+class StackedArea {
+    constructor(_parent, _data, _categories) {
         this.parent = _parent;
         this.data = _data;
-        this.catagories = _catagories;
+        this.categories = _categories;
         this.init();
     }
 
-    init(argument)
-    {
+    init() {
         var vis = this;
         vis.colorScale = d3.scaleOrdinal(d3.schemeCategory10);
-        vis.colorScale.domain(d3.keys(vis.catagories).filter(function(d){ return d != "date"; }))
-       // vis.colorScale.domain(vis.catagories);
+        vis.colorScale.domain(d3.keys(vis.categories).filter(function(d){ return d != "date"; }))
+       // vis.colorScale.domain(vis.categories);
 
         // initialize plot
         vis.margin = {top: 30, right: 30, bottom: 30, left: 60};
@@ -76,7 +74,7 @@ class Sarea {
             .attr("class", "y-axis axis");
 
 
-        var dataCategories = vis.catagories;
+        var dataCategories = vis.categories;
         var stack=d3.stack().keys(dataCategories);
         var stackedData = stack(this.data);
         vis.displayData =stackedData;
@@ -104,7 +102,7 @@ class Sarea {
         })
         ]);
         // console.log(vis.displayData)
-        var dataCategories = vis.catagories;
+        var dataCategories = vis.categories;
         var selection= "#" + vis.parent+'_selection';
         // Draw the layers
         var categories = vis.svg.selectAll(".area")
@@ -157,7 +155,7 @@ class Sarea {
             }
         });
 
-        var dataCategories = vis.catagories;
+        var dataCategories = vis.categories;
         var stack=d3.stack().keys(dataCategories);
         var stackedData = stack(vis.temp_data);
         vis.displayData =stackedData;

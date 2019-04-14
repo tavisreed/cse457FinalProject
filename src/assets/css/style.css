@@ -11,16 +11,11 @@ body {
   margin-top: 1em;
 }
 
-#line_charts > div {
+#charts > div {
   display: inline-block;
 }
 
-#area_charts> div, #year_chart_div > div {
-  width: 50%;
-  margin: 0 auto;
-}
-
-.area_chart_title, .chart_title{
+#brush {
   text-align: center;
 }
 

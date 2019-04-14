@@ -31,7 +31,7 @@ class Line {
 
     // define line
     var line = d3.line()
-        .defined(function(d) { return d != 'none'; })
+        .defined(function(d) { return d.value != 'none' ? d : null; })
         //.curve(d3.curveBasis)
         .x(function(d) { return x(d.date); })
         .y(function(d) { return y(d.value); });
