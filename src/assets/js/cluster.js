@@ -17,6 +17,7 @@ class Cluster {
     self.maxRadius = 15;
     
     var centerScale = d3.scalePoint().padding(1).range([0, self.width]);
+    var colorScale = d3.scaleOrdinal().range(d3.schemeCategory10);
     var forceStrength = 0.05;
     self.radiusScale = d3.scalePow()
     .exponent(0.5)
@@ -61,16 +62,7 @@ class Cluster {
       	.attr("r", function(d, i){ console.log (d.r); return d.r; })
         .attr("cx", function(d, i){ return 175 + 25 * i + 2 * i ** 2; })
 				.attr("cy", function(d, i){ return 250; })
-      	.style("fill", function(d, i){ 
-        if(d.type == "PUBLIC"){
-          return "purple"; 
-        } 
-        if(d.type == "PRIVATE"){
-          return "pink";
-        }  
-        return "black"
-
-        })
+      	.style("fill", "#ADD8E6")
       
         .style("pointer-events", "all")
       	.call(d3.drag()
@@ -104,14 +96,13 @@ class Cluster {
             .on("tick", ticked);
       
 
-      var c = document.getElementById("home").appendChild(document.createElement("button"));
-          c.innerHTML = "Group by Type";
-          c.setAttribute("id", "type");
-      
+     
 
-      d3.select("#type").on("click", function(){
-        var id= this.id;
-        splitBubbles(id);
+      d3.select("#home_selection").on("change", function(){
+        var value = $("#home_selection option:selected").val();
+
+        console.log(value);
+        splitBubbles(value);
       })
 
       function dragstarted(d,i) {
@@ -151,6 +142,17 @@ class Cluster {
         
         centerScale.domain(nodes.map(function(d){ return d[byVar]; }));
         
+        colorScale.domain(nodes.map(function(d){return d[byVar];}));
+        
+        circles.style("fill", function(d){
+          if(typeof d[byVar] === "undefined"){
+            return "#ADD8E6";
+          }
+          return colorScale(d[byVar]);
+        });
+
+        // circles = circles.merge(circlesEnter);
+      
         // if(byVar == "all"){
         //   hideTitles()
         // } else {
@@ -161,6 +163,7 @@ class Cluster {
         simulation.force('x', d3.forceX().strength(forceStrength).x(function(d){ 
         	return centerScale(d[byVar]);
         }));
+
 
         // @v4 We can reset the alpha value and restart the simulation
         simulation.alpha(2).restart();
