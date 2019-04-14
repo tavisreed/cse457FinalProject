@@ -1,3 +1,5 @@
+let cluster;
+
 function load_data() {
   let q = queue();
   let data = {};
@@ -29,7 +31,7 @@ function load_data() {
 function start(data) {
   console.log(data);
   let profile = new Profile('profiles', data);
-  let cluster = new Cluster('cluster', data);
+  cluster = new Cluster('cluster', data);
   //let enrollment = new Histogram('test', data);
 }
 

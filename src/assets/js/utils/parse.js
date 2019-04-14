@@ -83,7 +83,6 @@ function parse_table(t,name) {
     ethnicities['white'] = etotals[7]
     ethnicities['other'] = etotals[0]+etotals[1]+etotals[6]+etotals[8];
   } else {
-    console.log("I am sad to exist");
     return null;
   }
 
