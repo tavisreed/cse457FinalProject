@@ -45,7 +45,7 @@ class YearChart {
 
 
         vis.xAxis = d3.axisBottom()
-            .scale(vis.x);
+            .scale(vis.x).ticks(d3.timeYear).tickPadding(0);
 
 
         //Draw the rectangle
@@ -69,6 +69,18 @@ class YearChart {
             // // Update focus chart (detailed information)
             // //console.log();
             // ug_g_enrollment_chart.updateVis();
+            if (d3.event.sourceEvent.type === "brush") return;
+            var d0 = d3.event.selection.map(vis.x.invert),
+                d1 = d0.map(d3.timeYear.round);
+          
+            // If empty when rounded, use floor instead.
+            if (d1[0] >= d1[1]) {
+              d1[0] = d3.timeDay.floor(d0[0]);
+              d1[1] = d3.timeDay.offset(d1[0]);
+            }
+          
+            d3.select(this).call(d3.event.target.move, d1.map(vis.x));
+
             if(d3.event.selection == null) {
                 // No region selected (brush inactive)
                 $(vis.eventHandler).trigger("x", vis.x.domain());
