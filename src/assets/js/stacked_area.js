@@ -125,6 +125,30 @@ class StackedArea {
                 else if(dataCategories[i]=="undergrad_enroll"){
                     selection_text="Undergraduate Student Enrollment";
                 }
+                else if(dataCategories[i]=="freshM"){
+                    selection_text="Freshmen Males";
+                }
+                else if(dataCategories[i]=="freshF"){
+                    selection_text="Freshmen Females";
+                }
+                else if(dataCategories[i]=="sophM"){
+                    selection_text="Sophomore Males";
+                }
+                else if(dataCategories[i]=="sophF"){
+                    selection_text="Sophomore Females";
+                }
+                else if(dataCategories[i]=="juM"){
+                    selection_text="Junior Males";
+                }
+                else if(dataCategories[i]=="juF"){
+                    selection_text="Junior Females";
+                }
+                else if(dataCategories[i]=="senM"){
+                    selection_text="Senior Males";
+                }
+                else if(dataCategories[i]=="senF"){
+                    selection_text="Senior Females";
+                }
 
 
                 $( selection ).html("Selection: "+selection_text);

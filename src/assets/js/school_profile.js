@@ -32,7 +32,6 @@ class Profile {
 
   load_profile(school_idx) {
     let self = this;
-
     // initialize school attributes
     let name = self.data['2018'][school_idx].name;
     let description = self.data['2018'][school_idx].description;
@@ -62,6 +61,47 @@ class Profile {
       }
     });
 
+    // get enrollment by gender data
+    let gender_data = years.map(function(d) {
+      var freshM=0;
+      var freshF=0;
+      var sophM=0;
+      var sophF=0;
+      var juM=0;
+      var juF=0;
+      var senM=0;
+      var senF=0;
+      if (self.data[d][school_idx].freshmen_enroll_table !="none"){
+        freshM=self.data[d][school_idx].freshmen_enroll_table.gender.male;
+        freshF=self.data[d][school_idx].freshmen_enroll_table.gender.female;
+      }
+      if (self.data[d][school_idx].sophomore_enroll_table !="none"){
+        sophM=self.data[d][school_idx].sophomore_enroll_table.gender.male;
+        sophF=self.data[d][school_idx].sophomore_enroll_table.gender.female;
+      }
+      if (self.data[d][school_idx].junior_enroll_table !="none"){
+        juM=self.data[d][school_idx].junior_enroll_table.gender.male;
+        juF=self.data[d][school_idx].junior_enroll_table.gender.female;
+      }
+      if (self.data[d][school_idx].senior_enroll_table !="none"){
+        senM=self.data[d][school_idx].senior_enroll_table.gender.male;
+        senF=self.data[d][school_idx].senior_enroll_table.gender.female;
+      }
+
+      return {
+        'date': parse_time(d),
+        'freshM': freshM,
+        'freshF': freshF,
+        'sophM': sophM,
+        'sophF': sophF,
+        'juM': juM,
+        'juF': juF,
+        'senM': senM,
+        'senF': senF
+      }
+    });
+
+
     // parse year data
     let dates = years.map(function(d) {
       return parse_time(d);
@@ -79,10 +119,14 @@ class Profile {
     // create enrollment stacked area chart
     let enrollment_chart = new StackedArea('enroll_area', enroll_data, ['graduate_enroll', 'undergrad_enroll']);
 
+    //Create enrollment by gender area chart
+    let gender_chart = new StackedArea('Gender_chart', gender_data, ['freshM', 'freshF','sophM','sophF','juM','juF','senM','senF']);
+
     // bind brush event to event handler
     $(event_handler).bind("selectionChanged", function(event, selectionStart, selectionEnd) {
       enrollment_chart.onSelectionChange(selectionStart, selectionEnd);
-      tuition_line.onSelectionChange(selectionStart, selectionEnd);
+      tuition_line.onSelectionChange(selectionStart, selectionEnd)
+      gender_chart.onSelectionChange(selectionStart, selectionEnd)
     });
 
     // make profile content visible
