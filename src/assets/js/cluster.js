@@ -52,14 +52,14 @@ class Cluster {
       })
       
       var nodes = self.data[2018];
-      console.log(nodes);
+      
       
       
       var circles = g.selectAll("circle")
       	.data(nodes);
       
       var circlesEnter = circles.enter().append("circle")
-      	.attr("r", function(d, i){ console.log (d.r); return d.r; })
+      	.attr("r", function(d, i){ return d.r; })
         .attr("cx", function(d, i){ return 175 + 25 * i + 2 * i ** 2; })
 				.attr("cy", function(d, i){ return 250; })
       	.style("fill", "#ADD8E6")
@@ -97,14 +97,15 @@ class Cluster {
       
 
      
-
+      //selects selection box and assigns onchange value, then calls splitBubbles on change
       d3.select("#home_selection").on("change", function(){
         var value = $("#home_selection option:selected").val();
+        splitBubbles(value); 
+      });
 
-        console.log(value);
-        splitBubbles(value);
-      })
-
+      d3.select("#search_btn").on("click", function(){
+        findNode($("#search").val())
+      });
       function dragstarted(d,i) {
         //console.log("dragstarted " + i)
         if (!d3.event.active) simulation.alpha(1).restart();
@@ -169,6 +170,18 @@ class Cluster {
         simulation.alpha(2).restart();
       }
       
+
+      function findNode(query){
+        circles
+        .style("stroke" ,"black")
+        .style("stroke-width", function(d){
+          if(d.name == query){
+            console.log(d);
+            return d.r/3;
+          }
+          return "0"
+        });
+      }
       // function hideTitles() {
       //   svg.selectAll('.title').remove();
       // }
@@ -245,7 +258,7 @@ class Cluster {
   //   // d3.interval(function(){
   //   //   var lastDigit = Math.floor(Math.random() * 9);
   //   //   var nodes = getNodes(('201' + lastDigit));
-  //   //  console.log("sense at all")
+  //   
   //   //   update(nodes,("201"+lastDigit))
 
   //   // }, 10000);
