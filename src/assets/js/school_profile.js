@@ -166,7 +166,7 @@ class Profile {
     let year_chart = new YearChart('year_chart', dates, event_handler);
 
     // create tuition line chart
-    let tuition_chart = new Line('tuition_line', tuition_data);
+    let tuition_chart = new Line('tuition_line', tuition_data, tuition_data, 1);
 
     // create enrollment stacked area chart
     let enrollment_chart = new StackedArea('enroll_area', enroll_data, ['graduate_enroll', 'undergrad_enroll']);

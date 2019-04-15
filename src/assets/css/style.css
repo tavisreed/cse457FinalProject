@@ -74,3 +74,21 @@ body {
   shape-rendering: crispEdges;
 }
 
+.school_div{
+
+  border-style: solid;
+  border-width: 2px;
+  text-align: center;
+
+}
+
+#outer_school_div{
+  column-count: 3;
+  column-rule-width: 4px;
+
+}
+
+#school_name_1, #school_name_2, #school_name_3 {
+  text-decoration: underline;
+
+}

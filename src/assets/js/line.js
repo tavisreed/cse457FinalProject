@@ -1,7 +1,9 @@
 class Line {
-  constructor(_parent, _data) {
+  constructor(_parent, _data, _data2, _numberlines) {
     this.parent = _parent;
-    this.data = _data;
+    this.data = _data;;
+    this.data2=_data2;
+    this.numberlines=_numberlines
     this.init();
   }
 
@@ -15,6 +17,9 @@ class Line {
 
     // set data
     let line_data = self.data;
+    console.log(line_data)
+    let second_line_data=self.data2;
+    console.log(second_line_data)
 
     var svg = d3.select('#' + self.parent).html('')
         .attr("width", self.width + self.margin.left + self.margin.right)
@@ -29,12 +34,43 @@ class Line {
         .domain([0, d3.max(line_data, function(d) { return d.value; })])
         .range([self.height, 0]);
 
+
+    //Create a second line if needed
+    if(self.numberlines==2){
+      var line2 = d3.line()
+          .defined(function(d) { return d.value != 'none' ? d : null; })
+          //.curve(d3.curveBasis)
+          .x(function(d) { return x(d.date); })
+          .y(function(d) { return y(d.value); });
+
+      y = d3.scaleLinear()
+          .domain([0, d3.max(second_line_data, function(d) { return d.value; })])
+          .range([self.height, 0]);
+
+      g.append('path')
+          .data([second_line_data])
+          .attr('class', 'line')
+          .attr('fill', 'none')
+          .attr('stroke', 'red')
+          .attr('stroke-width', '1.5px')
+          .attr('d', line2);
+    }
     // define line
     var line = d3.line()
         .defined(function(d) { return d.value != 'none' ? d : null; })
         //.curve(d3.curveBasis)
         .x(function(d) { return x(d.date); })
         .y(function(d) { return y(d.value); });
+
+    g.append('path')
+        .data([line_data])
+        .attr('class', 'line')
+        .attr('fill', 'none')
+        .attr('stroke', 'blue')
+        .attr('stroke-width', '1.5px')
+        .attr('d', line);
+
+
 
     g.append("g")
         .attr("class", "x-axis")
@@ -46,13 +82,6 @@ class Line {
         .attr("transform", "translate(0," + 0 + ")")
         .call(d3.axisLeft(y));
 
-    g.append('path')
-        .data([line_data])
-        .attr('class', 'line')
-        .attr('fill', 'none')
-        .attr('stroke', 'blue')
-        .attr('stroke-width', '1.5px')
-        .attr('d', line);
   }
 
   updateVis(argument){
@@ -77,6 +106,28 @@ class Line {
         .domain([0, d3.max(self.displayData, function(d) { return d.value; })])
         .range([self.height, 0]);
 
+    if (self.numberlines==2){
+      y = d3.scaleLinear()
+          .domain([0, d3.max(self.displayData2, function(d) { return d.value; })])
+          .range([self.height, 0]);
+
+
+      var line2 = d3.line()
+          .defined(function(d) { return d != 'none'; })
+          //.curve(d3.curveBasis)
+          .x(function(d) { return x(d.date); })
+          .y(function(d) { return y(d.value); });
+
+
+      self.g.append('path')
+          .data([self.displayData2])
+          .attr('class', 'line')
+          .attr('fill', 'none')
+          .attr('stroke', 'red')
+          .attr('stroke-width', '1.5px')
+          .attr('d', line2);
+    }
+
     self.g.append("g")
         .attr("class", "x-axis")
         .attr("transform", "translate(0," + self.height + ")")
@@ -93,6 +144,7 @@ class Line {
         .x(function(d) { return x(d.date); })
         .y(function(d) { return y(d.value); });
 
+
     self.g.append('path')
         .data([self.displayData])
         .attr('class', 'line')
@@ -100,12 +152,24 @@ class Line {
         .attr('stroke', 'blue')
         .attr('stroke-width', '1.5px')
         .attr('d', line);
+
+
+
   }
 
   onSelectionChange(selectionStart, selectionEnd){
     var vis = this;
 
     vis.displayData=vis.data.filter(function(d){
+      if (d.date >= selectionStart && d.date<=selectionEnd){
+        return true;
+      }
+      else{
+        return false;
+      }
+    });
+
+    vis.displayData2=vis.data2.filter(function(d){
       if (d.date >= selectionStart && d.date<=selectionEnd){
         return true;
       }

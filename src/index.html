@@ -105,7 +105,7 @@
 
             <div id="trends_tuition">
               <h2>Private vs Public Tuition</h2>
-              <p id='trends_tuition_line_selection'>Selection:</p>
+              <p id='trends_tuition_line_selection'> <span style="color: red; ">Average Private School Tuition</span> , <span style="color: blue; ">Average Public School Tuition</span></p>
               <svg id='trends_tuition_line'></svg>
             </div>
 
@@ -155,61 +155,79 @@
 
       <!-- School Comparison tab -->
       <div class="tab-pane fade" id="nav-comparison" role="tabpanel" aria-labelledby="nav-comparison-tab">
-        <!-- School Selection Buttons -->
-        <p>School 1:</p>
-        <input id="school_1"  placeholder="Select a school...">
-        <button id ="school_1_btn" onclick="compSearch('1')">Confirm</button>
-        <p>School 2:</p>
-        <input id="school_2"  placeholder="Select a school...">
-        <button id ="school_2_btn" onclick="compSearch('2')">Confirm</button>
-        <p>School 3:</p>
-        <input id="school_3"  placeholder="Select a school...">
-        <button id ="school_3_btn" onclick="compSearch('3')">Confirm</button>
-        <p>School 4:</p>
-        <input id="school_4"  placeholder="Select a school...">
-        <button id ="school_4_btn" onclick="compSearch('4')">Confirm</button>
 
-        <!-- School 1 -->
-        <div>
-          <h3 id="school_name_1">School Name</h3>
-          <p id="type_1">Type of Institution:</p>
-          <p id="tuition_1">Tuition:</p>
-          <p id="students_numbers_1">Total Number of Students:</p>
-          <p id="grad_numbers_1">Percent of Graduate Students:</p>
-          <p id="under_numbers_1">Percent of Undergraduate Students:</p>
-          <p id="percent_male_1">Percent of Male Students:</p>
-          <p id="percent_female_1">Percent of Female Students:</p>
-          <p id="percent_asian_1">Percent of Asian Students:</p>
-          <p id="percent_black_1">Percent of Black Students:</p>
-          <p id="percent_native_1">Percent of Native American Students:</p>
-          <p id="percent_hispanic_1">Percent of Hispanic Students:</p>
-          <p id="percent_other_1">Percent of Other Students:</p>
-          <p id="percent_white_1">Percent of White Students:</p>
+        <div id="outer_school_div">
+          <!-- School 1 -->
+          <input id="school_1"  placeholder="Select a school...">
+          <button id ="school_1_btn" onclick="compSearch('1')">Confirm</button>
 
+          <div id="school_1_div" class="school_div">
+
+            <h3 id="school_name_1">School Name</h3>
+            <p id="type_1">Type of Institution:</p>
+            <p id="tuition_1">Tuition:</p>
+            <p id="students_numbers_1">Total Number of Students:</p>
+            <p id="grad_numbers_1">Percent of Graduate Students:</p>
+            <p id="under_numbers_1">Percent of Undergraduate Students:</p>
+            <p id="percent_male_1">Percent of Male Students:</p>
+            <p id="percent_female_1">Percent of Female Students:</p>
+            <p id="percent_asian_1">Percent of Asian Students:</p>
+            <p id="percent_black_1">Percent of Black Students:</p>
+            <p id="percent_native_1">Percent of Native American Students:</p>
+            <p id="percent_hispanic_1">Percent of Hispanic Students:</p>
+            <p id="percent_other_1">Percent of Other Students:</p>
+            <p id="percent_white_1">Percent of White Students:</p>
+
+          </div>
+
+          <!-- School 2 -->
+          <input id="school_2"  placeholder="Select a school...">
+          <button id ="school_2_btn" onclick="compSearch('2')">Confirm</button>
+          <div id="school_2_div"  class="school_div">
+
+
+            <h3 id="school_name_2">School Name</h3>
+            <p id="type_2">Type of Institution:</p>
+            <p id="tuition_2">Tuition:</p>
+            <p id="students_numbers_2">Total Number of Students:</p>
+            <p id="grad_numbers_2">Percent of Graduate Students:</p>
+            <p id="under_numbers_2">Percent of Undergraduate Students:</p>
+            <p id="percent_male_2">Percent of Male Students:</p>
+            <p id="percent_female_2">Percent of Female Students:</p>
+            <p id="percent_asian_2">Percent of Asian Students:</p>
+            <p id="percent_black_2">Percent of Black Students:</p>
+            <p id="percent_native_2">Percent of Native American Students:</p>
+            <p id="percent_hispanic_2">Percent of Hispanic Students:</p>
+            <p id="percent_other_2">Percent of Other Students:</p>
+            <p id="percent_white_2">Percent of White Students:</p>
+
+          </div>
+
+          <!-- School 3 -->
+          <input id="school_3"  placeholder="Select a school...">
+          <button id ="school_3_btn" onclick="compSearch('3')">Confirm</button>
+
+          <div id="school_3_div"  class="school_div">
+
+
+            <h3 id="school_name_3">School Name</h3>
+            <p id="type_3">Type of Institution:</p>
+            <p id="tuition_3">Tuition:</p>
+            <p id="students_numbers_3">Total Number of Students:</p>
+            <p id="grad_numbers_3">Percent of Graduate Students:</p>
+            <p id="under_numbers_3">Percent of Undergraduate Students:</p>
+            <p id="percent_male_3">Percent of Male Students:</p>
+            <p id="percent_female_3">Percent of Female Students:</p>
+            <p id="percent_asian_3">Percent of Asian Students:</p>
+            <p id="percent_black_3">Percent of Black Students:</p>
+            <p id="percent_native_3">Percent of Native American Students:</p>
+            <p id="percent_hispanic_3">Percent of Hispanic Students:</p>
+            <p id="percent_other_3">Percent of Other Students:</p>
+            <p id="percent_white_3">Percent of White Students:</p>
+
+          </div>
 
         </div>
-
-        <!-- School 2 -->
-        <div>
-          <h3 id="school_name_2">School Name</h3>
-
-
-        </div>
-
-        <!-- School 3 -->
-        <div>
-          <h3 id="school_name_3">School Name</h3>
-
-
-        </div>
-
-        <!-- School 4 -->
-        <div>
-          <h3 id="school_name_4">School Name</h3>
-
-
-        </div>
-
       </div>
 
     </div>
