@@ -21,35 +21,42 @@ class Trends {
         let years = create_years(1999,2018);
 
         // get tuition data over years
-        let tuition_data = years.map(function(d) {
-            var public_tuition=0;
-            var public_counter=0;
-            var private_tuition=0;
-            var private_counter=0;
+        let public_tuition_data = years.map(function(d) {
+            var tuition=0;
+            var tuition_counter=0;
             for (var i=0;i<self.data[d].length;i++){
                 if (self.data[d][i].type=="PUBLIC"){
                     if (self.data[d][i].tuition[0]!="none"&&self.data[d][i].tuition[0]!="n"){
-                        public_tuition=public_tuition+self.data[d][i].tuition[0];
-                        public_counter=public_counter+1;
+                        tuition=tuition+self.data[d][i].tuition[0];
+                        tuition_counter=tuition_counter+1;
                     }
                 }
-
-                if (self.data[d][i].type=="PRIVATE"){
-                    if (self.data[d][i].tuition[0]!="none"&&self.data[d][i].tuition[0]!="n"){
-                        private_tuition=private_tuition+self.data[d][i].tuition[0];
-                        private_counter=private_counter+1;
-                    }
-                }
-
             }
-            public_tuition=public_tuition/public_counter;
-            private_tuition=private_tuition/private_counter;
+            tuition=tuition/tuition_counter;
             return {
                 'date': parse_time(d),
-                'public_tuition': public_tuition,
-                'private_tuition': private_tuition,
+                'value': tuition,
             }
         });
+
+        let private_tuition_data = years.map(function(d) {
+            var tuition=0;
+            var tuition_counter=0;
+            for (var i=0;i<self.data[d].length;i++){
+                if (self.data[d][i].type=="PRIVATE"){
+                    if (self.data[d][i].tuition[0]!="none"&&self.data[d][i].tuition[0]!="n"){
+                        tuition=tuition+self.data[d][i].tuition[0];
+                        tuition_counter=tuition_counter+1;
+                    }
+                }
+            }
+            tuition=tuition/tuition_counter;
+            return {
+                'date': parse_time(d),
+                'value': tuition,
+            }
+        });
+
         // get enrollment data for grad and under grad over the years;
         let public_enroll_data = years.map(function(d) {
             var graduate_enroll=0;
@@ -411,7 +418,7 @@ class Trends {
         let year_chart = new YearChart('trends_year_chart', dates, event_handler);
         //
         // create tuition area chart
-        let tuition_chart = new StackedArea('trends_tuition_line', tuition_data, ['public_tuition','private_tuition']);
+        let tuition_chart = new Line('trends_tuition_line', public_tuition_data, private_tuition_data, 2);
 
         // create enrollment stacked area charts
         let public_enrollment_chart = new StackedArea('public_enroll', public_enroll_data, ['graduate_enroll', 'undergrad_enroll']);
