@@ -17,6 +17,7 @@
         <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="false">Home</a>
         <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="true">School Directory</a>
         <a class="nav-item nav-link" id="nav-other-tab" data-toggle="tab" href="#nav-other" role="tab" aria-controls="nav-other" aria-selected="false">Other</a>
+        <a class="nav-item nav-link" id="nav-trends-tab" data-toggle="tab" href="#nav-trends" role="tab" aria-controls="nav-trends" aria-selected="false">Trends</a>
       </div>
     </nav>
 
@@ -88,6 +89,66 @@
       <!-- other tab -->
       <div class="tab-pane fade" id="nav-other" role="tabpanel" aria-labelledby="nav-other-tab">...</div>
 
+
+      <!-- Trends tab -->
+      <div class="tab-pane fade" id="nav-trends" role="tabpanel" aria-labelledby="nav-trend-tab">
+        <div class='page' id='trends'>
+          <div id='trends_content' style='display: none'>
+
+
+            <div id='trends_brush'>
+              <h2>Select Year Range</h2>
+              <svg id='trends_year_chart'></svg>
+            </div>
+
+            <div id='trends_charts'>
+              <div>
+                <h2>Private vs Public Tuition</h2>
+                <p id='trends_tuition_line_selection'>Selection:</p>
+                <svg id='trends_tuition_line'></svg>
+              </div>
+
+              <div>
+                <h2>Private Schools Grad vs. Undergrad Enrollment</h2>
+                <p id='private_enroll_selection'>Selection:  </p>
+                <svg id='private_enroll'></svg>
+              </div>
+
+              <div>
+                <h2>Public Schools Grad vs. Undergrad Enrollment</h2>
+                <p id='public_enroll_selection'>Selection:  </p>
+                <svg id='public_enroll'></svg>
+              </div>
+
+              <div>
+                <h2>Private Schools Enrollment by Gender</h2>
+                <p id='private_gender_selection'>Selection:  </p>
+                <svg id='private_gender'></svg>
+              </div>
+
+              <div>
+                <h2>Public Schools Enrollment by Gender</h2>
+                <p id='public_gender_selection'>Selection:  </p>
+                <svg id='public_gender'></svg>
+              </div>
+
+              <div>
+                <h2>Private Schools Enrollment by Ethnicity</h2>
+                <p id='private_ethnicity_selection'>Selection:  </p>
+                <svg id='private_ethnicity'></svg>
+              </div>
+
+              <div>
+                <h2>Public Schools Enrollment by Ethnicity</h2>
+                <p id='public_ethnicity_selection'>Selection:  </p>
+                <svg id='public_ethnicity'></svg>
+              </div>
+
+            </div>
+            </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- libraries -->
@@ -100,7 +161,6 @@
     <!-- utils -->
     <script src='assets/js/utils/parse.js'></script>
     <script src='assets/js/utils/years.js'></script>
-    <script src='assets/js/utils/search_tools.js'></script>
 
     <!-- plot scripts -->
     <script src='assets/js/histogram.js'></script>
@@ -110,6 +170,7 @@
     <script src='assets/js/stacked_area.js'></script>
     <script src='assets/js/year_chart.js'></script>
     <script src='assets/js/cluster.js'></script>
+    <script src='assets/js/trends.js'></script>
 
     <!-- main scripts -->
     <script src='assets/js/school_profile.js'></script>

@@ -63,7 +63,9 @@ function parse_data(data) {
 function start(data) {
   console.log(data);
   let profile = new Profile('profiles', data);
+  let trends = new Trends('trends', data);
   let cluster = new Cluster('cluster', data);
+
   //let enrollment = new Histogram('test', data);
 }
 //Search tool functions

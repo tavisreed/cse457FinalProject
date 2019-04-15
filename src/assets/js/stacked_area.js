@@ -158,6 +158,9 @@ class StackedArea {
                 else if(dataCategories[i]=="hispanic"){
                     selection_text="Hispanic Students";
                 }
+                else if(dataCategories[i]=="native_american"){
+                    selection_text="Native American Students";
+                }
                 else if(dataCategories[i]=="other"){
                     selection_text="Other Students";
                 }
@@ -166,6 +169,12 @@ class StackedArea {
                 }
                 else if(dataCategories[i]=="value"){
                     selection_text="Tuition"
+                }
+                else if(dataCategories[i]=="public_tuition"){
+                    selection_text="Average Public School Tuition"
+                }
+                else if(dataCategories[i]=="private_tuition"){
+                    selection_text="Average Private School Tuition"
                 }
 
 

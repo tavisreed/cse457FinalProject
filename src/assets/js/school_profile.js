@@ -101,7 +101,7 @@ class Profile {
       }
     });
 
-    // get ethnicity by gender data
+    // get ethnicity by ethnicity data
     let ethnicity_data = years.map(function(d) {
       var asian=0;
       var black=0;
