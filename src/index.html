@@ -18,6 +18,7 @@
         <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="true">School Directory</a>
         <a class="nav-item nav-link" id="nav-other-tab" data-toggle="tab" href="#nav-other" role="tab" aria-controls="nav-other" aria-selected="false">Other</a>
         <a class="nav-item nav-link" id="nav-trends-tab" data-toggle="tab" href="#nav-trends" role="tab" aria-controls="nav-trends" aria-selected="false">Trends</a>
+        <a class="nav-item nav-link" id="nav-comparison-tab" data-toggle="tab" href="#nav-comparison" role="tab" aria-controls="nav-comparison" aria-selected="false">School Comparison</a>
       </div>
     </nav>
 
@@ -89,7 +90,6 @@
       <!-- other tab -->
       <div class="tab-pane fade" id="nav-other" role="tabpanel" aria-labelledby="nav-other-tab">...</div>
 
-
       <!-- Trends tab -->
       <div class="tab-pane fade" id="nav-trends" role="tabpanel" aria-labelledby="nav-trend-tab">
         <div class='page' id='trends'>
@@ -149,6 +149,65 @@
             </div>
             </div>
         </div>
+      </div>
+
+      <!-- School Comparison tab -->
+      <div class="tab-pane fade" id="nav-comparison" role="tabpanel" aria-labelledby="nav-comparison-tab">
+        <!-- School Selection Buttons -->
+        <p>School 1:</p>
+        <input id="school_1"  placeholder="Select a school...">
+        <button id ="school_1_btn" onclick="compSearch('1')">Confirm</button>
+        <p>School 2:</p>
+        <input id="school_2"  placeholder="Select a school...">
+        <button id ="school_2_btn" onclick="compSearch('2')">Confirm</button>
+        <p>School 3:</p>
+        <input id="school_3"  placeholder="Select a school...">
+        <button id ="school_3_btn" onclick="compSearch('3')">Confirm</button>
+        <p>School 4:</p>
+        <input id="school_4"  placeholder="Select a school...">
+        <button id ="school_4_btn" onclick="compSearch('4')">Confirm</button>
+
+        <!-- School 1 -->
+        <div>
+          <h3 id="school_name_1">School Name</h3>
+          <p id="type_1">Type of Institution:</p>
+          <p id="tuition_1">Tuition:</p>
+          <p id="students_numbers_1">Total Number of Students:</p>
+          <p id="grad_numbers_1">Percent of Graduate Students:</p>
+          <p id="under_numbers_1">Percent of Undergraduate Students:</p>
+          <p id="percent_male_1">Percent of Male Students:</p>
+          <p id="percent_female_1">Percent of Female Students:</p>
+          <p id="percent_asian_1">Percent of Asian Students:</p>
+          <p id="percent_black_1">Percent of Black Students:</p>
+          <p id="percent_native_1">Percent of Native American Students:</p>
+          <p id="percent_hispanic_1">Percent of Hispanic Students:</p>
+          <p id="percent_other_1">Percent of Other Students:</p>
+          <p id="percent_white_1">Percent of White Students:</p>
+
+
+        </div>
+
+        <!-- School 2 -->
+        <div>
+          <h3 id="school_name_2">School Name</h3>
+
+
+        </div>
+
+        <!-- School 3 -->
+        <div>
+          <h3 id="school_name_3">School Name</h3>
+
+
+        </div>
+
+        <!-- School 4 -->
+        <div>
+          <h3 id="school_name_4">School Name</h3>
+
+
+        </div>
+
       </div>
 
     </div>
