@@ -254,9 +254,12 @@ function compSearch(number){
     document.querySelector(type_id).innerHTML ="Type of Institution: "+self.data[2018][indexes[0]].type;
     var tuition_id="#tuition_"+number;
     //Get tuition
-    var tuition=self.data[2018][indexes[0]].tuition;
+    var tuition=self.data[2018][indexes[0]].tuition[0];
     if (typeof tuition != "number"){
         tuition="Data Not Avaliable";
+    }
+    else{
+        tuition="$"+tuition;
     }
     document.querySelector(tuition_id).innerHTML ="Tuition: "+tuition;
     //Get Enrollment numbers
