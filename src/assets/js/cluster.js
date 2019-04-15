@@ -71,7 +71,18 @@ class Cluster {
                 .on("end", dragended));
                 
         circlesEnter.append('svg:title')
-        .text(function(d) { return d.name; });
+        .text(function(d) { return d.name });
+
+        //Added ID to use in searching
+        circlesEnter.attr("id",function(d){
+          var name=d.name.split(' ').join('');
+          name=name.split('.').join('');
+          name=name.split('-').join('');
+          name=name.split(',').join('');
+          name=name.split("'").join('');
+
+          return name})
+
 
         circlesEnter.on("click", function(d){
                $("#selection").val(d.index).trigger('change');
@@ -103,9 +114,9 @@ class Cluster {
         splitBubbles(value); 
       });
 
-      d3.select("#search_btn").on("click", function(){
-        findNode($("#search").val())
-      });
+      // d3.select("#search_btn").on("click", function(){
+      //   findNode($("#search").val())
+      // });
       function dragstarted(d,i) {
         //console.log("dragstarted " + i)
         if (!d3.event.active) simulation.alpha(1).restart();
@@ -171,17 +182,17 @@ class Cluster {
       }
       
 
-      function findNode(query){
-        circles
-        .style("stroke" ,"black")
-        .style("stroke-width", function(d){
-          if(d.name == query){
-            console.log(d);
-            return d.r/3;
-          }
-          return "0"
-        });
-      }
+      // function findNode(query){
+      //   circles
+      //   .style("stroke" ,"black")
+      //   .style("stroke-width", function(d){
+      //     if(d.name == query){
+      //       console.log(d);
+      //       return d.r/3;
+      //     }
+      //     return "0"
+      //   });
+      // }
       // function hideTitles() {
       //   svg.selectAll('.title').remove();
       // }

@@ -27,8 +27,8 @@
         <div class='page' id='home'>
           <h1>School Clusters</h1>
           <h5 id='home-message'>Loading data...</h5>
-          <input id="search">
-          <button id ="search_btn">Search</button>
+          <input id="search"  placeholder="Search for schools..">
+          <button id ="search_btn" onclick="callSearch()">Search</button>
           <svg id='cluster'></svg>
           <select id="home_selection">
             <option value = "all">All</option>
@@ -100,7 +100,8 @@
     <!-- utils -->
     <script src='assets/js/utils/parse.js'></script>
     <script src='assets/js/utils/years.js'></script>
-    
+    <script src='assets/js/utils/search_tools.js'></script>
+
     <!-- plot scripts -->
     <script src='assets/js/histogram.js'></script>
     <script src='assets/js/line.js'></script>

@@ -24,7 +24,7 @@ function load_data() {
 
     // unwrap schools
     schools = schools.map(function(d) { return d.name; });
-
+    this.schools=schools;
     file_data.forEach(function(d,i) {
       let slice = d.filter(function(e) {
         return schools.includes(e.name);
@@ -66,5 +66,59 @@ function start(data) {
   let cluster = new Cluster('cluster', data);
   //let enrollment = new Histogram('test', data);
 }
+//Search tool functions
+function callSearch(){
+  search(this.schools)
+}
+function search(school_list){
+  //Clear old highlights
+  d3.select("#cluster")
+      .select("g")
+      .selectAll("circle")
+      .style("stroke-width",0)
+
+
+  //source:https://www.w3schools.com/howto/howto_js_filter_lists.asp
+  var input, filter,txtValue;
+  input = document.getElementById('search');
+  filter = input.value.toUpperCase();
+  var selected_schools=[]
+  // Loop through all list items, and hide those who don't match the search query
+  for (i = 0; i < school_list.length; i++) {
+      txtValue = school_list[i];;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        selected_schools.push(school_list[i])
+      }
+  }
+
+  //Highlight selected schools
+  if(selected_schools.length<school_list.length/3){
+    console.log(selected_schools.length)
+    for (i=0; i<selected_schools.length;i++){
+      var current_school="#"+selected_schools[i];
+      current_school=current_school.split(' ').join('');
+      current_school=current_school.split('.').join('');
+      current_school=current_school.split('-').join('');
+      current_school=current_school.split(',').join('');
+      current_school=current_school.split("'").join('');
+      console.log(current_school, i)
+      var radius=d3.select("#cluster")
+          .select("g")
+          .select(current_school)
+          .attr("r");
+
+        d3.select("#cluster")
+            .select("g")
+            .select(current_school)
+            .attr("stroke", "black")
+            .style("stroke-width", function(d){return radius/3});
+    }
+  }
+
+
+
+
+}
+
 
 load_data();
