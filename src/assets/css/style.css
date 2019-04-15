@@ -7,15 +7,35 @@ body {
   margin: 1em;
 }
 
+#trends {
+  margin: 1em;
+}
+
 #profiles #content {
   margin-top: 1em;
 }
+
+#trends #trends_content {
+  margin-top: 1em;
+}
+
 
 #charts > div {
   display: inline-block;
 }
 
+#trends_charts > div {
+  display: inline-block;
+}
+
 #brush {
+  text-align: center;
+}
+
+#trends_brush {
+  text-align: center;
+}
+#trends_tuition {
   text-align: center;
 }
 

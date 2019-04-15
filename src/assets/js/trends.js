@@ -53,50 +53,37 @@ class Trends {
         // get enrollment data for grad and under grad over the years;
         let public_enroll_data = years.map(function(d) {
             var graduate_enroll=0;
-            var grad_counter=0;
             var undergrad_enroll=0;
-            var undergrad_counter=0;
             for (var i=0;i<self.data[d].length;i++) {
                 if (self.data[d][i].type=="PUBLIC"){
                     if (self.data[d][i].graduate_enroll[0]!="none"&&self.data[d][i].graduate_enroll[0]!="n"){
                         graduate_enroll=graduate_enroll+self.data[d][i].graduate_enroll;
-                        grad_counter=grad_counter+1;
                     }
                     if (self.data[d][i].undergrad_enroll[0]!="none"&&self.data[d][i].undergrad_enroll[0]!="n"){
                         undergrad_enroll=undergrad_enroll+self.data[d][i].undergrad_enroll;
-                        undergrad_counter=undergrad_counter+1;
                     }
                 }
             }
-            graduate_enroll=graduate_enroll/grad_counter;
-            undergrad_enroll=undergrad_enroll/undergrad_counter;
-
                 return {
                 'date': parse_time(d),
                 'graduate_enroll': graduate_enroll,
                 'undergrad_enroll': undergrad_enroll
             }
         });
-
         let private_enroll_data = years.map(function(d) {
             var graduate_enroll=0;
-            var grad_counter=0;
             var undergrad_enroll=0;
-            var undergrad_counter=0;
             for (var i=0;i<self.data[d].length;i++) {
                 if (self.data[d][i].type=="PRIVATE"){
                     if (self.data[d][i].graduate_enroll[0]!="none"&&self.data[d][i].graduate_enroll[0]!="n"){
                         graduate_enroll=graduate_enroll+self.data[d][i].graduate_enroll;
-                        grad_counter=grad_counter+1;
                     }
                     if (self.data[d][i].undergrad_enroll[0]!="none"&&self.data[d][i].undergrad_enroll[0]!="n"){
                         undergrad_enroll=undergrad_enroll+self.data[d][i].undergrad_enroll;
-                        undergrad_counter=undergrad_counter+1;
                     }
                 }
             }
-            graduate_enroll=graduate_enroll/grad_counter;
-            undergrad_enroll=undergrad_enroll/undergrad_counter;
+
 
             return {
                 'date': parse_time(d),
