@@ -148,8 +148,8 @@ function parse_data(data) {
       'name': d.name,
       'type': d.type,
       'index': i,
-      'undergrad_enroll': (d.undergrad_enroll == 0) ? 'none' : d.undergrad_enroll,
-      'graduate_enroll': (d.graduate_enroll == 0) ? 'none' : d.graduate_enroll,
+      'undergrad_enroll': (d.undergrad_enroll == 0) ? 'none' : +d.undergrad_enroll,
+      'graduate_enroll': (d.graduate_enroll == 0) ? 'none' : +d.graduate_enroll,
       'description': d.description,
       'freshmen_enroll_table': parse_table(d.freshmen_enroll_table),
       'sophomore_enroll_table': parse_table(d.sophomore_enroll_table),
@@ -167,7 +167,7 @@ function parse_data(data) {
 
 function year_filter(data) {
   return data.filter(function(d) {
-    let attrs = ['type','undergrad_enroll','tuition','freshmen_enroll_table','sophomore_enroll_table','junior_enroll_table','senior_enroll_table'];
+    let attrs = ['type','undergrad_enroll','graduate_enroll','tuition','freshmen_enroll_table','sophomore_enroll_table','junior_enroll_table','senior_enroll_table'];
     for (let i=0; i<attrs.length; i++) {
       if (d[attrs[i]] == 'none') return false;
     }
@@ -201,6 +201,13 @@ function synchronize(file_data) {
       return schools.includes(e.name);
     });
     data[years[i]] = slice;
+  });
+
+  // recompute indices
+  years.forEach(function(year) {
+    data[year].forEach(function(d,i) {
+      d.index = i;
+    });
   });
 
   return data;

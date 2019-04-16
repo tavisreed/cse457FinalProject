@@ -16,9 +16,9 @@
       <div class="nav nav-tabs" id="nav-tab" role="tablist">
         <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="false">Home</a>
         <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="true">School Directory</a>
-        <a class="nav-item nav-link" id="nav-other-tab" data-toggle="tab" href="#nav-other" role="tab" aria-controls="nav-other" aria-selected="false">Other</a>
         <a class="nav-item nav-link" id="nav-trends-tab" data-toggle="tab" href="#nav-trends" role="tab" aria-controls="nav-trends" aria-selected="false">Trends</a>
         <a class="nav-item nav-link" id="nav-comparison-tab" data-toggle="tab" href="#nav-comparison" role="tab" aria-controls="nav-comparison" aria-selected="false">School Comparison</a>
+        <a class="nav-item nav-link" id="nav-about-tab" data-toggle="tab" href="#nav-about" role="tab" aria-controls="nav-about" aria-selected="false">About</a>
       </div>
     </nav>
 
@@ -27,35 +27,31 @@
       <!-- home tab -->
       <div class="tab-pane fade active show" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
         <div class='page' id='home'>
-          <h1>School Clusters</h1>
           <h5 id='home-message'>Loading data...</h5>
 
-          <button id='both'>By both</button>
-          <button id='gender'>By gender</button>
-          <button id='ethnicity'>By ethnicity</button>
-          <button id='school'>By school</button>
-          <button id='tuition'>By tuition</button>
+          <span><b>Cluster by:</b></span>
+          <select id="cluster-selection">
+            <option value='initial'>By school (default)</option>
+            <option value='school'>By public vs private</option>
+            <option value='both'>By gender & ethnicity</option>
+            <option value='gender'>By gender</option>
+            <option value='ethnicity'>By ethnicity</option>
+          </select>
 
-          <div>
+          <div style="margin-top: 10px" id='search_bar'>
             <input id="search"  placeholder="Search for schools..">
+            <button id ="search_btn" onclick="callSearch()">Search</button>
           </div>
-          <button id ="search_btn" onclick="callSearch()">Search</button>
 
           <svg id='cluster'></svg>
-          <select id="home_selection">
-            <option value = "all">All</option>
-            <option value = "type">Public vs Private</option>
-          </select>
         </div>
       </div>
 
       <!-- profile tab -->
       <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
         <div class='page' id='profiles'>
-          <h1>School Directory</h1>
           <h5 id='message'>Loading data...</h5>
-          <select id="selection"></select>
-          <hr>
+          <select id="selection" style = "display: none"></select>
 
           <!-- school page content -->
           <div id='content' style='display: none'>
@@ -96,9 +92,6 @@
           </div>
         </div>
       </div>
-
-      <!-- other tab -->
-      <div class="tab-pane fade" id="nav-other" role="tabpanel" aria-labelledby="nav-other-tab">...</div>
 
       <!-- Trends tab -->
       <div class="tab-pane fade" id="nav-trends" role="tabpanel" aria-labelledby="nav-trend-tab">
@@ -243,6 +236,11 @@
           </div>
 
         </div>
+      </div>
+
+      <!-- about tab -->
+      <div class="tab-pane fade" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
+        <h1>About the visualization</h1>
       </div>
 
     </div>

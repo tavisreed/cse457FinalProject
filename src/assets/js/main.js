@@ -44,25 +44,9 @@ function start(data) {
   // update message, data done loading
   document.querySelector('#home-message').style.display = 'none';
 
-  // initialize button listeners
-  document.querySelector('#both').addEventListener('click', function() {
-    cluster.update('both');
-  });
-
-  document.querySelector('#gender').addEventListener('click', function() {
-    cluster.update('gender');
-  });
-
-  document.querySelector('#ethnicity').addEventListener('click', function() {
-    cluster.update('ethnicity');
-  });
-
-  document.querySelector('#school').addEventListener('click', function() {
-    cluster.update('school');
-  });
-
-  document.querySelector('#tuition').addEventListener('click', function() {
-    cluster.update('tuition');
+  let cluster_select = document.querySelector('#cluster-selection');
+  cluster_select.addEventListener('change', function() {
+    cluster.update(cluster_select.value);
   });
 }
 
@@ -204,12 +188,12 @@ function search(school_list){
       current_school=current_school.split("'").join('');
       console.log(current_school, i)
       var radius=d3.select("#cluster")
-          .select("g")
+          .select("#clusterG")
           .select(current_school)
           .attr("r");
 
         d3.select("#cluster")
-            .select("g")
+            .select("#clusterG")
             .select(current_school)
             .attr("stroke", "black")
             .style("stroke-width", function(d){return radius/3});

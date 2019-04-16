@@ -10,7 +10,7 @@ class Cluster {
 
     // process data
     self.preprocessing();
-    console.log(self.vdata);
+
     // initialize plot
     self.margin = {top: 120, right: 120, bottom: 120, left: 120};
     self.width = window.innerWidth/1 - self.margin.left - self.margin.right;
@@ -23,23 +23,32 @@ class Cluster {
     self.svg = d3.select('#' + self.parent).html('')
         .attr("width", self.width + self.margin.left + self.margin.right)
         .attr("height", self.height + self.margin.top + self.margin.bottom);
-    self.g = self.svg.append("g").attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
+    self.g = self.svg.append("g").attr("id","clusterG").attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
 
     self.n = 500;
     self.color = d3.scaleSequential(d3.interpolateRainbow)
         .domain(d3.range(12));
 
+    self.radiusScale = d3.scalePow()
+      .exponent(0.5)
+      .range([0,20])
+      .domain([0,120000]);
+
+    self.showClusterLegend();
+
     // initial force layout setup
     self.simulation = d3.forceSimulation()
       .on('tick', tick);
 
-    self.compute_clusters(2,6);
+    self.compute_clusters(1,1);
     self.set_nodes('initial');
     self.force_setup('cluster');
 
     self.circles = self.g.selectAll('circle')
         .data(self.nodes)
       .enter().append('circle');
+
+    self.update('initial');
 
     // ramp up collision strength to provide smooth transition
     // var transitionTime = 1000;
@@ -94,6 +103,22 @@ class Cluster {
       'total': total
     }
   }
+      
+  showClusterLegend() {
+    let self = this;
+    var gDiv =  self.svg.append("g").attr('id','legend');
+    var gHeight = self.height/3;
+    gDiv.attr("transform", "translate("+self.width/1.1+","+0+")");
+    gDiv.append("g").attr("transform", "translate(75," + (gHeight*0.15)+")").append("text").text("Total Enrollment")
+    gDiv.append("circle").attr("r", self.radiusScale(120000)).style("fill","grey").attr("cy",gHeight*0.4).attr("cx", 100);
+    gDiv.append("g").attr("transform", "translate(125," + (gHeight*0.4)+")").append("text").text("120000")
+    gDiv.append("circle").attr("r", self.radiusScale(67500)).style("fill","grey").attr("cy",(gHeight*0.4)+40).attr("cx", 100);
+    gDiv.append("g").attr("transform", "translate(125," + ((gHeight*0.4)+40)+")").append("text").text("67500")
+    gDiv.append("circle").attr("r", self.radiusScale(30000)).style("fill","grey").attr("cy",(gHeight*0.4)+70).attr("cx", 100);
+    gDiv.append("g").attr("transform", "translate(125," + ((gHeight*0.4)+70)+")").append("text").text("30000")
+    gDiv.append("circle").attr("r", self.radiusScale(7500)).style("fill","grey").attr("cy",(gHeight*0.4)+90).attr("cx", 100);
+    gDiv.append("g").attr("transform", "translate(125," + ((gHeight*0.4)+90)+")").append("text").text("7500")
+  }
 
   update(group) {
     let self = this;
@@ -103,16 +128,29 @@ class Cluster {
     let force_group = '';
 
     if (group == 'both') {
+      document.querySelector('#legend').style.display = 'none';
+      document.querySelector('#search_bar').style.display = 'none';
       clusters = [2,6];
       force_group = 'cluster';
     } else if (group == 'gender') {
+      document.querySelector('#legend').style.display = 'none';
+      document.querySelector('#search_bar').style.display = 'none';
       clusters = [2,1];
       force_group = 'cluster';
     } else if (group == 'ethnicity') {
+      document.querySelector('#legend').style.display = 'none';
+      document.querySelector('#search_bar').style.display = 'none';
       clusters = [1,6];
       force_group = 'cluster';
     } else if (group == 'school') {
+      document.querySelector('#legend').style.display = 'block';
+      document.querySelector('#search_bar').style.display = 'block';
       clusters = [1,2];
+      force_group = 'cluster';
+    } else if (group == 'initial') {
+      document.querySelector('#legend').style.display = 'block';
+      document.querySelector('#search_bar').style.display = 'block';
+      clusters = [1,1];
       force_group = 'cluster';
     } else if (group == 'tuition') {
       clusters = [0,0];
@@ -126,25 +164,27 @@ class Cluster {
 
     self.compute_clusters(clusters[0], clusters[1]);
     self.set_nodes(group);
-    console.log('Group: ' + group)
-    console.log('Num nodes: ' + self.nodes.length);
     self.force_setup(force_group, alpha, alphaTarget);
 
     let t = d3.transition().duration(500);
 
     self.circles = self.circles.data(self.nodes);
 
-    self.circles.enter().append('circle')
-      // new attr only
-      .on("click", function(d) {
-         $("#selection").val(d.index).trigger('change');
-         $('#nav-profile-tab').trigger('click');
-       })
-      .attr("id", function(d) {
-          //return d.da.replace(/[ .\-,']/g,'');
-      })
-      .merge(self.circles)
-      // all attr
+    if (group == 'initial' || group == 'school') {
+      self.circles.enter().append('circle')
+        .merge(self.circles)
+        // new attr only
+        .on("click", function(d) {
+          console.log(d.data.index)
+           $("#selection").val(d.data.index).trigger('change');
+           $('#nav-profile-tab').trigger('click');
+         })
+        .attr("id", function(d) {
+            return d.data.name.replace(/[ .\-,']/g,'');
+        })
+      } else {
+        self.circles.enter().append('circle').merge(self.circles)
+      }
 
     self.circles.exit().remove();
 
@@ -156,7 +196,7 @@ class Cluster {
   compute_clusters(rows, cols) {
     let self = this;
 
-    let xpad = 40, ypad = 20; 
+    let xpad = 60, ypad = 20; 
     self.clusters = [];
     for (let i=0; i<rows; i++) {
       let row = [];
@@ -193,18 +233,18 @@ class Cluster {
 
     if (group == 'cluster') {
       self.simulation
-        .alpha(alpha).alphaTarget(alphaTarget)
+        .alpha(alpha).alphaTarget(alphaTarget).alphaMin(0)
         .force('cluster', cluster)
         .force('charge', d3.forceManyBody()
-          .strength(-20))
+          .strength(-30))
         .force('collide', d3.forceCollide(function(d) { return d.r + self.padding; })
-          .strength(0.4))
+          .strength(0.6))
         .force('x', null)
         .force('y', null)
         .nodes(self.nodes);
     } else if (group == 'beeswarm') {
       self.simulation
-        .alpha(alpha).alphaTarget(alphaTarget)
+        .alpha(alpha).alphaTarget(alphaTarget).alphaMin(0)
         .force('cluster', null)
         .force('charge', d3.forceManyBody()
           .strength(-2))
@@ -220,8 +260,19 @@ class Cluster {
 
   set_nodes(group) {
     let self = this;
-
     if (group == 'initial') {
+      self.nodes = self.data['2018'].map(function(d,i) {
+        let node = {
+              data: d,
+              cluster: [0, 0],
+              r: self.radiusScale(d.graduate_enroll+d.undergrad_enroll),
+              color: 0,
+              x: window.innerWidth*Math.random(),
+              y: window.innerHeight*Math.random()
+            };
+        return node;
+      });
+    } else if (group == 'init') {
       let node_data = [];
       let i = 0;
       for (let gen of Object.keys(self.vdata.all)) {
@@ -249,30 +300,30 @@ class Cluster {
         return node;
       });
     } else if (group == 'both') {
-      self.set_nodes('initial');
+      self.set_nodes('init');
       self.nodes.forEach(function(d) {
         d.cluster = [d.data[0],d.data[1]];
         d.color = (d.data[0]+1)*(d.data[1]+1)/12;
       });
     } else if (group == 'gender') {
-      self.set_nodes('initial');
+      self.set_nodes('init');
       self.nodes.forEach(function(d) {
         d.cluster = [d.data[0],0];
         d.color = d.data[0]/2;
       });
     } else if (group == 'ethnicity') {
-      self.set_nodes('initial');
+      self.set_nodes('init');
       self.nodes.forEach(function(d) {
         d.cluster = [0,d.data[1]];
         d.color = d.data[1]/6;
       });
     } else if (group == 'school') {
       self.nodes = self.data['2018'].map(function(d,i) {
-        console.log(d.undergrad_enroll);
+        console.log(d.graduate_enroll+d.undergrad_enroll)
         let node = {
               data: d,
               cluster: [0, d.type == 'PUBLIC' ? 0 : 1],
-              r: Math.log(d.undergrad_enroll/100),
+              r: self.radiusScale(d.graduate_enroll+d.undergrad_enroll),
               color: d.type == 'PUBLIC' ? 0 : 0.5,
               x: window.innerWidth*Math.random(),
               y: window.innerHeight*Math.random()
