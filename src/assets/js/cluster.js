@@ -181,7 +181,7 @@ class Cluster {
          })
         .attr("id", function(d) {
             return d.data.name.replace(/[ .\-,']/g,'');
-        })
+        }).append('svg:title').text(function(d) { return d.data.name; });
       } else {
         self.circles.enter().append('circle').merge(self.circles)
       }
