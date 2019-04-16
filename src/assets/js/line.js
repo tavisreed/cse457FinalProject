@@ -17,15 +17,18 @@ class Line {
 
     // set data
     let line_data = self.data;
-    console.log(line_data)
-    let second_line_data=self.data2;
-    console.log(second_line_data)
+    let second_line_data = self.data2;
+
+    line_data = line_data.filter(function(d) {
+      return d.value != 'n';
+    });
 
     var svg = d3.select('#' + self.parent).html('')
         .attr("width", self.width + self.margin.left + self.margin.right)
         .attr("height", self.height + self.margin.top + self.margin.bottom),
       g = svg.append("g").attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
-    self.g=g;
+    self.g = g;
+
     var x = d3.scaleTime()
         .domain(d3.extent(line_data, function(d) { return d.date; }))
         .range([0, self.width]);
@@ -57,8 +60,11 @@ class Line {
     }
     // define line
     var line = d3.line()
-        .defined(function(d) { return d.value != 'none' ? d : null; })
-        //.curve(d3.curveBasis)
+        .defined(function(d) { 
+          console.log(d.value != 'n');
+          return d.value != 'n'; 
+        })
+        .curve(d3.curveBasis)
         .x(function(d) { return x(d.date); })
         .y(function(d) { return y(d.value); });
 
@@ -84,8 +90,8 @@ class Line {
 
   }
 
-  updateVis(argument){
-    var self=this;
+  updateVis() {
+    var self = this;
     d3.select('#' + self.parent)
         .selectAll(".x-axis")
         .remove();
@@ -139,8 +145,8 @@ class Line {
         .call(d3.axisLeft(y));
 
     var line = d3.line()
-        .defined(function(d) { return d != 'none'; })
-        //.curve(d3.curveBasis)
+        .defined(function(d) { return d.value != 'n'; })
+        .curve(d3.curveBasis)
         .x(function(d) { return x(d.date); })
         .y(function(d) { return y(d.value); });
 

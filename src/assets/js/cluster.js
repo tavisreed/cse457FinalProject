@@ -8,420 +8,330 @@ class Cluster {
   init() {
     let self = this;
 
+    // process data
+    self.preprocessing();
+
     // initialize plot
-    self.margin = {top: 30, right: 30, bottom: 30, left: 60};
-    self.width = window.innerWidth - self.margin.left - self.margin.right;
-    self.height = window.innerHeight- self.margin.top - self.margin.bottom;
+    self.margin = {top: 120, right: 120, bottom: 120, left: 120};
+    self.width = window.innerWidth/1 - self.margin.left - self.margin.right;
+    self.height = window.innerHeight/1.25 - self.margin.top - self.margin.bottom;
     self.padding = 1.5, // separation between same-color nodes
     self.clusterPadding = 6, // separation between different-color nodes
-    self.maxRadius = 15;
-    
-    var centerScale = d3.scalePoint().padding(1).range([0, self.width]);
-    var colorScale = d3.scaleOrdinal().range(d3.schemeCategory10);
-    var forceStrength = 0.05;
-    self.radiusScale = d3.scalePow()
-    .exponent(0.5)
-    .range([0,20])
-    .domain([0,120000]);
-
-    
-    
-    // update message, data done loading
-    document.querySelector('#home-message').style.display = 'none';
-
+    self.maxRadius = 12;
 
     // svg setup
-    let svg = d3.select('#' + self.parent).html('')
+    self.svg = d3.select('#' + self.parent).html('')
         .attr("width", self.width + self.margin.left + self.margin.right)
         .attr("height", self.height + self.margin.top + self.margin.bottom);
-        showClusterLegend();    
-    let g = svg.append("g").attr("id","clusterG").attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
-     
+    self.g = self.svg.append("g").attr("id","clusterG").attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
 
+    self.n = 500;
+    self.color = d3.scaleSequential(d3.interpolateRainbow)
+        .domain(d3.range(12));
 
-      var simulation = d3.forceSimulation()
-            .force("collide",d3.forceCollide( function(d){
-              	return d.r + 8 }).iterations(16) 
-            )
-            .force("charge", d3.forceManyBody())
-            .force("y", d3.forceY().y(self.height / 2))
-            .force("x", d3.forceX().x(self.width / 2))
-    
-    
-      
-    self.data[2018].forEach(function(d){
-        
-      d.r = self.radiusScale(d.graduate_enroll+d.undergrad_enroll);
-        d.x = self.width / 2;
-        d.y = self.height / 2;
-      })
-      
-      var nodes = self.data[2018];
-      
-      
-      
-      var circles = g.selectAll("circle")
-      	.data(nodes);
-      
-      var circlesEnter = circles.enter().append("circle")
-      	.attr("r", function(d, i){ return d.r; })
-        .attr("cx", function(d, i){ return 175 + 25 * i + 2 * i ** 2; })
-				.attr("cy", function(d, i){ return 250; })
-      	.style("fill", "#ADD8E6")
-      
-        .style("pointer-events", "all")
-      	.call(d3.drag()
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended));
-                
-        circlesEnter.append('svg:title')
-        .text(function(d) { return d.name });
+    self.radiusScale = d3.scalePow()
+      .exponent(0.5)
+      .range([0,20])
+      .domain([0,120000]);
 
-        //Added ID to use in searching
-        circlesEnter.attr("id",function(d){
-          var name=d.name.split(' ').join('');
-          name=name.split('.').join('');
-          name=name.split('-').join('');
-          name=name.split(',').join('');
-          name=name.split("'").join('');
+    self.showClusterLegend();
 
-          return name})
+    // initial force layout setup
+    self.simulation = d3.forceSimulation()
+      .on('tick', tick);
 
+    self.compute_clusters(1,1);
+    self.set_nodes('initial');
+    self.force_setup('cluster');
 
-        circlesEnter.on("click", function(d){
-               $("#selection").val(d.index).trigger('change');
-               $('#nav-profile-tab').trigger('click');
-             })
-      
-      
-      circles = circles.merge(circlesEnter);
-      
-      
-             
-      function ticked() {
-        //console.log("tick")
-        //console.log(data.map(function(d){ return d.x; }));
-        circles
-            .attr("cx", function(d){ return d.x; })
-            .attr("cy", function(d){ return d.y; });
-      }   
+    self.circles = self.g.selectAll('circle')
+        .data(self.nodes)
+      .enter().append('circle');
 
-      simulation
-            .nodes(nodes)
-            .on("tick", ticked);
-      
+    self.update('initial');
 
-     
-      //selects selection box and assigns onchange value, then calls splitBubbles on change
-      d3.select("#home_selection").on("change", function(){
-        var value = $("#home_selection option:selected").val();
-        splitBubbles(value); 
-      });
+    // ramp up collision strength to provide smooth transition
+    // var transitionTime = 1000;
+    // var t = d3.timer(function (elapsed) {
+    //   var dt = elapsed / transitionTime;
+    //   self.simulation.force('collide').strength(Math.pow(dt, 2) * 0.7);
+    //   if (dt >= 1.0) t.stop();
+    // });
 
-      // d3.select("#search_btn").on("click", function(){
-      //   findNode($("#search").val())
-      // });
-      function dragstarted(d,i) {
-        //console.log("dragstarted " + i)
-        if (!d3.event.active) simulation.alpha(1).restart();
-        d.fx = d.x;
-        d.fy = d.y;
-      }
+    function tick() {
+      self.circles
+        .attr('cx', function(d) { return d.x; })
+        .attr('cy', function(d) { return d.y; })
+        .attr('r', function(d) { return d.r; })
+        .style('fill', function(d) { return self.color(d.color); })
+    }
+  }
 
-      function dragged(d,i) {
-        //console.log("dragged " + i)
-        d.fx = d3.event.x;
-        d.fy = d3.event.y;
-      }
+  preprocessing() {
+    let self = this;
 
-      function dragended(d,i) {
-        //console.log("dragended " + i)
-        if (!d3.event.active) simulation.alphaTarget(0);
-        d.fx = null;
-        d.fy = null;
-       
-       
-       
-      } 
-      
-      function groupBubbles() {
-        //hideTitles();
+    let total = 0;
+    let totals = {};
+    let gen_totals = {};
+    let eth_totals = {};
+    let tables = ['freshmen_enroll_table','sophomore_enroll_table','junior_enroll_table','senior_enroll_table'];
 
-        // @v4 Reset the 'x' force to draw the bubbles to the center.
-        simulation.force('x', d3.forceX().strength(forceStrength).x(w / 2));
+    self.data['2018'].forEach(function(d) {
+      for (let table of tables) {
+        for (let gen of Object.keys(d[table]['total'])) {
+          for (let eth of Object.keys(d[table]['total'][gen])) {
+            if (!totals[gen]) totals[gen] = {};
+            if (!totals[gen][eth]) totals[gen][eth] = 0;
+            totals[gen][eth] += d[table]['total'][gen][eth];
 
-        // @v4 We can reset the alpha value and restart the simulation
-        simulation.alpha(1).restart();
-      }
-      
-      function splitBubbles(byVar) {
-        
-        centerScale.domain(nodes.map(function(d){ return d[byVar]; }));
-        
-        colorScale.domain(nodes.map(function(d){return d[byVar];}));
-        
-        circles.style("fill", function(d){
-          if(typeof d[byVar] === "undefined"){
-            return "#ADD8E6";
+            if (!gen_totals[gen]) gen_totals[gen] = 0;
+            gen_totals[gen] += d[table]['total'][gen][eth]
+
+            if (!eth_totals[eth]) eth_totals[eth] = 0;
+            eth_totals[eth] += d[table]['total'][gen][eth]
+
+            total += d[table]['total'][gen][eth];
           }
-          return colorScale(d[byVar]);
-        });
-
-        // circles = circles.merge(circlesEnter);
-      
-        // if(byVar == "all"){
-        //   hideTitles()
-        // } else {
-	      //   showTitles(byVar, centerScale);
-        // }
-        
-        // @v4 Reset the 'x' force to draw the bubbles to their year centers
-        simulation.force('x', d3.forceX().strength(forceStrength).x(function(d){ 
-        	return centerScale(d[byVar]);
-        }));
-
-
-        // @v4 We can reset the alpha value and restart the simulation
-        simulation.alpha(2).restart();
+        }
       }
+    });
+
+    self.vdata = {
+      'all': totals,
+      'gender': gen_totals,
+      'ethnicity': eth_totals,
+      'total': total
+    }
+  }
       
-      
-      function showClusterLegend(){
-        var gDiv =  svg.append("g");
-        var gHeight = self.height/3;
-        gDiv.attr("transform", "translate("+self.width/1.25+","+self.height/3+")");
-        gDiv.append("g").attr("transform", "translate(75," + (gHeight*0.25)+")").append("text").text("Total Enrollment")
-        gDiv.append("circle").attr("r", self.radiusScale(120000)).style("fill","grey").attr("cy",gHeight*0.4).attr("cx", 100);
-        gDiv.append("g").attr("transform", "translate(125," + (gHeight*0.4)+")").append("text").text("120000")
-        gDiv.append("circle").attr("r", self.radiusScale(67500)).style("fill","grey").attr("cy",(gHeight*0.4)+40).attr("cx", 100);
-        gDiv.append("g").attr("transform", "translate(125," + ((gHeight*0.4)+40)+")").append("text").text("67500")
-        gDiv.append("circle").attr("r", self.radiusScale(30000)).style("fill","grey").attr("cy",(gHeight*0.4)+70).attr("cx", 100);
-        gDiv.append("g").attr("transform", "translate(125," + ((gHeight*0.4)+70)+")").append("text").text("30000")
-        gDiv.append("circle").attr("r", self.radiusScale(7500)).style("fill","grey").attr("cy",(gHeight*0.4)+90).attr("cx", 100);
-        gDiv.append("g").attr("transform", "translate(125," + ((gHeight*0.4)+90)+")").append("text").text("7500")
+  showClusterLegend() {
+    let self = this;
+    var gDiv =  self.svg.append("g").attr('id','legend');
+    var gHeight = self.height/3;
+    gDiv.attr("transform", "translate("+self.width/1.1+","+0+")");
+    gDiv.append("g").attr("transform", "translate(75," + (gHeight*0.15)+")").append("text").text("Total Enrollment")
+    gDiv.append("circle").attr("r", self.radiusScale(120000)).style("fill","grey").attr("cy",gHeight*0.4).attr("cx", 100);
+    gDiv.append("g").attr("transform", "translate(125," + (gHeight*0.4)+")").append("text").text("120000")
+    gDiv.append("circle").attr("r", self.radiusScale(67500)).style("fill","grey").attr("cy",(gHeight*0.4)+40).attr("cx", 100);
+    gDiv.append("g").attr("transform", "translate(125," + ((gHeight*0.4)+40)+")").append("text").text("67500")
+    gDiv.append("circle").attr("r", self.radiusScale(30000)).style("fill","grey").attr("cy",(gHeight*0.4)+70).attr("cx", 100);
+    gDiv.append("g").attr("transform", "translate(125," + ((gHeight*0.4)+70)+")").append("text").text("30000")
+    gDiv.append("circle").attr("r", self.radiusScale(7500)).style("fill","grey").attr("cy",(gHeight*0.4)+90).attr("cx", 100);
+    gDiv.append("g").attr("transform", "translate(125," + ((gHeight*0.4)+90)+")").append("text").text("7500")
+  }
+
+  update(group) {
+    let self = this;
+    let clusters = [];
+    let alpha = 0.2;
+    let alphaTarget = 0;
+    let force_group = '';
+
+    if (group == 'both') {
+      document.querySelector('#legend').style.display = 'none';
+      document.querySelector('#search_bar').style.display = 'none';
+      clusters = [2,6];
+      force_group = 'cluster';
+    } else if (group == 'gender') {
+      document.querySelector('#legend').style.display = 'none';
+      document.querySelector('#search_bar').style.display = 'none';
+      clusters = [2,1];
+      force_group = 'cluster';
+    } else if (group == 'ethnicity') {
+      document.querySelector('#legend').style.display = 'none';
+      document.querySelector('#search_bar').style.display = 'none';
+      clusters = [1,6];
+      force_group = 'cluster';
+    } else if (group == 'school') {
+      document.querySelector('#legend').style.display = 'block';
+      document.querySelector('#search_bar').style.display = 'block';
+      clusters = [1,2];
+      force_group = 'cluster';
+    } else if (group == 'initial') {
+      document.querySelector('#legend').style.display = 'block';
+      document.querySelector('#search_bar').style.display = 'block';
+      clusters = [1,1];
+      force_group = 'cluster';
+    } else if (group == 'tuition') {
+      clusters = [0,0];
+      force_group = 'beeswarm';
+      alpha = 0.1;
+      alphaTarget = 0.4;
+      self.scale = d3.scaleLinear()
+        .domain([0,60000])
+        .range([0,self.width]);
+    }
+
+    self.compute_clusters(clusters[0], clusters[1]);
+    self.set_nodes(group);
+    self.force_setup(force_group, alpha, alphaTarget);
+
+    let t = d3.transition().duration(500);
+
+    self.circles = self.circles.data(self.nodes);
+
+    if (group == 'initial' || group == 'school') {
+      self.circles.enter().append('circle')
+        .merge(self.circles)
+        // new attr only
+        .on("click", function(d) {
+          console.log(d.data.index)
+           $("#selection").val(d.data.index).trigger('change');
+           $('#nav-profile-tab').trigger('click');
+         })
+        .attr("id", function(d) {
+            return d.data.name.replace(/[ .\-,']/g,'');
+        })
+      } else {
+        self.circles.enter().append('circle').merge(self.circles)
       }
 
-      // function findNode(query){
-      //   circles
-      //   .style("stroke" ,"black")
-      //   .style("stroke-width", function(d){
-      //     if(d.name == query){
-      //       console.log(d);
-      //       return d.r/3;
-      //     }
-      //     return "0"
-      //   });
-      // }
-      // function hideTitles() {
-      //   svg.selectAll('.title').remove();
-      // }
+    self.circles.exit().remove();
 
-      // function showTitles(byVar, scale) {
-      //   // Another way to do this would be to create
-      //   // the year texts once and then just hide them.
-      //  	var titles = svg.selectAll('.title')
-      //     .data(scale.domain());
-        
-      //   titles.enter().append('text')
-      //     	.attr('class', 'title')
-      //   	.merge(titles)
-      //       .attr('x', function (d) { return scale(d); })
-      //       .attr('y', 40)
-      //       .attr('text-anchor', 'middle')
-      //       .text(function (d) { return byVar + ' ' + d; });
-        
-      //   titles.exit().remove() 
-      // }
-    
-    
-    // let parse_time = d3.timeParse("%Y");
-    // let years = create_years(1999,2018);
-    
-    // let year_data = years.map(function(d) {
-    //   return {
-    //     'date': parse_time(d),
-    //     'value': self.data[d]
-    //   }
-    // });
-    //   //Create event handler
-    // var MyEventHandler = {};
+    self.circles = self.g.selectAll('circle');
 
-    // //Create Year chart for brushing
-    // var dates=[];
-    // for (let i=0; i<year_data.length; i++) {
-    //   dates.push(year_data[i].date);
-    // }
-    // let year_chart= new YearChart('Year_chart_home', dates, MyEventHandler);
+    self.simulation.restart();
+  }
 
-    // //Bind event handler
-    // $(MyEventHandler).bind("selectionChanged", function(event, selectionStart, selectionEnd){
-     
-    
-    // });
-   
-    
- 
-  //   let m = 10; // number of distinct clusters
+  compute_clusters(rows, cols) {
+    let self = this;
 
-  //   var color = d3.scaleSequential(d3.interpolateRainbow)
-  //       .domain(d3.range(m));
+    let xpad = 60, ypad = 20; 
+    self.clusters = [];
+    for (let i=0; i<rows; i++) {
+      let row = [];
+      for (let j=0; j<cols; j++) {
+        let pos = {
+          x: (self.width-2*xpad)*j/(cols-1) + xpad,
+          y: (self.height-2*ypad)*i/(rows-1) + ypad
+        };
+        if (rows <= 1) {
+          pos.y = self.height/2;
+        }
+        if (cols <= 1) {
+          pos.x = self.width/2;
+        }
+        row.push(pos);
+      }
+      self.clusters.push(row);
+    }
+    return self.clusters;
+  }
 
-  //   // The largest node for each cluster.
-  //   var clusters = new Array(m);
+  force_setup(group, alpha=0.2, alphaTarget=0) {
+    let self = this;
 
-  //   var force = d3.forceSimulation()
-  //     // keep entire simulation balanced around screen center
-  //     .force('center', d3.forceCenter(self.width/2, self.height/2));
+    function cluster(alpha) {
+      for (let i = 0, n = self.nodes.length; i < n; ++i) {
+        let k = alpha * 1;
+        let node = self.nodes[i];
+        let cluster = self.clusters[node.cluster[0]][node.cluster[1]];
+        node.vx -= (node.x - cluster.x) * k;
+        node.vy -= (node.y - cluster.y) * k;
+      }
+    }
 
-  //     // cluster by section
-  //     // .force('cluster', cluster()
-  //     //   .strength(0.2))
+    if (group == 'cluster') {
+      self.simulation
+        .alpha(alpha).alphaTarget(alphaTarget).alphaMin(0)
+        .force('cluster', cluster)
+        .force('charge', d3.forceManyBody()
+          .strength(-30))
+        .force('collide', d3.forceCollide(function(d) { return d.r + self.padding; })
+          .strength(0.6))
+        .force('x', null)
+        .force('y', null)
+        .nodes(self.nodes);
+    } else if (group == 'beeswarm') {
+      self.simulation
+        .alpha(alpha).alphaTarget(alphaTarget).alphaMin(0)
+        .force('cluster', null)
+        .force('charge', d3.forceManyBody()
+          .strength(-2))
+        .force('collide', d3.forceCollide(function(d) { return d.r + self.padding; })
+          .strength(0.4))
+        .force('x', d3.forceX().x(function(d) { return self.scale(d.data.tuition[0]); })
+          .strength(1))
+        .force('y', d3.forceY(200)
+          .strength(0.2))
+        .nodes(self.nodes);
+    }
+  }
 
-  //     // apply collision with padding
+  set_nodes(group) {
+    let self = this;
+    if (group == 'initial') {
+      self.nodes = self.data['2018'].map(function(d,i) {
+        let node = {
+              data: d,
+              cluster: [0, 0],
+              r: self.radiusScale(d.graduate_enroll+d.undergrad_enroll),
+              color: 0,
+              x: window.innerWidth*Math.random(),
+              y: window.innerHeight*Math.random()
+            };
+        return node;
+      });
+    } else if (group == 'init') {
+      let node_data = [];
+      let i = 0;
+      for (let gen of Object.keys(self.vdata.all)) {
+        let j = 0;
+        for (let eth of Object.keys(self.vdata.all[gen])) {
+          let num = Math.ceil(self.vdata.all[gen][eth]*self.n/self.vdata.total);
+          for (let k=0; k<num; k++) {
+            node_data.push({'cluster': [i,j], 'gender':gen, 'ethnicity':eth});
+          }
+          j++;
+        }
+        i++;
+      }
+
+      // create nodes from data
+      self.nodes = node_data.map(function(d,i) {
+        let node = {
+              data: d.cluster,
+              cluster: d.cluster,
+              r: 4,
+              color: (d.cluster[0]+1)*(d.cluster[1]+1)/12,
+              x: window.innerWidth*Math.random(),
+              y: window.innerHeight*Math.random()
+            };
+        return node;
+      });
+    } else if (group == 'both') {
+      self.set_nodes('init');
+      self.nodes.forEach(function(d) {
+        d.cluster = [d.data[0],d.data[1]];
+        d.color = (d.data[0]+1)*(d.data[1]+1)/12;
+      });
+    } else if (group == 'gender') {
+      self.set_nodes('init');
+      self.nodes.forEach(function(d) {
+        d.cluster = [d.data[0],0];
+        d.color = d.data[0]/2;
+      });
+    } else if (group == 'ethnicity') {
+      self.set_nodes('init');
+      self.nodes.forEach(function(d) {
+        d.cluster = [0,d.data[1]];
+        d.color = d.data[1]/6;
+      });
+    } else if (group == 'school') {
+      self.nodes = self.data['2018'].map(function(d,i) {
+        console.log(d.graduate_enroll+d.undergrad_enroll)
+        let node = {
+              data: d,
+              cluster: [0, d.type == 'PUBLIC' ? 0 : 1],
+              r: self.radiusScale(d.graduate_enroll+d.undergrad_enroll),
+              color: d.type == 'PUBLIC' ? 0 : 0.5,
+              x: window.innerWidth*Math.random(),
+              y: window.innerHeight*Math.random()
+            };
+        return node;
+      });
+    } else if (group == 'tuition') {
       
-      
-      
-
-  //   var node = g.selectAll("circle");
-    
-  //   update(getNodes(2018),2018);
-  //   // d3.interval(function(){
-  //   //   var lastDigit = Math.floor(Math.random() * 9);
-  //   //   var nodes = getNodes(('201' + lastDigit));
-  //   
-  //   //   update(nodes,("201"+lastDigit))
-
-  //   // }, 10000);
-
-
-  //   for(var i = 1999; i<2019; ++i){
-  //     var b = document.getElementById("home").appendChild(document.createElement("button"));
-  //     b.innerHTML = i;
-  //     b.setAttribute("id", "yearButton");
-  //     b.setAttribute("value", i);
-      
-  //   }
-  //   // var nodes = getNodes(2018);
-    
-  //   d3.selectAll("#yearButton").on("click", function(){
-  //     update(getNodes(d3.select(this).text()),d3.select(this).text());
-  //   })
-  //   //function update(data){
-  //   function update(sedon,year){
-    
-  //   var s = d3.transition()
-  //         .duration(750);
-
-  //     // Apply the general update pattern to the nodes.
-  //     node = node.data(sedon);
-
-  //     node.exit()
-  //       .transition(s)
-  //         .attr("r", 1e-6)
-  //         .remove();
-
-  //     node
-  //         .transition(s)
-  //         .style("fill", function(d) { return color(d.cluster/10); })
-  //         .attr("r", function(d){ return d.radius;});
-
-  //     node = node.enter().append("circle")
-  //     .style("fill", function(d) { return color(d.cluster/10); })
-  //     .attr("r", function(d){ return d.radius; })
-  //     .merge(node);
-
-  //   node.on("click", function(d){
-    
-  //     $("#selection").val(d.data.index).trigger('change');
-  //     $('#nav-profile-tab').trigger('click');
-  //   })
-
-  //   node.append('svg:title')
-  //     .text(function(d) { return d.data.name; })
-
-  //   force.nodes(sedon)
-  //   .force('collide', d3.forceCollide(d => d.radius + self.padding).strength(1))
-  //   .on('tick', layoutTick);
-  //   //ramp up collision strength to provide smooth transition
-  //   // var transitionTime = 3000;
-  //   // var t = d3.timer(function (elapsed) {
-  //   //   var dt = elapsed / transitionTime;
-  //   //   force.force('collide').strength(Math.pow(dt, 2) * 0.7);
-  //   //   if (dt >= 1.0) t.stop();
-  //   // });
-  // }
-
-  // function getNodes(year){
-  //   return self.data[year].map(function(e) {
-  //     var i = Math.floor(Math.random() * m),
-  //         r = Math.sqrt((i + 1) / m * -Math.log(Math.random())) * self.maxRadius,
-  //         pub = 0;
-
-  //     if (e.type != 'none') {
-  //       pub = e.type == 'PUBLIC' ? 0 : 1;
-  //     }
-  //     i = pub;
-  //     //console.log(e.undergrad_enroll != NaN ? e.undergrad_enroll/10000 : 1);
-
-  //     let d = {
-  //           data: e,
-  //           cluster: i,
-  //           radius: isNaN(e.undergrad_enroll) ? 1 : e.undergrad_enroll/3000,
-  //           x: Math.cos(i / m * 2 * Math.PI) * 100 + self.width / 2 + Math.random(),
-  //           y: Math.sin(i / m * 2 * Math.PI) * 100 + self.height / 2 + Math.random()
-  //         };
-  //     if (!clusters[i] || (r > clusters[i].radius)) clusters[i] = d;
-  //     return d;
-  //   });
-  // }
-  
-  //   function layoutTick(e) {
-  //     node
-  //         .attr("cx", function(d) { return d.x; })
-  //         .attr("cy", function(d) { return d.y; })
-  //         .attr("r", function(d) { return d.radius; });
-  //   }
-
-  //   // Move d to be adjacent to the cluster node.
-  //   // from: https://bl.ocks.org/mbostock/7881887
-  //   function cluster() {
-  //     var nodes,
-  //       strength = 0.1;
-
-  //     function force(alpha) {
-  //       // scale + curve alpha value
-  //       alpha *= strength * alpha;
-
-  //       nodes.forEach(function(d) {
-  //         var cluster = clusters[d.cluster];
-  //         if (cluster === d) return;
-          
-  //         let x = d.x - cluster.x,
-  //           y = d.y - cluster.y,
-  //           l = Math.sqrt(x * x + y * y),
-  //           r = d.radius + cluster.radius;
-
-  //         if (l != r) {
-  //           l = (l - r) / l * alpha;
-  //           d.x -= x *= l;
-  //           d.y -= y *= l;
-  //           cluster.x += x;
-  //           cluster.y += y;
-  //         }
-  //       });
-  //     }
-
-  //     force.initialize = function (_) {
-  //       nodes = _;
-  //     }
-
-  //     force.strength = _ => {
-  //       strength = _ == null ? strength : _;
-  //       return force;
-  //     };
-
-  //     return force;
-  //   }
+    }
   }
 }

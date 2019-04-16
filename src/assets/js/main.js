@@ -5,58 +5,26 @@ function load_data() {
 
   // queue all year files
   years.forEach(function(d) {
-    q.defer(d3.json, 'assets/data/'+d+'data.json')
+    q.defer(d3.json, 'assets/data/datanew/'+d+'data.json')
   });
 
   // await all loading files
   q.awaitAll(function(error, file_data) {
-    // synchronize schools across years
-    let schools = file_data.reduce(function(a,b) {
-      let a_names = a.map(function(d) { return d.name; });
-      let b_names = b.map(function(d) { return d.name; });
-      let intersection = a_names.filter(function(d) {
-        return b_names.includes(d);
-      });
-      return intersection.map(function(d) {
-        return { 'name': d };
-      });
+    // initial parsing
+    file_data.forEach(function(d,i) {
+      data[years[i]] = parse_data(d);
     });
 
-    // unwrap schools
-    schools = schools.map(function(d) { return d.name; });
-    this.schools=schools;
-    file_data.forEach(function(d,i) {
-      let slice = d.filter(function(e) {
-        return schools.includes(e.name);
-      });
-      data[years[i]] = parse_data(slice);
-    });
+    // strip all schools without 2018 data
+    data[2018] = year_filter(data[2018]);
+
+    // synchronize schools across years
+    data = synchronize(data);
+
+    this.schools = data['2017'].map(function(d) { return d.name; });;
 
     // start visualizations
     start(data);
-  });
-}
-
-function parse_data(data) {
-  return data.map(function(d,i) {
-    let entry = {
-      'name': d.name,
-      'type': d.type,
-      'index': i,
-      'undergrad_enroll': +d.undergrad_enroll,
-      'graduate_enroll': +d.graduate_enroll,
-      'description': d.description,
-      'freshmen_enroll_table': parse_table(d.freshmen_enroll_table),
-      'sophomore_enroll_table': parse_table(d.sophomore_enroll_table),
-      'junior_enroll_table': parse_table(d.junior_enroll_table),
-      'senior_enroll_table': parse_table(d.senior_enroll_table),
-      'teaching_tenure_table': 'none',
-      'tuition': parse_tuition(d.tuition),
-      'sat_scores': 'none',
-      'act_scores': 'none',
-      'degree_table': 'none',
-    }
-    return entry;
   });
 }
 
@@ -72,6 +40,14 @@ function start(data) {
   autocomplete(document.getElementById("school_2"), this.schools);
   autocomplete(document.getElementById("school_3"), this.schools);
   //let enrollment = new Histogram('test', data);
+
+  // update message, data done loading
+  document.querySelector('#home-message').style.display = 'none';
+
+  let cluster_select = document.querySelector('#cluster-selection');
+  cluster_select.addEventListener('change', function() {
+    cluster.update(cluster_select.value);
+  });
 }
 
 //autocomplete form from https://www.w3schools.com/howto/howto_js_autocomplete.asp

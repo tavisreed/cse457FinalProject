@@ -10,7 +10,7 @@ class Trends {
         // initialize data
         self.years = create_years(1999,2018);
         self.schools = self.data['2018'].map(function(d) { return d.name; });
-        self.load_trends_page()
+        self.load_trends_page();
     }
 
     load_trends_page() {
