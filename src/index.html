@@ -17,6 +17,8 @@
         <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="false">Home</a>
         <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="true">School Directory</a>
         <a class="nav-item nav-link" id="nav-other-tab" data-toggle="tab" href="#nav-other" role="tab" aria-controls="nav-other" aria-selected="false">Other</a>
+        <a class="nav-item nav-link" id="nav-trends-tab" data-toggle="tab" href="#nav-trends" role="tab" aria-controls="nav-trends" aria-selected="false">Trends</a>
+        <a class="nav-item nav-link" id="nav-comparison-tab" data-toggle="tab" href="#nav-comparison" role="tab" aria-controls="nav-comparison" aria-selected="false">School Comparison</a>
       </div>
     </nav>
 
@@ -27,12 +29,23 @@
         <div class='page' id='home'>
           <h1>School Clusters</h1>
           <h5 id='home-message'>Loading data...</h5>
+
           <button id='both'>By both</button>
           <button id='gender'>By gender</button>
           <button id='ethnicity'>By ethnicity</button>
           <button id='school'>By school</button>
           <button id='tuition'>By tuition</button>
+
+          <div>
+            <input id="search"  placeholder="Search for schools..">
+          </div>
+          <button id ="search_btn" onclick="callSearch()">Search</button>
+
           <svg id='cluster'></svg>
+          <select id="home_selection">
+            <option value = "all">All</option>
+            <option value = "type">Public vs Private</option>
+          </select>
         </div>
       </div>
 
@@ -58,12 +71,13 @@
             <div id='charts'>
               <div>
                 <h2>Tuition over time</h2>
+                <p id='tuition_line_selection'>Selection: Tuition  </p>
                 <svg id='tuition_line'></svg>
               </div>
 
               <div>
                 <h2>Grad vs. Undergrad Enrollment</h2>
-                <p id='GvU_chart_selection'>Selection:  </p>
+                <p id='enroll_area_selection'>Selection:  </p>
                 <svg id='enroll_area'></svg>
               </div>
 
@@ -86,6 +100,151 @@
       <!-- other tab -->
       <div class="tab-pane fade" id="nav-other" role="tabpanel" aria-labelledby="nav-other-tab">...</div>
 
+      <!-- Trends tab -->
+      <div class="tab-pane fade" id="nav-trends" role="tabpanel" aria-labelledby="nav-trend-tab">
+        <div class='page' id='trends'>
+          <div id='trends_content' style='display: none'>
+
+
+            <div id='trends_brush'>
+              <h2>Select Year Range</h2>
+              <svg id='trends_year_chart'></svg>
+            </div>
+
+            <div id="trends_tuition">
+              <h2>Private vs Public Tuition</h2>
+              <p id='trends_tuition_line_selection'> <span style="color: red; ">Average Private School Tuition</span> , <span style="color: blue; ">Average Public School Tuition</span></p>
+              <svg id='trends_tuition_line'></svg>
+            </div>
+
+            <div id='trends_charts'>
+
+
+              <div>
+                <h2>Private Schools Grad vs. Undergrad Enrollment</h2>
+                <p id='private_enroll_selection'>Selection:  </p>
+                <svg id='private_enroll'></svg>
+              </div>
+
+              <div>
+                <h2>Public Schools Grad vs. Undergrad Enrollment</h2>
+                <p id='public_enroll_selection'>Selection:  </p>
+                <svg id='public_enroll'></svg>
+              </div>
+
+              <div>
+                <h2>Private Schools Enrollment by Gender</h2>
+                <p id='private_gender_selection'>Selection:  </p>
+                <svg id='private_gender'></svg>
+              </div>
+
+              <div>
+                <h2>Public Schools Enrollment by Gender</h2>
+                <p id='public_gender_selection'>Selection:  </p>
+                <svg id='public_gender'></svg>
+              </div>
+
+              <div>
+                <h2>Private Schools Enrollment by Ethnicity</h2>
+                <p id='private_ethnicity_selection'>Selection:  </p>
+                <svg id='private_ethnicity'></svg>
+              </div>
+
+              <div>
+                <h2>Public Schools Enrollment by Ethnicity</h2>
+                <p id='public_ethnicity_selection'>Selection:  </p>
+                <svg id='public_ethnicity'></svg>
+              </div>
+
+            </div>
+            </div>
+        </div>
+      </div>
+
+      <!-- School Comparison tab -->
+      <div class="tab-pane fade" id="nav-comparison" role="tabpanel" aria-labelledby="nav-comparison-tab">
+
+        <div id="outer_school_div">
+          <!-- School 1 -->
+          <div>
+            <input id="school_1"  placeholder="Select a school...">
+          </div>
+          <button id ="school_1_btn" onclick="compSearch('1')">Confirm</button>
+
+          <div id="school_1_div" class="school_div">
+
+            <h3 id="school_name_1">School Name</h3>
+            <p id="type_1">Type of Institution:</p>
+            <p id="tuition_1">Tuition:</p>
+            <p id="students_numbers_1">Total Number of Students:</p>
+            <p id="grad_numbers_1">Percent of Graduate Students:</p>
+            <p id="under_numbers_1">Percent of Undergraduate Students:</p>
+            <p id="percent_male_1">Percent of Male Students:</p>
+            <p id="percent_female_1">Percent of Female Students:</p>
+            <p id="percent_asian_1">Percent of Asian Students:</p>
+            <p id="percent_black_1">Percent of Black Students:</p>
+            <p id="percent_native_1">Percent of Native American Students:</p>
+            <p id="percent_hispanic_1">Percent of Hispanic Students:</p>
+            <p id="percent_other_1">Percent of Other Students:</p>
+            <p id="percent_white_1">Percent of White Students:</p>
+
+          </div>
+
+          <!-- School 2 -->
+          <div>
+            <input id="school_2"  placeholder="Select a school...">
+          </div>
+          
+          <button id ="school_2_btn" onclick="compSearch('2')">Confirm</button>
+          <div id="school_2_div"  class="school_div">
+
+
+            <h3 id="school_name_2">School Name</h3>
+            <p id="type_2">Type of Institution:</p>
+            <p id="tuition_2">Tuition:</p>
+            <p id="students_numbers_2">Total Number of Students:</p>
+            <p id="grad_numbers_2">Percent of Graduate Students:</p>
+            <p id="under_numbers_2">Percent of Undergraduate Students:</p>
+            <p id="percent_male_2">Percent of Male Students:</p>
+            <p id="percent_female_2">Percent of Female Students:</p>
+            <p id="percent_asian_2">Percent of Asian Students:</p>
+            <p id="percent_black_2">Percent of Black Students:</p>
+            <p id="percent_native_2">Percent of Native American Students:</p>
+            <p id="percent_hispanic_2">Percent of Hispanic Students:</p>
+            <p id="percent_other_2">Percent of Other Students:</p>
+            <p id="percent_white_2">Percent of White Students:</p>
+
+          </div>
+
+          <!-- School 3 -->
+          <div>
+            <input id="school_3"  placeholder="Select a school...">
+          </div>
+          <button id ="school_3_btn" onclick="compSearch('3')">Confirm</button>
+
+          <div id="school_3_div"  class="school_div">
+
+
+            <h3 id="school_name_3">School Name</h3>
+            <p id="type_3">Type of Institution:</p>
+            <p id="tuition_3">Tuition:</p>
+            <p id="students_numbers_3">Total Number of Students:</p>
+            <p id="grad_numbers_3">Percent of Graduate Students:</p>
+            <p id="under_numbers_3">Percent of Undergraduate Students:</p>
+            <p id="percent_male_3">Percent of Male Students:</p>
+            <p id="percent_female_3">Percent of Female Students:</p>
+            <p id="percent_asian_3">Percent of Asian Students:</p>
+            <p id="percent_black_3">Percent of Black Students:</p>
+            <p id="percent_native_3">Percent of Native American Students:</p>
+            <p id="percent_hispanic_3">Percent of Hispanic Students:</p>
+            <p id="percent_other_3">Percent of Other Students:</p>
+            <p id="percent_white_3">Percent of White Students:</p>
+
+          </div>
+
+        </div>
+      </div>
+
     </div>
 
     <!-- libraries -->
@@ -98,7 +257,7 @@
     <!-- utils -->
     <script src='assets/js/utils/parse.js'></script>
     <script src='assets/js/utils/years.js'></script>
-    
+
     <!-- plot scripts -->
     <script src='assets/js/histogram.js'></script>
     <script src='assets/js/line.js'></script>
@@ -107,6 +266,7 @@
     <script src='assets/js/stacked_area.js'></script>
     <script src='assets/js/year_chart.js'></script>
     <script src='assets/js/cluster.js'></script>
+    <script src='assets/js/trends.js'></script>
 
     <!-- main scripts -->
     <script src='assets/js/school_profile.js'></script>

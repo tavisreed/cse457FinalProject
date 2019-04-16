@@ -125,6 +125,57 @@ class StackedArea {
                 else if(dataCategories[i]=="undergrad_enroll"){
                     selection_text="Undergraduate Student Enrollment";
                 }
+                else if(dataCategories[i]=="freshM"){
+                    selection_text="Freshmen Males";
+                }
+                else if(dataCategories[i]=="freshF"){
+                    selection_text="Freshmen Females";
+                }
+                else if(dataCategories[i]=="sophM"){
+                    selection_text="Sophomore Males";
+                }
+                else if(dataCategories[i]=="sophF"){
+                    selection_text="Sophomore Females";
+                }
+                else if(dataCategories[i]=="juM"){
+                    selection_text="Junior Males";
+                }
+                else if(dataCategories[i]=="juF"){
+                    selection_text="Junior Females";
+                }
+                else if(dataCategories[i]=="senM"){
+                    selection_text="Senior Males";
+                }
+                else if(dataCategories[i]=="senF"){
+                    selection_text="Senior Females";
+                }
+                else if(dataCategories[i]=="asian"){
+                    selection_text="Asian Students";
+                }
+                else if(dataCategories[i]=="black"){
+                    selection_text="Black Students";
+                }
+                else if(dataCategories[i]=="hispanic"){
+                    selection_text="Hispanic Students";
+                }
+                else if(dataCategories[i]=="native_american"){
+                    selection_text="Native American Students";
+                }
+                else if(dataCategories[i]=="other"){
+                    selection_text="Other Students";
+                }
+                else if(dataCategories[i]=="white"){
+                    selection_text="White Students";
+                }
+                else if(dataCategories[i]=="value"){
+                    selection_text="Tuition"
+                }
+                else if(dataCategories[i]=="public_tuition"){
+                    selection_text="Average Public School Tuition"
+                }
+                else if(dataCategories[i]=="private_tuition"){
+                    selection_text="Average Private School Tuition"
+                }
 
 
                 $( selection ).html("Selection: "+selection_text);

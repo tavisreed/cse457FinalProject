@@ -10,7 +10,7 @@ class Cluster {
 
     // process data
     self.preprocessing();
-
+    console.log(self.vdata);
     // initialize plot
     self.margin = {top: 120, right: 120, bottom: 120, left: 120};
     self.width = window.innerWidth/1 - self.margin.left - self.margin.right;
@@ -69,19 +69,19 @@ class Cluster {
 
     self.data['2018'].forEach(function(d) {
       for (let table of tables) {
-        for (let gen of Object.keys(d[table])) {
-          for (let eth of Object.keys(d[table][gen])) {
+        for (let gen of Object.keys(d[table]['total'])) {
+          for (let eth of Object.keys(d[table]['total'][gen])) {
             if (!totals[gen]) totals[gen] = {};
             if (!totals[gen][eth]) totals[gen][eth] = 0;
-            totals[gen][eth] += d[table][gen][eth];
+            totals[gen][eth] += d[table]['total'][gen][eth];
 
             if (!gen_totals[gen]) gen_totals[gen] = 0;
-            gen_totals[gen] += d[table][gen][eth]
+            gen_totals[gen] += d[table]['total'][gen][eth]
 
             if (!eth_totals[eth]) eth_totals[eth] = 0;
-            eth_totals[eth] += d[table][gen][eth]
+            eth_totals[eth] += d[table]['total'][gen][eth]
 
-            total += d[table][gen][eth];
+            total += d[table]['total'][gen][eth];
           }
         }
       }
@@ -136,6 +136,13 @@ class Cluster {
 
     self.circles.enter().append('circle')
       // new attr only
+      .on("click", function(d) {
+         $("#selection").val(d.index).trigger('change');
+         $('#nav-profile-tab').trigger('click');
+       })
+      .attr("id", function(d) {
+          //return d.da.replace(/[ .\-,']/g,'');
+      })
       .merge(self.circles)
       // all attr
 
@@ -261,6 +268,7 @@ class Cluster {
       });
     } else if (group == 'school') {
       self.nodes = self.data['2018'].map(function(d,i) {
+        console.log(d.undergrad_enroll);
         let node = {
               data: d,
               cluster: [0, d.type == 'PUBLIC' ? 0 : 1],
