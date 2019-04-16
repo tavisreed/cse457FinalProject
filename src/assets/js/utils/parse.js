@@ -16,7 +16,7 @@ function parse_tuition(t) {
   return tuition;
 }
 
-function parse_table(t,name) {
+function parse_table(t) {
   if (t == 'none') return null;
 
   let header2009 = [
@@ -43,56 +43,102 @@ function parse_table(t,name) {
     "Total"
   ];
 
-  let men_total = 0;
-  let women_total = 0;
+  // let men_total = 0;
+  // let women_total = 0;
 
-  // get gender totals
+  // // get gender totals
+  // for (let i=0; i<t.length; i++) {
+  //   if (t[i][0] == 'Men') {
+  //     let row_total = (+t[i][t[i].length-1])+(+t[i][t[i].length-2]);
+  //     men_total += row_total;
+  //   } else if (t[i][0] == 'Women') {
+  //     let row_total = (+t[i][t[i].length-1])+(+t[i][t[i].length-2]);
+  //     women_total += row_total;
+  //   }
+  // }
+
+  // // get ethnicity totals
+  // let totals = t[t.length-1].slice(1);
+  // let etotals = [];
+  // for (let i=0; i<totals.length; i++) {
+  //   if (i%2 == 0) etotals.push((+totals[i])+(+totals[i+1]));
+  // }
+
+  // let ethnicities = {};
+
+  // if (etotals.length == 8) {
+  //   // prior 2010 format
+  //   ethnicities['black'] = etotals[0]
+  //   ethnicities['asian'] = etotals[1]
+  //   ethnicities['hispanic'] = etotals[2]
+  //   ethnicities['native-american'] = etotals[3]
+  //   ethnicities['white'] = etotals[4]
+  //   ethnicities['other'] = etotals[5]+etotals[6]+etotals[7];
+  // } else if (etotals.length == 10) {
+  //   // 2010 and after format
+  //   ethnicities['black'] = etotals[5]
+  //   ethnicities['asian'] = etotals[4]
+  //   ethnicities['hispanic'] = etotals[2]
+  //   ethnicities['native-american'] = etotals[3]
+  //   ethnicities['white'] = etotals[7]
+  //   ethnicities['other'] = etotals[0]+etotals[1]+etotals[6]+etotals[8];
+  // } else {
+  //   return null;
+  // }
+
+  // get breakdowns
+  let total = {'male':{},'female':{}};
   for (let i=0; i<t.length; i++) {
-    if (t[i][0] == 'Men') {
-      let row_total = (+t[i][t[i].length-1])+(+t[i][t[i].length-2]);
-      men_total += row_total;
-    } else if (t[i][0] == 'Women') {
-      let row_total = (+t[i][t[i].length-1])+(+t[i][t[i].length-2]);
-      women_total += row_total;
+    if (t[i][0] == 'Men' || t[i][0] == 'Women') {
+      // get ethnicity totals
+      let totals = t[i].slice(1);
+      let etotals = [];
+      for (let i=0; i<totals.length; i++) {
+        if (i%2 == 0) etotals.push((+totals[i])+(+totals[i+1]));
+      }
+
+      let ethnicities = {};
+      if (etotals.length == 8) {
+        // prior 2010 format
+        ethnicities['black'] = etotals[0]
+        ethnicities['asian'] = etotals[1]
+        ethnicities['hispanic'] = etotals[2]
+        ethnicities['native-american'] = etotals[3]
+        ethnicities['white'] = etotals[4]
+        ethnicities['other'] = etotals[5]+etotals[6]+etotals[7];
+      } else if (etotals.length == 10) {
+        // 2010 and after format
+        ethnicities['black'] = etotals[5]
+        ethnicities['asian'] = etotals[4]
+        ethnicities['hispanic'] = etotals[2]
+        ethnicities['native-american'] = etotals[3]
+        ethnicities['white'] = etotals[7]
+        ethnicities['other'] = etotals[0]+etotals[1]+etotals[6]+etotals[8];
+      } else {
+        return null;
+      }
+
+      let gender = 'male';
+      if (t[i][0] == 'Women') {
+        gender = 'female';
+      }
+
+      for (let eth of Object.keys(ethnicities)) {
+        if (!total[gender][eth]) total[gender][eth] = 0;
+        total[gender][eth] += ethnicities[eth];
+      }
     }
   }
 
-  // get ethnicity totals
-  let totals = t[t.length-1].slice(1);
-  let etotals = [];
-  for (let i=0; i<totals.length; i++) {
-    if (i%2 == 0) etotals.push((+totals[i])+(+totals[i+1]));
-  }
+  // return {
+  //   'gender': {
+  //     'male': men_total,
+  //     'female': women_total
+  //   },
+  //   'ethnicity': ethnicities
+  // }
 
-  let ethnicities = {};
-
-  if (etotals.length == 8) {
-    // prior 2010 format
-    ethnicities['black'] = etotals[0]
-    ethnicities['asian'] = etotals[1]
-    ethnicities['hispanic'] = etotals[2]
-    ethnicities['native-american'] = etotals[3]
-    ethnicities['white'] = etotals[4]
-    ethnicities['other'] = etotals[5]+etotals[6]+etotals[7];
-  } else if (etotals.length == 10) {
-    // 2010 and after format
-    ethnicities['black'] = etotals[5]
-    ethnicities['asian'] = etotals[4]
-    ethnicities['hispanic'] = etotals[2]
-    ethnicities['native-american'] = etotals[3]
-    ethnicities['white'] = etotals[7]
-    ethnicities['other'] = etotals[0]+etotals[1]+etotals[6]+etotals[8];
-  } else {
-    return null;
-  }
-
-  return {
-    'gender': {
-      'male': men_total,
-      'female': women_total
-    },
-    'ethnicity': ethnicities
-  }
+  return total;
 }
 
 function parse_data(data) {
@@ -104,7 +150,7 @@ function parse_data(data) {
       'undergrad_enroll': +d.undergrad_enroll,
       'graduate_enroll': +d.graduate_enroll,
       'description': d.description,
-      'freshmen_enroll_table': parse_table(d.freshmen_enroll_table,d.name),
+      'freshmen_enroll_table': parse_table(d.freshmen_enroll_table),
       'sophomore_enroll_table': parse_table(d.sophomore_enroll_table),
       'junior_enroll_table': parse_table(d.junior_enroll_table),
       'senior_enroll_table': parse_table(d.senior_enroll_table),

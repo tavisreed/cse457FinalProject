@@ -1,5 +1,3 @@
-let cluster;
-
 function load_data() {
   let q = queue();
   let data = {};
@@ -31,8 +29,32 @@ function load_data() {
 function start(data) {
   console.log(data);
   let profile = new Profile('profiles', data);
-  cluster = new Cluster('cluster', data);
+  let cluster = new Cluster('cluster', data);
   //let enrollment = new Histogram('test', data);
+
+  // update message, data done loading
+  document.querySelector('#home-message').style.display = 'none';
+
+  // initialize button listeners
+  document.querySelector('#both').addEventListener('click', function() {
+    cluster.update('both');
+  });
+
+  document.querySelector('#gender').addEventListener('click', function() {
+    cluster.update('gender');
+  });
+
+  document.querySelector('#ethnicity').addEventListener('click', function() {
+    cluster.update('ethnicity');
+  });
+
+  document.querySelector('#school').addEventListener('click', function() {
+    cluster.update('school');
+  });
+
+  document.querySelector('#tuition').addEventListener('click', function() {
+    cluster.update('tuition');
+  });
 }
 
 load_data();
