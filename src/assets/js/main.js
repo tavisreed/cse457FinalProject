@@ -29,6 +29,14 @@ function load_data() {
 }
 
 function start(data) {
+    invis_start("svg_school_level_1");
+    invis_start("svg_school_gen_1");
+    invis_start("svg_school_eth_1");
+
+    invis_start("svg_school_level_2");
+    invis_start("svg_school_gen_2");
+    invis_start("svg_school_eth_2");
+
   console.log(data);
   console.log(this.schools);
   let profile = new Profile('profiles', data);
@@ -48,6 +56,7 @@ function start(data) {
   cluster_select.addEventListener('change', function() {
     cluster.update(cluster_select.value);
   });
+
 }
 
 //autocomplete form from https://www.w3schools.com/howto/howto_js_autocomplete.asp
@@ -358,7 +367,7 @@ function compSearch(number){
     var per_other=(other/(total_eth)*100).toFixed(2);
     var per_white=(white/(total_eth)*100).toFixed(2);
 
-    if(total_eth==0 || typeof total_eth!="number"){
+        if(total_eth==0 || typeof total_eth!="number"){
         per_asian="Data Not Avaliable";
         per_black="Data Not Avaliable";
         per_hispanic="Data Not Avaliable";
@@ -377,6 +386,27 @@ function compSearch(number){
 
 function end_popup(){
     document.querySelector('#start_div').style.display = 'none';
+
+}
+
+//Start with invisible placeholder bars
+function invis_start(parent_name){
+    var margin = {top: 30, right: 30, bottom: 30, left: 60};
+    console.log(margin)
+    var width = window.innerWidth/2.2 - margin.left - margin.right;
+    var height = 100 - margin.top -margin.bottom;
+
+    console.log("HERE")
+    var svg = d3.select('#' + parent_name).html('')
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom);
+
+    svg.append("rect")
+        .attr("fill", "white")
+        .attr("height", height)
+        .attr("width", width)
+        .attr("y", 0)
+        .attr("x", 0);
 
 }
 

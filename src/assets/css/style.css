@@ -87,9 +87,9 @@ body {
 
 }
 
-#school_name_1, #school_name_2, #school_name_3 {
+#school_name_1, #school_name_2{
   text-decoration: underline;
-
+  position: absolute;
 }
 
 
