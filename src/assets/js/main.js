@@ -38,7 +38,7 @@ function start(data) {
   autocomplete(document.getElementById("search"), this.schools);
   autocomplete(document.getElementById("school_1"), this.schools);
   autocomplete(document.getElementById("school_2"), this.schools);
-  autocomplete(document.getElementById("school_3"), this.schools);
+  //autocomplete(document.getElementById("school_3"), this.schools);
   //let enrollment = new Histogram('test', data);
 
   // update message, data done loading
