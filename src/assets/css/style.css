@@ -82,7 +82,7 @@ body {
 }
 
 #outer_school_div{
-  column-count: 3;
+  column-count: 2;
   column-rule-width: 4px;
 
 }
@@ -141,4 +141,32 @@ input[type=submit] {
   /*when navigating through the items using the arrow keys:*/
   background-color: DodgerBlue !important;
   color: #ffffff;
+}
+
+#start_div{
+  z-index: 10;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 200%;
+  width:200%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background-color: rgba(0,0,0,0.5); /*dim the background*/
+}
+
+
+#info_box{
+  background-color: white;
+  position: relative;
+  border-style: solid;
+  border-width: 3px;
+  height: 600px;
+  width: 500px;
+  display:inline-block;
+  transform: translate(5%, 115%);
+}
+
+#info_box_content > #start_div{
+  text-align: justify;
 }

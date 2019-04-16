@@ -264,23 +264,24 @@ function compSearch(number){
         total="Data Not Avaliable";
     }
 
-    var per_grad=((grad/total)*100).toFixed(2)+"%";
-    var per_ungrad=((ungrad/total)*100).toFixed(2)+"%";
+    var per_grad=((grad/total)*100).toFixed(2);
+    var per_ungrad=((ungrad/total)*100).toFixed(2);
 
-    if(total==0 || typeof total!="number"){
-        per_grad="Data Not Avaliable";
-        per_ungrad="Data Not Avaliable";
+    // if(total==0 || typeof total!="number"){
+    //     per_grad="Data Not Avaliable";
+    //     per_ungrad="Data Not Avaliable";
+    // }
+
+
+    var parent="svg_school_level_"+number;
+    if(total && typeof total=="number"){
+        let stackedBar_gen = new StackedBar(parent, [parseInt(per_grad),parseInt(per_ungrad)], ['Graduate Students','Undergraduate Students']);
     }
 
-    var students_id="#students_numbers_"+number;
-    document.querySelector(students_id).innerHTML ="Total Number of Students: "+ total;
-    var grad_id="#grad_numbers_"+number;
-    document.querySelector(grad_id).innerHTML ="Percent of Graduate Students: "+ per_grad;
-    var ungrad_id="#under_numbers_"+number;
-    document.querySelector(ungrad_id).innerHTML ="Percent of Undergraduate Students:"+per_ungrad;
+
+    //Get enrollment by gender numbers
     var male=0;
     var female=0;
-    //Get enrollment by gender numbers
     if (self.data[2018][indexes[0]].freshmen_enroll_table !="none"){
         male=male+self.data[2018][indexes[0]].freshmen_enroll_table.gender.male;
         female=female+self.data[2018][indexes[0]].freshmen_enroll_table.gender.female;
@@ -297,17 +298,17 @@ function compSearch(number){
         male=male+self.data[2018][indexes[0]].senior_enroll_table.gender.male;
         female=female+self.data[2018][indexes[0]].senior_enroll_table.gender.female;
     }
-    var per_male=(male/(male+female)*100).toFixed(2)+"%";
-    var per_female=(female/(male+female)*100).toFixed(2)+"%";
-    if(male+female==0 || typeof (male+female)!="number"){
-        per_male="Data Not Avaliable";
-        per_female="Data Not Avaliable";
+    var per_male=(male/(male+female)*100).toFixed(2);
+    var per_female=(female/(male+female)*100).toFixed(2);
+    // if(male+female==0 || typeof (male+female)!="number"){
+    //     per_male="Data Not Avaliable";
+    //     per_female="Data Not Avaliable";
+    // }
+    var parent="svg_school_gen_"+number;
+    if(male+female!=0 && typeof (male+female)=="number"){
+        let stackedBar_gen = new StackedBar(parent, [parseInt(per_male),parseInt(per_female)], ['Male','Female']);
     }
 
-    var male_id="#percent_male_"+number;
-    document.querySelector(male_id).innerHTML ="Percent of Male Students: "+per_male ;
-    var female_id="#percent_female_"+number;
-    document.querySelector(female_id).innerHTML ="Percent of Female Students: "+ per_female;
 
     //Get enrollment by Ethnicity
     var asian=0;
@@ -350,12 +351,12 @@ function compSearch(number){
     }
     var total_eth=asian+black+hispanic+native_american+other+white;
 
-    var per_asian=(asian/(total_eth)*100).toFixed(2)+"%";
-    var per_black= (black/(total_eth)*100).toFixed(2)+"%";
-    var per_hispanic=(hispanic/(total_eth)*100).toFixed(2)+"%";
-    var per_native=(native_american/(total_eth)*100).toFixed(2)+"%";
-    var per_other=(other/(total_eth)*100).toFixed(2)+"%";
-    var per_white=(white/(total_eth)*100).toFixed(2)+"%";
+    var per_asian=(asian/(total_eth)*100).toFixed(2);
+    var per_black= (black/(total_eth)*100).toFixed(2);
+    var per_hispanic=(hispanic/(total_eth)*100).toFixed(2);
+    var per_native=(native_american/(total_eth)*100).toFixed(2);
+    var per_other=(other/(total_eth)*100).toFixed(2);
+    var per_white=(white/(total_eth)*100).toFixed(2);
 
     if(total_eth==0 || typeof total_eth!="number"){
         per_asian="Data Not Avaliable";
@@ -365,18 +366,17 @@ function compSearch(number){
         per_other="Data Not Avaliable";
         per_white="Data Not Avaliable";
     }
-    var asian_id="#percent_asian_"+number;
-    document.querySelector(asian_id).innerHTML ="Percent of Asian Students: "+per_asian ;
-    var black_id="#percent_black_"+number;
-    document.querySelector(black_id).innerHTML ="Percent of Black Students: "+per_black;
-    var hispanic_id="#percent_hispanic_"+number;
-    document.querySelector(hispanic_id).innerHTML ="Percent of Hispanic Students: "+ per_hispanic;
-    var other_id="#percent_other_"+number;
-    document.querySelector(other_id).innerHTML ="Percent of Other Students: "+ per_other;
-    var white_id="#percent_white_"+number;
-    document.querySelector(white_id).innerHTML ="Percent of White Students: "+ per_white;
-    var native_id="#percent_native_"+number;
-    document.querySelector(native_id).innerHTML ="Percent of Native American Students: "+ per_native;
+
+    var parent="svg_school_eth_"+number;
+    if(total_eth!=0 && typeof total_eth==="number"){
+        let stackedBar_eth = new StackedBar(parent, [parseInt(per_asian),parseInt(per_black),parseInt(per_hispanic),parseInt(per_native),parseInt(per_other),parseInt(per_white)], ['Asian','Black','Hispanic','Native American','Other', 'White']);
+    }
+
+
+}
+
+function end_popup(){
+    document.querySelector('#start_div').style.display = 'none';
 
 }
 
