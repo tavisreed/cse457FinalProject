@@ -212,12 +212,12 @@ function search(school_list){
       current_school=current_school.split("'").join('');
       console.log(current_school, i)
       var radius=d3.select("#cluster")
-          .select("g")
+          .select("#clusterG")
           .select(current_school)
           .attr("r");
 
         d3.select("#cluster")
-            .select("g")
+            .select("#clusterG")
             .select(current_school)
             .attr("stroke", "black")
             .style("stroke-width", function(d){return radius/3});

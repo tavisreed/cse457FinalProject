@@ -24,11 +24,7 @@ class Cluster {
     .range([0,20])
     .domain([0,120000]);
 
-    self.invertedRadiusScale = d3.scalePow()
-    .exponent(0.5)
-    .domain([0,20])
-    .range([0,120000]);
-    console.log(self.radiusScale(67500));
+    
     
     // update message, data done loading
     document.querySelector('#home-message').style.display = 'none';
@@ -39,7 +35,7 @@ class Cluster {
         .attr("width", self.width + self.margin.left + self.margin.right)
         .attr("height", self.height + self.margin.top + self.margin.bottom);
         showClusterLegend();    
-    let g = svg.append("g").attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
+    let g = svg.append("g").attr("id","clusterG").attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
      
 
 
