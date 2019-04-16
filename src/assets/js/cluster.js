@@ -21,8 +21,15 @@ class Cluster {
     var forceStrength = 0.05;
     self.radiusScale = d3.scalePow()
     .exponent(0.5)
-    .range([0,15])
-    .domain([0,d3.max(self.data[2018], function(d){return d.undergrad_enroll;})]);
+    .range([0,20])
+    .domain([0,120000]);
+
+    self.invertedRadiusScale = d3.scalePow()
+    .exponent(0.5)
+    .domain([0,20])
+    .range([0,120000]);
+    console.log(self.radiusScale(67500));
+    
     // update message, data done loading
     document.querySelector('#home-message').style.display = 'none';
 
@@ -30,9 +37,10 @@ class Cluster {
     // svg setup
     let svg = d3.select('#' + self.parent).html('')
         .attr("width", self.width + self.margin.left + self.margin.right)
-        .attr("height", self.height + self.margin.top + self.margin.bottom),
-      g = svg.append("g").attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
-
+        .attr("height", self.height + self.margin.top + self.margin.bottom);
+        showClusterLegend();    
+    let g = svg.append("g").attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
+     
 
 
       var simulation = d3.forceSimulation()
@@ -46,7 +54,8 @@ class Cluster {
     
       
     self.data[2018].forEach(function(d){
-        d.r = self.radiusScale(+d.undergrad_enroll);
+        
+      d.r = self.radiusScale(d.graduate_enroll+d.undergrad_enroll);
         d.x = self.width / 2;
         d.y = self.height / 2;
       })
@@ -181,6 +190,21 @@ class Cluster {
         simulation.alpha(2).restart();
       }
       
+      
+      function showClusterLegend(){
+        var gDiv =  svg.append("g");
+        var gHeight = self.height/3;
+        gDiv.attr("transform", "translate("+self.width/1.25+","+self.height/3+")");
+        gDiv.append("g").attr("transform", "translate(75," + (gHeight*0.25)+")").append("text").text("Total Enrollment")
+        gDiv.append("circle").attr("r", self.radiusScale(120000)).style("fill","grey").attr("cy",gHeight*0.4).attr("cx", 100);
+        gDiv.append("g").attr("transform", "translate(125," + (gHeight*0.4)+")").append("text").text("120000")
+        gDiv.append("circle").attr("r", self.radiusScale(67500)).style("fill","grey").attr("cy",(gHeight*0.4)+40).attr("cx", 100);
+        gDiv.append("g").attr("transform", "translate(125," + ((gHeight*0.4)+40)+")").append("text").text("67500")
+        gDiv.append("circle").attr("r", self.radiusScale(30000)).style("fill","grey").attr("cy",(gHeight*0.4)+70).attr("cx", 100);
+        gDiv.append("g").attr("transform", "translate(125," + ((gHeight*0.4)+70)+")").append("text").text("30000")
+        gDiv.append("circle").attr("r", self.radiusScale(7500)).style("fill","grey").attr("cy",(gHeight*0.4)+90).attr("cx", 100);
+        gDiv.append("g").attr("transform", "translate(125," + ((gHeight*0.4)+90)+")").append("text").text("7500")
+      }
 
       // function findNode(query){
       //   circles

@@ -27,7 +27,7 @@ class Profile {
     });
 
     // update message, data done loading
-    document.querySelector('#message').innerHTML = 'Select a school to get started';
+    document.querySelector('#message').innerHTML = "";
   }
 
   load_profile(school_idx) {
