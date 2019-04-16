@@ -158,7 +158,7 @@ function parse_data(data) {
       'teaching_tenure_table': 'none',
       'tuition': parse_tuition(d.tuition),
       'sat_scores': 'none',
-      'act_scores': 'none',
+      'act_scores': d.act_scores,
       'degree_table': 'none',
     }
     return entry;
@@ -167,7 +167,7 @@ function parse_data(data) {
 
 function year_filter(data) {
   return data.filter(function(d) {
-    let attrs = ['type','undergrad_enroll','graduate_enroll','tuition','freshmen_enroll_table','sophomore_enroll_table','junior_enroll_table','senior_enroll_table'];
+    let attrs = ['type','act_scores','undergrad_enroll','graduate_enroll','tuition','freshmen_enroll_table','sophomore_enroll_table','junior_enroll_table','senior_enroll_table'];
     for (let i=0; i<attrs.length; i++) {
       if (d[attrs[i]] == 'none') return false;
     }

@@ -5,15 +5,35 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto:100,400,300,400italic,700' rel='stylesheet' type='text/css'>
 
     <!-- CSS libraries -->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="assets/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="assets/css/bootswatch.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <title>Education Exploration</title>
   </head>
   <body>
-    <div id="start_div">
-        <div id="info_box">
-          <h2><u>Engineering Education Across the United States</u></h2>
-          <div id="info_box_center">
+
+    <nav>
+      <div class="nav navbar navbar-expand-lg navbar-light bg-light" id="nav-tab" role="tablist">
+        <a class="navbar-brand" href="#">EduExplore</a>
+        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="false">Home</a>
+        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="true">School Directory</a>
+        <a class="nav-item nav-link" id="nav-trends-tab" data-toggle="tab" href="#nav-trends" role="tab" aria-controls="nav-trends" aria-selected="false">Trends</a>
+        <a class="nav-item nav-link" id="nav-comparison-tab" data-toggle="tab" href="#nav-comparison" role="tab" aria-controls="nav-comparison" aria-selected="false">School Comparison</a>
+        <a class="nav-item nav-link" id="nav-about-tab" data-toggle="tab" href="#nav-about" role="tab" aria-controls="nav-about" aria-selected="false">About</a>
+      </div>
+    </nav>
+
+    <!-- Modal -->
+    <div class="modal fade" id="initial-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Engineering Education Across the United States</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
             <p>This visualization was created as a way to visually explore data related to engineering schools
               in the United States. The main visualization is a force cluster chart that shows all the schools
               that we have data on. Using the buttons to select an attribute, you can split the cluster into multiple groups based off that
@@ -28,46 +48,63 @@
 
             <p>NOTE: The data was obtained from the American Society For Engineering Education (<a href="http://profiles.asee.org/">ASEE</a>),
               which has profiles on most universities in the United States. The data was self-reported by each school to ASEE. Some schools
-              opted to not provide certain information, and others may have provided inaccurate data. </p>
-
-
-
+              opted to not provide certain information, and others may have provided inaccurate data.</p>
           </div>
-          <button id ="end_popup_btn" onclick="end_popup()">Click To Get Started</button>
+          <div class="modal-footer">
+              <span id='loading-modal'>Loading data...</span>
+              <div class="spinner">
+                <div class="rect1"></div>
+                <div class="rect2"></div>
+                <div class="rect3"></div>
+                <div class="rect4"></div>
+                <div class="rect5"></div>
+              </div>
+            <button style='display: none' type="button" class="btn btn-outline-primary" data-dismiss="modal" id='dismiss-modal'>Get started</button>
+          </div>
         </div>
-    </div>
-    <h1>Engineering Education Across the United States</h1>
-
-    <nav>
-      <div class="nav nav-tabs" id="nav-tab" role="tablist">
-        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="false">Home</a>
-        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="true">School Directory</a>
-        <a class="nav-item nav-link" id="nav-trends-tab" data-toggle="tab" href="#nav-trends" role="tab" aria-controls="nav-trends" aria-selected="false">Trends</a>
-        <a class="nav-item nav-link" id="nav-comparison-tab" data-toggle="tab" href="#nav-comparison" role="tab" aria-controls="nav-comparison" aria-selected="false">School Comparison</a>
-        <a class="nav-item nav-link" id="nav-about-tab" data-toggle="tab" href="#nav-about" role="tab" aria-controls="nav-about" aria-selected="false">About</a>
       </div>
-    </nav>
+    </div>
 
     <div class="tab-content" id="nav-tabContent">
 
       <!-- home tab -->
       <div class="tab-pane fade active show" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
         <div class='page' id='home'>
-          <h5 id='home-message'>Loading data...</h5>
 
-          <span><b>Cluster by:</b></span>
-          <select id="cluster-selection">
-            <option value='initial'>By school (default)</option>
-            <option value='school'>By public vs private</option>
-            <option value='both'>By gender & ethnicity</option>
-            <option value='gender'>By gender</option>
-            <option value='ethnicity'>By ethnicity</option>
-          </select>
+          <div class="control_container">
+            <div style="display: inline-block;">
+              <span><b>Mode: </b></span>
+              <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-outline-primary btn-sm active">
+                  <input type="radio" name="options" id="option1" autocomplete="off" checked=""> Schools
+                </label>
+                <label class="btn btn-outline-primary btn-sm">
+                  <input type="radio" name="options" id="option2" autocomplete="off"> Students
+                </label>
+              </div>
+            </div>
 
-          <div style="margin-top: 10px" id='search_bar'>
-            <input id="search"  placeholder="Search for schools..">
-            <button id ="search_btn" onclick="callSearch()">Search</button>
+            <div style="display: inline-block;">
+              <form>
+                <span><b>Cluster by: </b></span>
+                <div class='form-group' style="display:inline-block;">
+                  <select id="cluster-selection" class='form-control form-control-sm'>
+                    <option value='initial'>By school (default)</option>
+                    <option value='school'>By public vs private</option>
+                    <option value='both'>By gender & ethnicity</option>
+                    <option value='gender'>By gender</option>
+                    <option value='ethnicity'>By ethnicity</option>
+                  </select>
+                </div>
+              </form>
+            </div>
+
+            <form class="form-inline my-2 my-lg-0" id='search_bar'>
+              <input class="form-control form-control-sm mr-sm-2" type="text" id="search" placeholder="Search for schools..">
+              <button class="btn btn-secondary btn-sm my-2 my-sm-0" id="search_btn" onclick="callSearch()">Search</button>
+            </form>
           </div>
+          <hr>
 
           <svg id='cluster'></svg>
         </div>
@@ -257,7 +294,7 @@
     <script src='assets/js/histogram.js'></script>
     <script src='assets/js/line.js'></script>
     <script src='assets/js/pie.js'></script>
-    <script src='assets/js/stackedBar.js'></script>
+    <script src='assets/js/stackedbar.js'></script>
     <script src='assets/js/stacked_area.js'></script>
     <script src='assets/js/year_chart.js'></script>
     <script src='assets/js/cluster.js'></script>

@@ -29,20 +29,22 @@ function load_data() {
 }
 
 function start(data) {
+  document.querySelector('#dismiss-modal').style.display = 'block';
+  document.querySelector('#loading-modal').style.display = 'none';
+  document.querySelector('.spinner').style.display = 'none';
+
   console.log(data);
-  console.log(this.schools);
+
   let profile = new Profile('profiles', data);
   let trends = new Trends('trends', data);
   let cluster = new Cluster('cluster', data);
   this.data=data;
+
   autocomplete(document.getElementById("search"), this.schools);
   autocomplete(document.getElementById("school_1"), this.schools);
   autocomplete(document.getElementById("school_2"), this.schools);
   //autocomplete(document.getElementById("school_3"), this.schools);
   //let enrollment = new Histogram('test', data);
-
-  // update message, data done loading
-  document.querySelector('#home-message').style.display = 'none';
 
   let cluster_select = document.querySelector('#cluster-selection');
   cluster_select.addEventListener('change', function() {
@@ -379,6 +381,9 @@ function end_popup(){
     document.querySelector('#start_div').style.display = 'none';
 
 }
+
+// toggle modal
+$('#initial-modal').modal('toggle');
 
 
 load_data();
