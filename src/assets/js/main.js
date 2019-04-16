@@ -105,6 +105,7 @@ function autocomplete(inp, arr) {
         }
       }
   });
+
   /*execute a function presses a key on the keyboard:*/
   inp.addEventListener("keydown", function(e) {
       var x = document.getElementById(this.id + "autocomplete-list");
@@ -130,6 +131,7 @@ function autocomplete(inp, arr) {
         }
       }
   });
+
   function addActive(x) {
     /*a function to classify an item as "active":*/
     if (!x) return false;
@@ -140,12 +142,14 @@ function autocomplete(inp, arr) {
     /*add class "autocomplete-active":*/
     x[currentFocus].classList.add("autocomplete-active");
   }
+
   function removeActive(x) {
     /*a function to remove the "active" class from all autocomplete items:*/
     for (var i = 0; i < x.length; i++) {
       x[i].classList.remove("autocomplete-active");
     }
   }
+
   function closeAllLists(elmnt) {
     /*close all autocomplete lists in the document,
     except the one passed as an argument:*/
@@ -172,7 +176,6 @@ function search(school_list){
       .select("g")
       .selectAll("circle")
       .style("stroke-width",0)
-
 
   //source:https://www.w3schools.com/howto/howto_js_filter_lists.asp
   var input, filter,txtValue;
@@ -210,10 +213,6 @@ function search(school_list){
             .style("stroke-width", function(d){return radius/3});
     }
   }
-
-
-
-
 }
 
 
@@ -382,13 +381,6 @@ function compSearch(number){
     if(total_eth!=0 && typeof total_eth==="number"){
         let stackedBar_eth = new StackedBar(parent, [parseInt(per_asian),parseInt(per_black),parseInt(per_hispanic),parseInt(per_native),parseInt(per_other),parseInt(per_white)], ['Asian','Black','Hispanic','Native American','Other', 'White']);
     }
-
-
-}
-
-function end_popup(){
-    document.querySelector('#start_div').style.display = 'none';
-
 }
 
 // toggle modal

@@ -290,7 +290,7 @@ class Cluster {
               data: d,
               cluster: [0, 0],
               r: self.radiusScale(d.graduate_enroll+d.undergrad_enroll),
-              color: 0,
+              color: 0.75,
               x: window.innerWidth*Math.random(),
               y: window.innerHeight*Math.random()
             };
