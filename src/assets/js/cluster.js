@@ -218,6 +218,30 @@ class Cluster {
     return self.clusters;
   }
 
+  update_legend() {
+    // handle legend  
+    let legend = self.svg.append("g")
+        .style("font-family", "sans-serif")
+        .attr("font-size", 10)
+        .attr("text-anchor", "end")
+        .attr("transform", function(d, i) { return "translate(" + (full_width/2+radius+40) + "," + (full_height/2-40) + ")"; })
+      .selectAll("g")
+      .data(pie(data))
+      .enter().append("g")
+        .attr("transform", function(d, i) { return "translate(0," + i*20 + ")"; });
+
+    legend.append("rect")
+        .attr("x", 5)
+        .attr("width", 15)
+        .attr("height", 15)
+        .style("fill", function(d, i) { return clr(i); });
+
+    legend.append("text")
+        .attr("y", 7.5)
+        .attr("dy", "0.32em")
+        .text(function(d) { return d.data.animal; });
+  }
+
   force_setup(group, alpha=0.2, alphaTarget=0) {
     let self = this;
 
