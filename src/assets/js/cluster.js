@@ -343,7 +343,6 @@ class Cluster {
       });
     } else if (group == 'school') {
       self.nodes = self.data['2018'].map(function(d,i) {
-        console.log(d.graduate_enroll+d.undergrad_enroll)
         let node = {
               data: d,
               cluster: [0, d.type == 'PUBLIC' ? 0 : 1],
