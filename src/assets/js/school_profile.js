@@ -25,9 +25,6 @@ class Profile {
     $('#selection').change(function() {
       self.load_profile(select.value);
     });
-
-    // update message, data done loading
-    document.querySelector('#message').innerHTML = "";
   }
 
   load_profile(school_idx) {

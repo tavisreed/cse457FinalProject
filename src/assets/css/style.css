@@ -10,6 +10,13 @@ body {
   float: right;
 }
 
+.ui-autocomplete {
+  width: 250px;
+  height: 200px; 
+  overflow-y: scroll; 
+  overflow-x: auto;
+}
+
 #profiles {
   margin: 1em;
 }

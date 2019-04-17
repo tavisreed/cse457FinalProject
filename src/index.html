@@ -7,11 +7,13 @@
     <!-- CSS libraries -->
     <!-- <link rel="stylesheet" href="assets/css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="assets/css/bootswatch.min.css">
+    <link rel="stylesheet" href="assets/css/jquery-ui.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <title>Education Exploration</title>
   </head>
   <body>
 
+    <!-- site nav bar -->
     <nav>
       <div class="nav navbar navbar-expand-lg navbar-light bg-light" id="nav-tab" role="tablist">
         <a class="navbar-brand" href="#">EduExplore</a>
@@ -23,7 +25,7 @@
       </div>
     </nav>
 
-    <!-- Modal -->
+    <!-- initial modal -->
     <div class="modal fade" id="initial-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -65,7 +67,7 @@
       </div>
     </div>
 
-    <!-- Main tab content -->
+    <!-- main content -->
     <div class="tab-content" id="nav-tabContent">
 
       <!-- home tab -->
@@ -77,10 +79,10 @@
               <span><b>Mode: </b></span>
               <div class="btn-group btn-group-toggle" data-toggle="buttons">
                 <label class="btn btn-outline-primary btn-sm active">
-                  <input type="radio" name="options" id="option1" autocomplete="off" checked=""> Schools
+                  <input type="radio" name="modes" id="schools">Schools
                 </label>
                 <label class="btn btn-outline-primary btn-sm">
-                  <input type="radio" name="options" id="option2" autocomplete="off"> Students
+                  <input type="radio" name="modes" id="students" checked>Students
                 </label>
               </div>
             </div>
@@ -90,19 +92,14 @@
                 <span><b>Cluster by: </b></span>
                 <div class='form-group' style="display:inline-block;">
                   <select id="cluster-selection" class='form-control form-control-sm'>
-                    <option value='initial'>By school (default)</option>
-                    <option value='school'>By public vs private</option>
-                    <option value='both'>By gender & ethnicity</option>
-                    <option value='gender'>By gender</option>
-                    <option value='ethnicity'>By ethnicity</option>
                   </select>
                 </div>
               </form>
             </div>
 
             <form class="form-inline my-2 my-lg-0" id='search_bar'>
-              <input class="form-control form-control-sm mr-sm-2" type="text" id="search" placeholder="Search for schools..">
-              <button class="btn btn-secondary btn-sm" id="search_btn" type='button' onclick="callSearch()">Search</button>
+              <input class="form-control form-control-sm mr-sm-2 ui-autocomplete-input" type="text" id="search" placeholder="Search for schools..">
+              <button class="btn btn-secondary btn-sm" id="search_btn" type='button'>Search</button>
             </form>
           </div>
           <hr style="margin-top: 0;">
@@ -114,7 +111,7 @@
       <!-- profile tab -->
       <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
         <div class='page' id='profiles'>
-          <h5 id='message'>Loading data...</h5>
+          <!-- hidden school selector -->
           <select id="selection" style = "display: none"></select>
 
           <!-- school page content -->
@@ -162,7 +159,6 @@
         <div class='page' id='trends'>
           <div id='trends_content' style='display: none'>
 
-
             <div id='trends_brush'>
               <h2>Select Year Range</h2>
               <svg id='trends_year_chart'></svg>
@@ -175,8 +171,6 @@
             </div>
 
             <div id='trends_charts'>
-
-
               <div>
                 <h2>Private Schools Grad vs. Undergrad Enrollment</h2>
                 <p id='private_enroll_selection'>Selection:  </p>
@@ -212,9 +206,8 @@
                 <p id='public_ethnicity_selection'>Selection:  </p>
                 <svg id='public_ethnicity'></svg>
               </div>
-
             </div>
-            </div>
+          </div>
         </div>
       </div>
 
@@ -297,18 +290,15 @@
           <p>NOTE: The data was obtained from the American Society For Engineering Education (<a href="http://profiles.asee.org/">ASEE</a>),
             which has profiles on most universities in the United States. The data was self-reported by each school to ASEE. Some schools
             opted to not provide certain information, and others may have provided inaccurate data. </p>
-
-
-
         </div>
       </div>
-
     </div>
 
     <!-- libraries -->
     <script src='assets/js/lib/d3.v4.min.js'></script>
     <script src='assets/js/lib/queue.min.js'></script>
     <script src='assets/js/lib/jquery.min.js'></script>
+    <script src='assets/js/lib/jquery-ui.min.js'></script>
     <script src='assets/js/lib/popper.min.js'></script>
     <script src='assets/js/lib/bootstrap.min.js'></script>
 
