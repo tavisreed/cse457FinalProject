@@ -30,6 +30,8 @@ function load_data() {
 }
 
 function start(data) {
+  console.log(data);
+
   // create main visualization objects
   let profile = new Profile('profiles', data);
   let trends = new Trends('trends', data);
@@ -99,7 +101,8 @@ function start(data) {
   let mode_options = {
     'schools': [
       {'text': 'By school (default)', 'value': 'school'}, 
-      {'text': 'By public vs. private', 'value': 'school_type'}
+      {'text': 'By public vs. private', 'value': 'school_type'},
+      {'text': 'By tuition', 'value': 'tuition'}
     ],
     'students': [
       {'text': 'By gender & ethnicity (default)', 'value': 'both'}, 

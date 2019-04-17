@@ -132,7 +132,7 @@ class Cluster {
   update(group) {
     let self = this;
     let clusters = [];
-    let alpha = 0.2;
+    let alpha = 0.15;
     let alphaTarget = 0;
     let force_group = 'cluster';
 
@@ -153,8 +153,8 @@ class Cluster {
     } else if (group == 'tuition') {
       clusters = [0,0];
       force_group = 'beeswarm';
-      alpha = 0.1;
-      alphaTarget = 0.4;
+      alpha = 0.4;
+      //alphaTarget = 0.4;
       self.scale = d3.scaleLinear()
         .domain([0,60000])
         .range([0,self.width]);
@@ -222,8 +222,8 @@ class Cluster {
               cluster: d.cluster,
               r: 4,
               color: (d.cluster[0]+1)*(d.cluster[1]+1)/12,
-              x: window.innerWidth/2,
-              y: window.innerHeight/2
+              x: self.nodes[i%self.nodes.length].x,
+              y: self.nodes[i%self.nodes.length].y
             };
         return node;
       });
@@ -333,18 +333,18 @@ class Cluster {
         .force('y', null)
         .nodes(self.nodes);
     } else if (group == 'beeswarm') {
+      self.circles.style('stroke', 'black').style('stroke-width', '1px')
       self.simulation
         .alpha(alpha).alphaTarget(alphaTarget).alphaMin(0)
         .force('cluster', null)
-        .force('charge', d3.forceManyBody()
-          .strength(-2))
-        .force('collide', d3.forceCollide(function(d) { return d.r + self.padding; })
-          .strength(0.4))
+        .force('charge', null)
+        .force('collide', d3.forceCollide(function(d) { return d.r; })
+          .strength(1))
         .force('x', d3.forceX().x(function(d) { return self.scale(d.data.tuition[0]); })
           .strength(1))
-        .force('y', d3.forceY(200)
-          .strength(0.2))
-        .nodes(self.nodes);
+        .force('y', d3.forceY(self.height/2)
+          .strength(0.1))
+        .nodes(self.nodes)
     }
   }
 
@@ -356,12 +356,12 @@ class Cluster {
     if (group == 'school') {
       self.nodes.forEach(function(d) {
         d.cluster = [0,0];
-        d.color = 0.75;
+        d.color = 0.2;
       });
     } else if (group == 'school_type') {
       self.nodes.forEach(function(d) {
         d.cluster = [0, d.data.type == 'PUBLIC' ? 0 : 1];
-        d.color = d.data.type == 'PUBLIC' ? 0.1 : 0.7;
+        d.color = d.data.type == 'PUBLIC' ? 0.2 : 0.6;
       });
     } else if (group == 'tuition') {
       
@@ -384,5 +384,9 @@ class Cluster {
         d.color = d.data[1]/6;
       });
     }
+  }
+
+  label_generator(group) {
+
   }
 }
