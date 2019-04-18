@@ -13,7 +13,7 @@ class Cluster {
 
     // initialize plot
     self.margin = {top: 120, right: 120, bottom: 120, left: 120};
-    self.width = window.innerWidth/1.1 - self.margin.left - self.margin.right;
+    self.width = window.innerWidth/1 - self.margin.left - self.margin.right;
     self.height = window.innerHeight/1.25 - self.margin.top - self.margin.bottom;
     self.padding = 1.5, // separation between same-color nodes
     self.clusterPadding = 6, // separation between different-color nodes
@@ -42,17 +42,13 @@ class Cluster {
 
     self.change_mode('schools');
 
-    // self.circles = self.g.selectAll('circle')
-    //     .data(self.nodes)
-    //   .enter().append('circle');
-
     // ramp up collision strength to provide smooth transition
-    // var transitionTime = 1000;
-    // var t = d3.timer(function (elapsed) {
-    //   var dt = elapsed / transitionTime;
-    //   self.simulation.force('collide').strength(Math.pow(dt, 2) * 0.7);
-    //   if (dt >= 1.0) t.stop();
-    // });
+    let transitionTime = 3000;
+    let t = d3.timer(function (elapsed) {
+      let dt = elapsed / transitionTime;
+      self.simulation.force('collide').strength(Math.pow(dt, 2) * 0.7);
+      if (dt >= 1.0) t.stop();
+    });
 
     function tick() {
       self.circles
@@ -154,10 +150,13 @@ class Cluster {
       clusters = [0,0];
       force_group = 'beeswarm';
       alpha = 0.4;
-      //alphaTarget = 0.4;
+      alphaTarget = 0.1;
       self.scale = d3.scaleLinear()
         .domain([0,60000])
         .range([0,self.width]);
+      self.yscale = d3.scaleLinear()
+        .domain([0,60000])
+        .range([self.height,0]);
     }
 
     self.compute_clusters(clusters[0], clusters[1]);
@@ -262,7 +261,7 @@ class Cluster {
   compute_clusters(rows, cols) {
     let self = this;
 
-    let xpad = 60, ypad = 20; 
+    let xpad = 100, ypad = 10; 
     self.clusters = [];
     for (let i=0; i<rows; i++) {
       let row = [];
@@ -342,7 +341,7 @@ class Cluster {
           .strength(1))
         .force('x', d3.forceX().x(function(d) { return self.scale(d.data.tuition[0]); })
           .strength(1))
-        .force('y', d3.forceY(self.height/2)
+        .force('y', d3.forceY(self.height/2).y(function(d) { return self.yscale(d.data.undergrad_enroll); })
           .strength(0.1))
         .nodes(self.nodes)
     }
@@ -363,6 +362,7 @@ class Cluster {
         d.cluster = [0, d.data.type == 'PUBLIC' ? 0 : 1];
         d.color = d.data.type == 'PUBLIC' ? 0.2 : 0.6;
       });
+      self.labels = ['public', 'private'];
     } else if (group == 'tuition') {
       
     }
@@ -373,6 +373,7 @@ class Cluster {
         d.cluster = [d.data[0],d.data[1]];
         d.color = (d.data[0]+1)*(d.data[1]+1)/12;
       });
+      self.labels = [['black','asian','hispanic','native-american','white','other'],['male','female']];
     } else if (group == 'gender') {
       self.nodes.forEach(function(d) {
         d.cluster = [d.data[0],0];
@@ -387,6 +388,40 @@ class Cluster {
   }
 
   label_generator(group) {
+    let self = this;
 
+    if (self.clusters.length == 1 && self.clusters[0].length == 1) {
+      self.g.append('text')
+        .attr('x', self.clusters[0][0].x - self.width/4)
+        .attr('y', self.clusters[0][0].y)
+        .text('Hello - ')
+    } else if (self.clusters.length == 1) {
+      self.clusters[0].forEach(function(d,i) {
+        self.g.append('text')
+        .attr('x', d.x)
+        .attr('y', d.y - self.width/4)
+        .text(self.labels[i])
+      });
+    } else if (self.clusters[0].length == 1) {
+
+    } else {
+      self.clusters.forEach(function(d,i) {
+        // create top col labels
+        if (i == 0) {
+          d.forEach(function(e,i) {
+            self.g.append('text')
+              .attr('x', e.x)
+              .attr('y', 0)
+              .text(self.labels[0][i])
+          });
+        }
+
+        // create row labels
+        self.g.append('text')
+        .attr('x', 0)
+        .attr('y', d[0].y)
+        .text(self.labels[1][i])
+      })
+    }
   }
 }

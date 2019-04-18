@@ -2,8 +2,14 @@ body {
   font-family: 'Roboto';
 }
 
-#nav-tabContent {
-  margin: 1em;
+.control_container {
+  margin: 1em 1em 0;
+}
+
+text {
+  dominant-baseline: "middle";
+  text-anchor: "middle";
+  fill: lightgrey;
 }
 
 #search_bar {

@@ -1,3 +1,5 @@
+let cluster;
+
 // data loading/prep sequence
 function load_data() {
   let q = queue();
@@ -35,7 +37,7 @@ function start(data) {
   // create main visualization objects
   let profile = new Profile('profiles', data);
   let trends = new Trends('trends', data);
-  let cluster = new Cluster('cluster', data);
+  cluster = new Cluster('cluster', data);
 
   // prep modal for start
   document.querySelector('#dismiss-modal').style.display = 'block';
@@ -75,6 +77,7 @@ function start(data) {
   // on search click
   document.querySelector('#search_btn').addEventListener('click', function() {
     if (this.innerHTML == 'Clear') {
+      document.querySelector('#search').value = '';
       cluster.g.selectAll('circle').style('stroke', 'none');
       this.innerHTML = 'Search';
       return;
