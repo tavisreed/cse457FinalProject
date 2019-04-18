@@ -31,8 +31,7 @@ class StackedArea {
             }
         }
 
-
-        //Clear out old table
+        // clear out old table
         d3.select("#" + vis.parent)
             .selectAll("g")
             .remove();
@@ -44,9 +43,7 @@ class StackedArea {
             .append("g")
             .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
-
-
-        // Scales and axes
+        // scales and axes
         vis.x = d3.scaleTime()
             .range([0, vis.width])
             .domain(d3.extent(vis.data, function(d) { return d.date; }));
@@ -86,24 +83,19 @@ class StackedArea {
             .y0(function(d) { return vis.y(d[0]); })
             .y1(function(d) { return vis.y(d[1]); });
 
-
-
         vis.updateVis();
     }
 
     updateVis(argument){
         var vis = this;
+
         // Update domain
         // Get the maximum of the multi-dimensional array or in other words, get the highest peak of the uppermost layer
-        vis.y.domain([0, d3.max(vis.displayData, function(d) {
-            return d3.max(d, function(e) {
-                return e[1];
-            });
-        })
-        ]);
-        // console.log(vis.displayData)
+        vis.y.domain([0, d3.max(vis.displayData, function(d) { return d3.max(d, function(e) { return e[1]; }); }) ]);
+
         var dataCategories = vis.categories;
         var selection= "#" + vis.parent+'_selection';
+        
         // Draw the layers
         var categories = vis.svg.selectAll(".area")
             .data(vis.displayData);

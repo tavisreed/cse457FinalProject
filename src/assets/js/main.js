@@ -128,9 +128,6 @@ function start(data) {
     });
   });
 
-  // initial school button trigger
-  $("#schools").trigger('click');
-
   // update cluster group listener
   cluster_select.addEventListener('change', function() {
     cluster.update(cluster_select.value);

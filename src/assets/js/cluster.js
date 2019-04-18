@@ -12,7 +12,7 @@ class Cluster {
     self.preprocessing();
 
     // initialize plot
-    self.margin = {top: 120, right: 120, bottom: 120, left: 120};
+    self.margin = {top: 140, right: 60, bottom: 100, left: 60};
     self.width = window.innerWidth/1 - self.margin.left - self.margin.right;
     self.height = window.innerHeight/1.25 - self.margin.top - self.margin.bottom;
     self.padding = 1.5, // separation between same-color nodes
@@ -149,7 +149,7 @@ class Cluster {
     } else if (group == 'tuition') {
       clusters = [0,0];
       force_group = 'beeswarm';
-      alpha = 0.4;
+      alpha = 0.5;
       alphaTarget = 0.1;
       self.scale = d3.scaleLinear()
         .domain([0,60000])
@@ -341,8 +341,9 @@ class Cluster {
           .strength(1))
         .force('x', d3.forceX().x(function(d) { return self.scale(d.data.tuition[0]); })
           .strength(1))
-        .force('y', d3.forceY(self.height/2).y(function(d) { return self.yscale(d.data.undergrad_enroll); })
-          .strength(0.1))
+        .force('y', d3.forceY(self.height/2).strength(0.05))
+          //d3.forceY(self.height/2).y(function(d) { return self.yscale(d.data.undergrad_enroll); })
+          //.strength(0.1))
         .nodes(self.nodes)
     }
   }
@@ -390,38 +391,49 @@ class Cluster {
   label_generator(group) {
     let self = this;
 
-    if (self.clusters.length == 1 && self.clusters[0].length == 1) {
-      self.g.append('text')
-        .attr('x', self.clusters[0][0].x - self.width/4)
-        .attr('y', self.clusters[0][0].y)
-        .text('Hello - ')
-    } else if (self.clusters.length == 1) {
-      self.clusters[0].forEach(function(d,i) {
-        self.g.append('text')
-        .attr('x', d.x)
-        .attr('y', d.y - self.width/4)
-        .text(self.labels[i])
-      });
-    } else if (self.clusters[0].length == 1) {
-
+    if (group == 'beeswarm') {
+      self.g.append("g")
+        .attr("class", "x-axis")
+        .attr("transform", "translate(0," + self.height + ")")
+        .call(d3.axisBottom(self.scale));
     } else {
-      self.clusters.forEach(function(d,i) {
-        // create top col labels
-        if (i == 0) {
-          d.forEach(function(e,i) {
-            self.g.append('text')
-              .attr('x', e.x)
-              .attr('y', 0)
-              .text(self.labels[0][i])
-          });
-        }
-
-        // create row labels
+      if (self.clusters.length == 1 && self.clusters[0].length == 1) {
         self.g.append('text')
-        .attr('x', 0)
-        .attr('y', d[0].y)
-        .text(self.labels[1][i])
-      })
+          .attr('x', self.clusters[0][0].x - self.width/4)
+          .attr('y', self.clusters[0][0].y)
+          .text('Hello - ')
+      } else if (self.clusters.length == 1) {
+        self.clusters[0].forEach(function(d,i) {
+          self.g.append('text')
+          .attr('x', d.x)
+          .attr('y', d.y - self.width/4)
+          .text(self.labels[i])
+        });
+      } else if (self.clusters[0].length == 1) {
+
+      } else {
+        self.clusters.forEach(function(d,i) {
+          // create top col labels
+          if (i == 0) {
+            d.forEach(function(e,i) {
+              self.g.append('text')
+                .attr('x', e.x)
+                .attr('y', -100)
+                .attr('font-size', '14px')
+                .attr('class', 'label')
+                .text(self.labels[0][i])
+            });
+          }
+
+          // create row labels
+          self.g.append('text')
+          .attr('x', -20)
+          .attr('y', d[0].y)
+          .attr('font-size', '14px')
+          .attr('class', 'label')
+          .text(self.labels[1][i] + ' -')
+        })
+      }
     }
   }
 }

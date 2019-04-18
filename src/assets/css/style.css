@@ -7,9 +7,9 @@ body {
 }
 
 .label {
-  dominant-baseline: "middle";
-  text-anchor: "middle";
-  fill: lightgrey;
+  dominant-baseline: middle;
+  text-anchor: middle;
+  fill: grey;
 }
 
 #search_bar {
