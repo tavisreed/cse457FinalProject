@@ -6,7 +6,7 @@ body {
   margin: 1em 1em 0;
 }
 
-text {
+.label {
   dominant-baseline: "middle";
   text-anchor: "middle";
   fill: lightgrey;

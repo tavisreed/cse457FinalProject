@@ -8,7 +8,7 @@ function load_data() {
 
   // queue all year files
   years.forEach(function(d) {
-    q.defer(d3.json, 'assets/data/datanew/'+d+'data.json')
+    q.defer(d3.json, 'assets/data/'+d+'data.json')
   });
 
   // await all loading files

@@ -42,13 +42,13 @@ class Cluster {
 
     self.change_mode('schools');
 
-    // ramp up collision strength to provide smooth transition
-    let transitionTime = 3000;
-    let t = d3.timer(function (elapsed) {
-      let dt = elapsed / transitionTime;
-      self.simulation.force('collide').strength(Math.pow(dt, 2) * 0.7);
-      if (dt >= 1.0) t.stop();
-    });
+    // // ramp up collision strength to provide smooth transition
+    // let transitionTime = 3000;
+    // let t = d3.timer(function (elapsed) {
+    //   let dt = elapsed / transitionTime;
+    //   self.simulation.force('collide').strength(Math.pow(dt, 2) * 0.7);
+    //   if (dt >= 1.0) t.stop();
+    // });
 
     function tick() {
       self.circles
