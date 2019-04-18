@@ -61,7 +61,6 @@ class Line {
     // define line
     var line = d3.line()
         .defined(function(d) { 
-          console.log(d.value != 'n');
           return d.value != 'n'; 
         })
         .curve(d3.curveBasis)

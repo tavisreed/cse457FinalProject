@@ -9,7 +9,7 @@ function parse_tuition(t) {
         tuition[i] = +t[i];
       }
     }
-    if (!tuition[0]) tuition = 'none';
+    if (tuition[0] == 'none') tuition = 'none';
   } else {
     tuition = 'none';
   }
