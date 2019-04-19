@@ -17,7 +17,7 @@ class Cluster {
     self.height = window.innerHeight/1.25 - self.margin.top - self.margin.bottom;
     self.padding = 1.5, // separation between same-color nodes
     self.clusterPadding = 6, // separation between different-color nodes
-    self.maxRadius = 12;
+    //self.maxRadius = 12;
 
     // svg setup
     self.svg = d3.select('#' + self.parent).html('')
@@ -232,8 +232,25 @@ class Cluster {
     }
 
     // update pattern on circles
+
+
+    
+    var tip = d3.tip().attr('class', 'd3-tip')
+        
+        .offset([10, 20])
+        .html(function (d) {
+            var tooltip_data = {
+                "name": d.data.name,
+                "enrollment": d.data.undergrad_enroll+ d.data.graduate_enroll
+            };
+            return self.tooltip_render(tooltip_data);
+    });
+
+    self.svg.call(tip);
+
     self.circles = self.g.selectAll('circle')
       .data(self.nodes);
+
 
     if (mode == 'schools') {
       self.circles.enter().append('circle')
@@ -242,10 +259,17 @@ class Cluster {
              $('#selection').val(d.data.index).trigger('change');
              $('#nav-profile-tab').trigger('click');
            })
+           .on("mouseover", function (d) {
+            tip.show(d);
+        })
+        .on("mouseout", function (d) {
+            tip.hide(d);
+        })
           .attr('id', function(d) {
               return d.data.name.replace(/[ &.\-,']/g,'');
-          })
-          .append('svg:title').text(function(d) { return d.data.name; });
+          });
+          
+          //.append('svg:title').text(function(d) { return d.data.name; });
     } else {
       self.circles.enter().append('circle')
         .merge(self.circles)
@@ -387,6 +411,12 @@ class Cluster {
       });
     }
   }
+
+  tooltip_render (tooltip_data) {
+    var vis = this;
+    var text = "<div> <p>" + tooltip_data.name + "</p><p>\nCount: " + tooltip_data.enrollment + "</p> <p 'font-size = 10'>Click to Change Visualizations</p></div>";
+    return text;
+}
 
   label_generator(group) {
     let self = this;
