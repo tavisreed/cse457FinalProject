@@ -25,7 +25,7 @@ class StackedBar {
       }
       bar_data.push(temp);
     }
-    bar_data.sort(function(a,b){return a.value-b.value})
+    //bar_data.sort(function(a,b){return a.value-b.value})
     var svg = d3.select('#' + self.parent).html('')
       .attr("width", self.width + self.margin.left + self.margin.right)
       .attr("height", self.height + self.margin.top + self.margin.bottom);
@@ -61,16 +61,28 @@ class StackedBar {
       barX.push(barX[i]+(bar_data[i].value/100)*self.width);
     }
 
+    var tip = d3.tip().attr('class', 'd3-tip')
+        .html(function (d) {
+            var tooltip_data = {
+                "name": d.name,
+                "percent": d.value
+            };
+            return self.tooltip_render(tooltip_data);
+    });
+
+    svg.call(tip);
+
     g.selectAll("rect")
       .data(bar_data)
       .enter()
       .append("rect")
       .attr("fill", function(d,i){
+        console.log(d.name);
         return color_scale(i);
       })
       .attr("height", rect_height)
       .attr("width", function(d,i){
-        console.log(d.name + ": " + (d.value/100));
+        
         return (d.value/100)*(self.width);
       })
       .attr("y", 10)
@@ -78,18 +90,25 @@ class StackedBar {
         return barX[i];
       })
         .on("mouseover", function(d,i){
-          var selection_text=d.name;
-          var selection_id="#"+self.parent+"_selection";
+          //var selection_text=d.name;
+          tip.show(d);
+          //var selection_id="#"+self.parent+"_selection";
           
-          $( selection_id ).html("Selection: "+selection_text);
+          //$( selection_id ).html("Selection: "+selection_text);
         })
-        .on("mouseout", function(){
-          var selection_id="#"+self.parent+"_selection";
-          
-          $( selection_id ).html("Selection: ");
+        .on("mouseout", function(d,i){
+          //var selection_id="#"+self.parent+"_selection";
+          tip.hide(d);
+          //$( selection_id ).html("Selection: ");
         });
 
     // create text above the bars
-
+    
+  
   }
+  tooltip_render (tooltip_data) {
+    var vis = this;
+    var text = "<div> <p>" + tooltip_data.name + "</p><p> " + tooltip_data.percent + "%</p></div>";
+    return text;
+}
 }
