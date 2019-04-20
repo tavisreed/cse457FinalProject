@@ -412,7 +412,7 @@ class Cluster {
 
   tooltip_render (tooltip_data) {
     var vis = this;
-    var text = "<div> <p>" + tooltip_data.name + "</p><p>\nCount: " + tooltip_data.enrollment + "</p> <p 'font-size = 10'>Click to Change Visualizations</p></div>";
+    var text = "<div> <p>" + tooltip_data.name + "</p><p>\nEnrollment: " + tooltip_data.enrollment + "</p> <p 'font-size = 10'>Click to Change Visualizations</p></div>";
     return text;
 }
 
