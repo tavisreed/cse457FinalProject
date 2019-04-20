@@ -194,7 +194,7 @@ function compSearch(number) {
     }
 
     var per_grad=((grad/total)*100).toFixed(2);
-    var per_ungrad=((ungrad/total)*100).toFixed(2);
+    var per_ungrad=100-parseInt(per_grad);
 
     // if(total==0 || typeof total!="number"){
     //     per_grad="Data Not Avaliable";
@@ -228,7 +228,8 @@ function compSearch(number) {
         female=female+self.data[2018][indexes[0]].senior_enroll_table.gender.female;
     }
     var per_male=(male/(male+female)*100).toFixed(2);
-    var per_female=(female/(male+female)*100).toFixed(2);
+    //var per_female=(female/(male+female)*100).toFixed(2);
+    var per_female = 100-parseInt(per_male);
     // if(male+female==0 || typeof (male+female)!="number"){
     //     per_male="Data Not Avaliable";
     //     per_female="Data Not Avaliable";
@@ -285,7 +286,7 @@ function compSearch(number) {
     var per_hispanic=(hispanic/(total_eth)*100).toFixed(2);
     var per_native=(native_american/(total_eth)*100).toFixed(2);
     var per_other=(other/(total_eth)*100).toFixed(2);
-    var per_white=(white/(total_eth)*100).toFixed(2);
+    var per_white=100-(parseInt(per_asian)+parseInt(per_black)+parseInt(per_hispanic)+parseInt(per_native)+parseInt(per_other));
 
         if(total_eth==0 || typeof total_eth!="number"){
         per_asian="Data Not Avaliable";

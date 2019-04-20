@@ -56,6 +56,11 @@ class StackedBar {
           .remove();
 
     // create the rectangles for the stacked bar
+    var barX = [0]
+    for(var i = 0; i<bar_data.length; ++i){
+      barX.push(barX[i]+(bar_data[i].value/100)*self.width);
+    }
+
     g.selectAll("rect")
       .data(bar_data)
       .enter()
@@ -65,22 +70,23 @@ class StackedBar {
       })
       .attr("height", rect_height)
       .attr("width", function(d,i){
-        return x_scale(d.value);
+        console.log(d.name + ": " + (d.value/100));
+        return (d.value/100)*(self.width);
       })
       .attr("y", 10)
       .attr("x", function(d,i){
-        if (i == 0){
-          return 0;
-        }
-        else{
-          return x_scale(bar_data[i-1].value);
-        }
+        return barX[i];
       })
         .on("mouseover", function(d,i){
           var selection_text=d.name;
           var selection_id="#"+self.parent+"_selection";
-          console.log(selection_id)
+          
           $( selection_id ).html("Selection: "+selection_text);
+        })
+        .on("mouseout", function(){
+          var selection_id="#"+self.parent+"_selection";
+          
+          $( selection_id ).html("Selection: ");
         });
 
     // create text above the bars
