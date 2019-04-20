@@ -172,7 +172,11 @@ class StackedArea {
 
                 $( selection ).html("Selection: "+selection_text);
                 return;
-            } );
+            } )
+            .on("mouseout",function(){
+                $(selection).html("Selection: ");
+                return;
+            });
             // .on("mouseout", function(d){
             //     $( selection ).html("Selection:");
             //     return;
