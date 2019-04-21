@@ -204,7 +204,7 @@ function compSearch(number) {
 
     var parent="svg_school_level_"+number;
     if(total && typeof total=="number"){
-        let stackedBar_gen = new StackedBar(parent, [parseInt(per_grad),parseInt(per_ungrad)], ['Graduate Students','Undergraduate Students']);
+        let stackedBar_gen = new StackedBar(parent, [parseInt(per_grad),parseInt(per_ungrad)], ['Graduate Students','Undergraduate Students'],2);
     }
 
 
@@ -236,7 +236,7 @@ function compSearch(number) {
     // }
     var parent="svg_school_gen_"+number;
     if(male+female!=0 && typeof (male+female)=="number"){
-        let stackedBar_gen = new StackedBar(parent, [parseInt(per_male),parseInt(per_female)], ['Male','Female']);
+        let stackedBar_gen = new StackedBar(parent, [parseInt(per_male),parseInt(per_female)], ['Male','Female'],2);
     }
 
 
@@ -299,7 +299,7 @@ function compSearch(number) {
 
     var parent="svg_school_eth_"+number;
     if(total_eth!=0 && typeof total_eth==="number"){
-        let stackedBar_eth = new StackedBar(parent, [parseInt(per_asian),parseInt(per_black),parseInt(per_hispanic),parseInt(per_native),parseInt(per_other),parseInt(per_white)], ['Asian','Black','Hispanic','Native American','Other', 'White']);
+        let stackedBar_eth = new StackedBar(parent, [parseInt(per_asian),parseInt(per_black),parseInt(per_hispanic),parseInt(per_native),parseInt(per_other),parseInt(per_white)], ['Asian','Black','Hispanic','Native American','Other', 'White'],6);
     }
 }
 

@@ -425,16 +425,16 @@ class Trends {
         let tuition_chart = new Line('trends_tuition_line', public_tuition_data, private_tuition_data, 2);
 
         // create enrollment stacked area charts
-        let public_enrollment_chart = new StackedArea('public_enroll', public_enroll_data, ['graduate_enroll', 'undergrad_enroll']);
-        let private_enrollment_chart = new StackedArea('private_enroll', private_enroll_data, ['graduate_enroll', 'undergrad_enroll']);
+        let public_enrollment_chart = new StackedArea('public_enroll', public_enroll_data, ['graduate_enroll', 'undergrad_enroll'],2);
+        let private_enrollment_chart = new StackedArea('private_enroll', private_enroll_data, ['graduate_enroll', 'undergrad_enroll'],2);
 
         //Create enrollment by gender area charts
-        let public_gender_chart = new StackedArea('public_gender', public_gender_data, ['freshM', 'freshF','sophM','sophF','juM','juF','senM','senF']);
-        let private_gender_chart = new StackedArea('private_gender', private_gender_data, ['freshM', 'freshF','sophM','sophF','juM','juF','senM','senF']);
+        let public_gender_chart = new StackedArea('public_gender', public_gender_data, ['freshM', 'freshF','sophM','sophF','juM','juF','senM','senF'],8);
+        let private_gender_chart = new StackedArea('private_gender', private_gender_data, ['freshM', 'freshF','sophM','sophF','juM','juF','senM','senF'],8);
 
         //Create enrollment by ethnicity area chart
-        let public_ethnicity_chart = new StackedArea('public_ethnicity', public_ethnicity_data, ['asian', 'black','hispanic','native_american','other','white']);
-        let private_ethnicity_chart = new StackedArea('private_ethnicity', private_ethnicity_data, ['asian', 'black','hispanic','native_american','other','white']);
+        let public_ethnicity_chart = new StackedArea('public_ethnicity', public_ethnicity_data, ['asian', 'black','hispanic','native_american','other','white'],6);
+        let private_ethnicity_chart = new StackedArea('private_ethnicity', private_ethnicity_data, ['asian', 'black','hispanic','native_american','other','white'],6);
 
         // bind brush event to event handler
         $(event_handler).bind("selectionChanged", function(event, selectionStart, selectionEnd) {

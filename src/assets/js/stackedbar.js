@@ -1,10 +1,11 @@
 // Source: Assignment 2
 
 class StackedBar {
-  constructor(_parent, _data, _catagories) {
+  constructor(_parent, _data, _catagories, _num_categories) {
     this.parent = _parent;
     this.data = _data;
     this.catagories=_catagories;
+    this.num_cats=_num_categories;
     this.init();
   }
 
@@ -47,8 +48,20 @@ class StackedBar {
 
     // colors need to be updated
     var color_scale = d3.scaleOrdinal()
-      .range(d3.schemeCategory10)
       .domain([0,self.catagories.length]);
+    if(self.num_cats==2){
+      color_scale = d3.scaleOrdinal(["#FCAA67","#B0413E"]);
+    }
+    else if(self.num_cats==6){
+      color_scale = d3.scaleOrdinal(["#C0CAAD","#3E1929","#654C4F","#B26E63","#CEC075","#6699CC"]);
+
+    }
+    else if(self.num_cats==8){
+      color_scale = d3.scaleOrdinal(["#8A4F7D","#887880","#88A096","#BBAB8B","#EF8275","#141204","#DBB3B1","#CBE896"]);
+    }
+    else{
+      color_scale = d3.scaleOrdinal(["#EA62FD","#FD64E9","#FD66C5","#FD68A2","#FD6A80","#FE7A6C","#FE9F6E","#FEC370","#FEE572","#F6FF75"]);
+    }
 
 
     //Delete old rectangles

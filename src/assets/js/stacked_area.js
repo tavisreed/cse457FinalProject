@@ -1,16 +1,29 @@
 // source: studio 6
 
 class StackedArea {
-    constructor(_parent, _data, _categories) {
+    constructor(_parent, _data, _categories, _num_categories) {
         this.parent = _parent;
         this.data = _data;
         this.categories = _categories;
+        this.num_cats=_num_categories;
         this.init();
     }
 
     init() {
         var vis = this;
-        vis.colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+        if(vis.num_cats==2){
+            vis.colorScale = d3.scaleOrdinal(["#FCAA67","#B0413E"]);
+        }
+        else if(vis.num_cats==6){
+            vis.colorScale = d3.scaleOrdinal(["#C0CAAD","#3E1929","#654C4F","#B26E63","#CEC075","#6699CC"]);
+
+        }
+        else if(vis.num_cats==8){
+            vis.colorScale = d3.scaleOrdinal(["#8A4F7D","#887880","#88A096","#BBAB8B","#EF8275","#141204","#DBB3B1","#CBE896"]);
+        }
+        else{
+            vis.colorScale = d3.scaleOrdinal(["#EA62FD","#FD64E9","#FD66C5","#FD68A2","#FD6A80","#FE7A6C","#FE9F6E","#FEC370","#FEE572","#F6FF75"]);
+        }
         vis.colorScale.domain(d3.keys(vis.categories).filter(function(d){ return d != "date"; }))
        // vis.colorScale.domain(vis.categories);
 
@@ -149,7 +162,6 @@ class StackedArea {
                 else if(dataCategories[i]=="private_tuition"){
                     selection_text="Average Private School Tuition"
                 }
-                console.log(d)
                 var tooltip_data = {
                     "name": selection_text,
                 };
