@@ -501,4 +501,13 @@ class Cluster {
       d.fy = null;
     }
   }
+
+  // mouse hover functions
+  mouseover() {
+    div.style("display", "inline");
+  }
+
+  mouseout() {
+    div.style("display", "none");
+  }
 }
