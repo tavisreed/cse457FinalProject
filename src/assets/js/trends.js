@@ -26,7 +26,7 @@ class Trends {
             var tuition_counter=0;
             for (var i=0;i<self.data[d].length;i++){
                 if (self.data[d][i].type=="PUBLIC"){
-                    if (self.data[d][i].tuition[0]!="none"&&self.data[d][i].tuition[0]!="n"){
+                    if (self.data[d][i].tuition[0]!="none"&&self.data[d][i].tuition[0]!="n" && self.data[d][i].tuition[0]!=0){
                         tuition=tuition+self.data[d][i].tuition[0];
                         tuition_counter=tuition_counter+1;
                     }
@@ -44,7 +44,7 @@ class Trends {
             var tuition_counter=0;
             for (var i=0;i<self.data[d].length;i++){
                 if (self.data[d][i].type=="PRIVATE"){
-                    if (self.data[d][i].tuition[0]!="none"&&self.data[d][i].tuition[0]!="n"){
+                    if (self.data[d][i].tuition[0]!="none"&&self.data[d][i].tuition[0]!="n" && self.data[d][i].tuition[0]!=0){
                         tuition=tuition+self.data[d][i].tuition[0];
                         tuition_counter=tuition_counter+1;
                     }
@@ -286,7 +286,9 @@ class Trends {
                 }
 
             }
-
+            if (d<2010){
+                other=0;
+            }
 
             return {
                 'date': parse_time(d),
@@ -394,7 +396,9 @@ class Trends {
 
             }
 
-
+            if (d<2010){
+                other=0;
+            }
             return {
                 'date': parse_time(d),
                 'asian': asian,
