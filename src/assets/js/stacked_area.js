@@ -89,27 +89,8 @@ class StackedArea {
     updateVis(argument){
         var vis = this;
 
-        // Update domain
-        // Get the maximum of the multi-dimensional array or in other words, get the highest peak of the uppermost layer
-        vis.y.domain([0, d3.max(vis.displayData, function(d) { return d3.max(d, function(e) { return e[1]; }); }) ]);
-
-        var dataCategories = vis.categories;
-        var selection= "#" + vis.parent+'_selection';
-        
-        // Draw the layers
-        var categories = vis.svg.selectAll(".area")
-            .data(vis.displayData);
-
-        categories.enter().append("path")
-            .attr("class", "area")
-            .merge(categories)
-            .style("fill", function(d,i) {
-                return vis.colorScale(dataCategories[i]);
-            })
-            .attr("d", function(d) {
-                return vis.area(d);
-            })
-            .on("mouseover", function(d,i){
+        var tip = d3.tip().attr('class', 'd3-tip')
+            .html(function (d,i) {
                 var selection_text=dataCategories[i];
                 if (dataCategories[i]=="graduate_enroll"){
                     selection_text="Graduate Student Enrollment";
@@ -168,15 +149,102 @@ class StackedArea {
                 else if(dataCategories[i]=="private_tuition"){
                     selection_text="Average Private School Tuition"
                 }
+                console.log(d)
+                var tooltip_data = {
+                    "name": selection_text,
+                };
+                return vis.tooltip_render(tooltip_data);
+            });
 
+        vis.svg.call(tip);
 
-                $( selection ).html("Selection: "+selection_text);
-                return;
+        // Update domain
+        // Get the maximum of the multi-dimensional array or in other words, get the highest peak of the uppermost layer
+        vis.y.domain([0, d3.max(vis.displayData, function(d) { return d3.max(d, function(e) { return e[1]; }); }) ]);
+
+        var dataCategories = vis.categories;
+        var selection= "#" + vis.parent+'_selection';
+        
+        // Draw the layers
+        var categories = vis.svg.selectAll(".area")
+            .data(vis.displayData);
+
+        categories.enter().append("path")
+            .attr("class", "area")
+            .merge(categories)
+            .style("fill", function(d,i) {
+                return vis.colorScale(dataCategories[i]);
+            })
+            .attr("d", function(d) {
+                return vis.area(d);
+            })
+            .on("mouseover", function(d,i){
+                // var selection_text=dataCategories[i];
+                // if (dataCategories[i]=="graduate_enroll"){
+                //     selection_text="Graduate Student Enrollment";
+                // }
+                // else if(dataCategories[i]=="undergrad_enroll"){
+                //     selection_text="Undergraduate Student Enrollment";
+                // }
+                // else if(dataCategories[i]=="freshM"){
+                //     selection_text="Freshmen Males";
+                // }
+                // else if(dataCategories[i]=="freshF"){
+                //     selection_text="Freshmen Females";
+                // }
+                // else if(dataCategories[i]=="sophM"){
+                //     selection_text="Sophomore Males";
+                // }
+                // else if(dataCategories[i]=="sophF"){
+                //     selection_text="Sophomore Females";
+                // }
+                // else if(dataCategories[i]=="juM"){
+                //     selection_text="Junior Males";
+                // }
+                // else if(dataCategories[i]=="juF"){
+                //     selection_text="Junior Females";
+                // }
+                // else if(dataCategories[i]=="senM"){
+                //     selection_text="Senior Males";
+                // }
+                // else if(dataCategories[i]=="senF"){
+                //     selection_text="Senior Females";
+                // }
+                // else if(dataCategories[i]=="asian"){
+                //     selection_text="Asian Students";
+                // }
+                // else if(dataCategories[i]=="black"){
+                //     selection_text="Black Students";
+                // }
+                // else if(dataCategories[i]=="hispanic"){
+                //     selection_text="Hispanic Students";
+                // }
+                // else if(dataCategories[i]=="native_american"){
+                //     selection_text="Native American Students";
+                // }
+                // else if(dataCategories[i]=="other"){
+                //     selection_text="Other Students";
+                // }
+                // else if(dataCategories[i]=="white"){
+                //     selection_text="White Students";
+                // }
+                // else if(dataCategories[i]=="value"){
+                //     selection_text="Tuition"
+                // }
+                // else if(dataCategories[i]=="public_tuition"){
+                //     selection_text="Average Public School Tuition"
+                // }
+                // else if(dataCategories[i]=="private_tuition"){
+                //     selection_text="Average Private School Tuition"
+                // }
+                //
+                //
+                // $( selection ).html("Selection: "+selection_text);
+                tip.show(d,i);
             } )
-            .on("mouseout", function(){
-                $( selection ).html("Selection:");
-                return;
-            } );
+            .on("mouseout", function (d) {
+                tip.hide(d);
+            })
         categories.exit().remove();
 
 
@@ -210,6 +278,11 @@ class StackedArea {
 
     }
 
+    tooltip_render (tooltip_data) {
+        var vis = this;
+        var text = "<div> <p>" + tooltip_data.name +"</p></div>";
+        return text;
+    }
 
 
 

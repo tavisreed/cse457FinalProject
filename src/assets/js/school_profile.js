@@ -35,7 +35,7 @@ class Profile {
 
     // set html text
     document.querySelector('#profiles #name').innerHTML = name;
-    document.querySelector('#profiles #description').innerHTML = description;
+    //document.querySelector('#profiles #description').innerHTML = description;
 
     // parse data for line charts
     let parse_time = d3.timeParse("%Y");
