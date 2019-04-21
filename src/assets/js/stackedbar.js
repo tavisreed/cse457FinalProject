@@ -1,10 +1,11 @@
 // Source: Assignment 2
 
 class StackedBar {
-  constructor(_parent, _data, _catagories) {
+  constructor(_parent, _data, _catagories, _num_categories) {
     this.parent = _parent;
     this.data = _data;
     this.catagories=_catagories;
+    this.num_cats=_num_categories;
     this.init();
   }
 
@@ -25,7 +26,7 @@ class StackedBar {
       }
       bar_data.push(temp);
     }
-    bar_data.sort(function(a,b){return a.value-b.value})
+    //bar_data.sort(function(a,b){return a.value-b.value})
     var svg = d3.select('#' + self.parent).html('')
       .attr("width", self.width + self.margin.left + self.margin.right)
       .attr("height", self.height + self.margin.top + self.margin.bottom);
@@ -47,8 +48,20 @@ class StackedBar {
 
     // colors need to be updated
     var color_scale = d3.scaleOrdinal()
-      .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"])
       .domain([0,self.catagories.length]);
+    if(self.num_cats==2){
+      color_scale = d3.scaleOrdinal(["#FCAA67","#B0413E"]);
+    }
+    else if(self.num_cats==6){
+      color_scale = d3.scaleOrdinal(["#C0CAAD","#3E1929","#654C4F","#B26E63","#CEC075","#6699CC"]);
+
+    }
+    else if(self.num_cats==8){
+      color_scale = d3.scaleOrdinal(["#8A4F7D","#887880","#88A096","#BBAB8B","#EF8275","#141204","#DBB3B1","#CBE896"]);
+    }
+    else{
+      color_scale = d3.scaleOrdinal(["#EA62FD","#FD64E9","#FD66C5","#FD68A2","#FD6A80","#FE7A6C","#FE9F6E","#FEC370","#FEE572","#F6FF75"]);
+    }
 
 
     //Delete old rectangles
@@ -56,34 +69,59 @@ class StackedBar {
           .remove();
 
     // create the rectangles for the stacked bar
+    var barX = [0]
+    for(var i = 0; i<bar_data.length; ++i){
+      barX.push(barX[i]+(bar_data[i].value/100)*self.width);
+    }
+
+    var tip = d3.tip().attr('class', 'd3-tip')
+        .html(function (d) {
+            var tooltip_data = {
+                "name": d.name,
+                "percent": d.value
+            };
+            return self.tooltip_render(tooltip_data);
+    });
+
+    svg.call(tip);
+
     g.selectAll("rect")
       .data(bar_data)
       .enter()
       .append("rect")
       .attr("fill", function(d,i){
+        console.log(d.name);
         return color_scale(i);
       })
       .attr("height", rect_height)
       .attr("width", function(d,i){
-        return x_scale(d.value);
+        
+        return (d.value/100)*(self.width);
       })
       .attr("y", 10)
       .attr("x", function(d,i){
-        if (i == 0){
-          return 0;
-        }
-        else{
-          return x_scale(bar_data[i-1].value);
-        }
+        return barX[i];
       })
         .on("mouseover", function(d,i){
-          var selection_text=d.name;
-          var selection_id="#"+self.parent+"_selection";
-          console.log(selection_id)
-          $( selection_id ).html("Selection: "+selection_text);
+          //var selection_text=d.name;
+          tip.show(d);
+          //var selection_id="#"+self.parent+"_selection";
+          
+          //$( selection_id ).html("Selection: "+selection_text);
+        })
+        .on("mouseout", function(d,i){
+          //var selection_id="#"+self.parent+"_selection";
+          tip.hide(d);
+          //$( selection_id ).html("Selection: ");
         });
 
     // create text above the bars
-
+    
+  
   }
+  tooltip_render (tooltip_data) {
+    var vis = this;
+    var text = "<div> <p>" + tooltip_data.name + "</p><p> " + tooltip_data.percent + "%</p></div>";
+    return text;
+}
 }

@@ -195,7 +195,7 @@ function compSearch(number) {
     }
 
     var per_grad=((grad/total)*100).toFixed(2);
-    var per_ungrad=((ungrad/total)*100).toFixed(2);
+    var per_ungrad=100-parseInt(per_grad);
 
     // if(total==0 || typeof total!="number"){
     //     per_grad="Data Not Avaliable";
@@ -205,7 +205,7 @@ function compSearch(number) {
 
     var parent="svg_school_level_"+number;
     if(total && typeof total=="number"){
-        let stackedBar_gen = new StackedBar(parent, [parseInt(per_grad),parseInt(per_ungrad)], ['Graduate Students','Undergraduate Students']);
+        let stackedBar_gen = new StackedBar(parent, [parseInt(per_grad),parseInt(per_ungrad)], ['Graduate Students','Undergraduate Students'],2);
     }
 
 
@@ -229,14 +229,15 @@ function compSearch(number) {
         female=female+self.data[2018][indexes[0]].senior_enroll_table.gender.female;
     }
     var per_male=(male/(male+female)*100).toFixed(2);
-    var per_female=(female/(male+female)*100).toFixed(2);
+    //var per_female=(female/(male+female)*100).toFixed(2);
+    var per_female = 100-parseInt(per_male);
     // if(male+female==0 || typeof (male+female)!="number"){
     //     per_male="Data Not Avaliable";
     //     per_female="Data Not Avaliable";
     // }
     var parent="svg_school_gen_"+number;
     if(male+female!=0 && typeof (male+female)=="number"){
-        let stackedBar_gen = new StackedBar(parent, [parseInt(per_male),parseInt(per_female)], ['Male','Female']);
+        let stackedBar_gen = new StackedBar(parent, [parseInt(per_male),parseInt(per_female)], ['Male','Female'],2);
     }
 
 
@@ -286,7 +287,7 @@ function compSearch(number) {
     var per_hispanic=(hispanic/(total_eth)*100).toFixed(2);
     var per_native=(native_american/(total_eth)*100).toFixed(2);
     var per_other=(other/(total_eth)*100).toFixed(2);
-    var per_white=(white/(total_eth)*100).toFixed(2);
+    var per_white=100-(parseInt(per_asian)+parseInt(per_black)+parseInt(per_hispanic)+parseInt(per_native)+parseInt(per_other));
 
         if(total_eth==0 || typeof total_eth!="number"){
         per_asian="Data Not Avaliable";
@@ -299,7 +300,7 @@ function compSearch(number) {
 
     var parent="svg_school_eth_"+number;
     if(total_eth!=0 && typeof total_eth==="number"){
-        let stackedBar_eth = new StackedBar(parent, [parseInt(per_asian),parseInt(per_black),parseInt(per_hispanic),parseInt(per_native),parseInt(per_other),parseInt(per_white)], ['Asian','Black','Hispanic','Native American','Other', 'White']);
+        let stackedBar_eth = new StackedBar(parent, [parseInt(per_asian),parseInt(per_black),parseInt(per_hispanic),parseInt(per_native),parseInt(per_other),parseInt(per_white)], ['Asian','Black','Hispanic','Native American','Other', 'White'],6);
     }
 }
 

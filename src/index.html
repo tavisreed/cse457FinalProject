@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
+
+    
+    
     <!-- Load Google Font -->
     <link href='https://fonts.googleapis.com/css?family=Roboto:100,400,300,400italic,700' rel='stylesheet' type='text/css'>
 
@@ -9,6 +12,7 @@
     <link rel="stylesheet" href="assets/css/bootswatch.min.css">
     <link rel="stylesheet" href="assets/css/jquery-ui.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+  
     <title>Education Exploration</title>
   </head>
   <body>
@@ -120,8 +124,8 @@
           <!-- school page content -->
           <div id='content' style='display: none'>
             <h1 id='name'></h1>
-            <h4>Description</h4>
-            <p id='description'></p>
+          <!--  <h4>Description</h4>
+            <p id='description'></p>-->
 
             <div id='brush'>
               <h2>Select Year Range</h2>
@@ -131,25 +135,21 @@
             <div id='charts'>
               <div>
                 <h2>Tuition over time</h2>
-                <p id='tuition_line_selection'>Selection: Tuition  </p>
                 <svg id='tuition_line'></svg>
               </div>
 
               <div>
                 <h2>Grad vs. Undergrad Enrollment</h2>
-                <p id='enroll_area_selection'>Selection:  </p>
                 <svg id='enroll_area'></svg>
               </div>
 
               <div>
                 <h2>Enrollment by Gender</h2>
-                <p id='Gender_chart_selection'>Selection:  </p>
                 <svg id='Gender_chart'></svg>
               </div>
 
               <div>
                 <h2>Enrollment by Ethnicity</h2>
-                <p id='Ethnicity_chart_selection'>Selection:  </p>
                 <svg id='Ethnicity_chart'></svg>
               </div>
             </div>
@@ -169,44 +169,37 @@
 
             <div id="trends_tuition">
               <h2>Private vs Public Tuition</h2>
-              <p id='trends_tuition_line_selection'> <span style="color: red; ">Average Private School Tuition</span> , <span style="color: blue; ">Average Public School Tuition</span></p>
               <svg id='trends_tuition_line'></svg>
             </div>
 
             <div id='trends_charts'>
               <div>
                 <h2>Private Schools Grad vs. Undergrad Enrollment</h2>
-                <p id='private_enroll_selection'>Selection:  </p>
                 <svg id='private_enroll'></svg>
               </div>
 
               <div>
                 <h2>Public Schools Grad vs. Undergrad Enrollment</h2>
-                <p id='public_enroll_selection'>Selection:  </p>
                 <svg id='public_enroll'></svg>
               </div>
 
               <div>
                 <h2>Private Schools Enrollment by Gender</h2>
-                <p id='private_gender_selection'>Selection:  </p>
                 <svg id='private_gender'></svg>
               </div>
 
               <div>
                 <h2>Public Schools Enrollment by Gender</h2>
-                <p id='public_gender_selection'>Selection:  </p>
                 <svg id='public_gender'></svg>
               </div>
 
               <div>
                 <h2>Private Schools Enrollment by Ethnicity</h2>
-                <p id='private_ethnicity_selection'>Selection:  </p>
                 <svg id='private_ethnicity'></svg>
               </div>
 
               <div>
                 <h2>Public Schools Enrollment by Ethnicity</h2>
-                <p id='public_ethnicity_selection'>Selection:  </p>
                 <svg id='public_ethnicity'></svg>
               </div>
             </div>
@@ -232,13 +225,19 @@
             <p id="type_1">Type of Institution:</p>
             <p id="tuition_1">Tuition:</p>
               <h3>Enrollment by Level</h3>
-              <p id="svg_school_level_1_selection">Selection: </p>
+              <p id="svg_school_level_1_selection">
+                <!-- Selection:  -->
+              </p>
               <svg id='svg_school_level_1'></svg>
               <h3>Enrollment by Gender</h3>
-              <p id="svg_school_gen_1_selection">Selection: </p>
+              <p id="svg_school_gen_1_selection">
+                <!-- Selection:  -->
+              </p>
               <svg id='svg_school_gen_1'></svg>
               <h3>Enrollment by Ethnicity</h3>
-              <p id="svg_school_eth_1_selection">Selection: </p>
+              <p id="svg_school_eth_1_selection">
+                <!-- Selection:  -->
+              </p>
               <svg id='svg_school_eth_1'></svg>
 
           </div>
@@ -258,13 +257,19 @@
             <p id="type_2">Type of Institution:</p>
             <p id="tuition_2">Tuition:</p>
               <h3>Enrollment by Level</h3>
-              <p id="svg_school_level_2_selection">Selection: </p>
+              <p id="svg_school_level_2_selection">
+                <!-- Selection:  -->
+              </p>
               <svg id='svg_school_level_2'></svg>
               <h3>Enrollment by Gender</h3>
-              <p id="svg_school_gen_2_selection">Selection: </p>
+              <p id="svg_school_gen_2_selection">
+                <!-- Selection:  -->
+              </p>
               <svg id='svg_school_gen_2'></svg>
               <h3>Enrollment by Ethnicity</h3>
-              <p id="svg_school_eth_2_selection">Selection: </p>
+              <p id="svg_school_eth_2_selection">
+                <!-- Selection:  -->
+              </p>
               <svg id='svg_school_eth_2'></svg>
           </div>
 
@@ -321,6 +326,7 @@
 
     <!-- libraries -->
     <script src='assets/js/lib/d3.v4.min.js'></script>
+    <script src='assets/js/lib/d3-tip.js'></script>
     <script src='assets/js/lib/queue.min.js'></script>
     <script src='assets/js/lib/jquery.min.js'></script>
     <script src='assets/js/lib/jquery-ui.min.js'></script>

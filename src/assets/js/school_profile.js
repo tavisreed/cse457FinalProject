@@ -35,7 +35,7 @@ class Profile {
 
     // set html text
     document.querySelector('#profiles #name').innerHTML = name;
-    document.querySelector('#profiles #description').innerHTML = description;
+    //document.querySelector('#profiles #description').innerHTML = description;
 
     // parse data for line charts
     let parse_time = d3.timeParse("%Y");
@@ -43,18 +43,60 @@ class Profile {
 
     // get tuition data over years
     let tuition_data = years.map(function(d) {
+      var tuition=self.data[d][school_idx].tuition[0];
+      //Get an average for missing values
+      if (typeof tuition!="number"){
+        var pre=0;
+        var nxt=0;
+        if (d>1999){
+          pre=self.data[d-1][school_idx].tuition[0];
+          nxt=self.data[d-1][school_idx].tuition[0];
+        }
+        if(d<2018){
+          nxt=self.data[d+1][school_idx].tuition[0];
+        }
+        tuition=(pre+nxt)/2;
+      }
       return {
         'date': parse_time(d),
-        'value': self.data[d][school_idx].tuition[0]
+        'value':tuition
       }
     });
 
     // get enrollment data for grad and under grad over the years;
     let enroll_data = years.map(function(d) {
+      var graduate_enroll=self.data[d][school_idx].graduate_enroll;
+      var undergrad_enroll=self.data[d][school_idx].undergrad_enroll;
+      //Get an average for missing values
+      if (typeof graduate_enroll!="number"){
+        var pre=0;
+        var nxt=0;
+        if (d>1999){
+          pre=self.data[d-1][school_idx].graduate_enroll;
+          nxt=self.data[d-1][school_idx].graduate_enroll;
+        }
+        if(d<2018){
+          nxt=self.data[d+1][school_idx].graduate_enroll;
+        }
+        graduate_enroll=(pre+nxt)/2;
+      }
+      if (typeof undergrad_enroll!="number"){
+        var pre=0;
+        var nxt=0;
+        if (d>1999){
+          pre=self.data[d-1][school_idx].undergrad_enroll;
+          nxt=self.data[d-1][school_idx].undergrad_enroll;
+        }
+        if(d<2018){
+          nxt=self.data[d+1][school_idx].undergrad_enroll;
+        }
+        undergrad_enroll=(pre+nxt)/2;
+      }
+
       return {
         'date': parse_time(d),
-        'graduate_enroll': self.data[d][school_idx].graduate_enroll,
-        'undergrad_enroll': self.data[d][school_idx].undergrad_enroll
+        'graduate_enroll': graduate_enroll,
+        'undergrad_enroll': undergrad_enroll
       }
     });
 
@@ -139,7 +181,9 @@ class Profile {
         other=other+self.data[d][school_idx].senior_enroll_table.ethnicity.other;
         white=white+self.data[d][school_idx].senior_enroll_table.ethnicity.white;
       }
-
+      if (d<2010){
+        other=0;
+      }
       return {
         'date': parse_time(d),
         'asian': asian,
@@ -166,13 +210,12 @@ class Profile {
     let tuition_chart = new Line('tuition_line', tuition_data, tuition_data, 1);
 
     // create enrollment stacked area chart
-    let enrollment_chart = new StackedArea('enroll_area', enroll_data, ['graduate_enroll', 'undergrad_enroll']);
+    let enrollment_chart = new StackedArea('enroll_area', enroll_data, ['graduate_enroll', 'undergrad_enroll'],2);
 
     //Create enrollment by gender area chart
-    let gender_chart = new StackedArea('Gender_chart', gender_data, ['freshM', 'freshF','sophM','sophF','juM','juF','senM','senF']);
-
+    let gender_chart = new StackedArea('Gender_chart', gender_data, ['freshM', 'freshF','sophM','sophF','juM','juF','senM','senF'],8);
     //Create enrollment by ethnicity area chart
-    let ethnicity_chart = new StackedArea('Ethnicity_chart', ethnicity_data, ['asian', 'black','hispanic','native_american','other','white']);
+    let ethnicity_chart = new StackedArea('Ethnicity_chart', ethnicity_data, ['asian', 'black','hispanic','native_american','other','white'],6);
 
     // bind brush event to event handler
     $(event_handler).bind("selectionChanged", function(event, selectionStart, selectionEnd) {
