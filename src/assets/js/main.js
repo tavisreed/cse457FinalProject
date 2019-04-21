@@ -52,11 +52,6 @@ function start(data) {
   invis_start("svg_school_gen_2");
   invis_start("svg_school_eth_2");
 
-  // append tooltip div to DOM
-  var div = d3.select("body").append("div")
-    .attr("class", "tooltip")
-    .style("display", "none");
-
   // set school names
   let schools = data['2018'].map(function(d) { return d.name; });
   this.schools = schools;
