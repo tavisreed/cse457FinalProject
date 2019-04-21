@@ -78,7 +78,9 @@ function start(data) {
   document.querySelector('#search_btn').addEventListener('click', function() {
     if (this.innerHTML == 'Clear') {
       document.querySelector('#search').value = '';
-      cluster.g.selectAll('circle').style('stroke', 'none');
+      cluster.g.selectAll('circle').data().forEach(function(d) {
+        d.selected = false;
+      });
       this.innerHTML = 'Search';
       return;
     }
@@ -91,9 +93,8 @@ function start(data) {
       return d.toLowerCase().includes(search_text);
     }).forEach(function(d) {
       let school = d.replace(/[ &.\-,']/g,'');
-      d3.select('#'+school)
-          .style('stroke', 'black')
-          .style('stroke-width', 2);
+      let node = d3.select('#'+school);
+      node.datum().selected = true;
     });
 
     // set button to clear search

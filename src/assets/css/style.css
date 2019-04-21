@@ -10,6 +10,8 @@ body {
   dominant-baseline: middle;
   text-anchor: middle;
   fill: grey;
+  font-size: 14px;
+  fill-opacity: 0;
 }
 
 #search_bar {
