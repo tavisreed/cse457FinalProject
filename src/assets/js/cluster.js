@@ -268,6 +268,8 @@ class Cluster {
         .merge(self.circles)
           .on('click', null)
           .attr('id', null)
+          .on('mouseover', null)
+          .on('mouseout', null);
     }
 
     self.circles.exit().remove();
