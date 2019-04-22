@@ -55,6 +55,19 @@ class Profile {
         if(d<2018){
           nxt=self.data[d+1][school_idx].tuition[0];
         }
+          if(typeof pre!="number"){
+              pre=0;
+              if (d>2000){
+                  pre=self.data[d-2][school_idx].tuition[0];
+              }
+          }
+          if(typeof nxt!="number"){
+              nxt=0;
+              if (d<2017){
+                  nxt=self.data[d+2][school_idx].tuition[0];
+              }
+          }
+
         tuition=(pre+nxt)/2;
       }
       return {
@@ -62,6 +75,7 @@ class Profile {
         'value':tuition
       }
     });
+    console.log(tuition_data)
 
     // get enrollment data for grad and under grad over the years;
     let enroll_data = years.map(function(d) {
@@ -778,7 +792,6 @@ class Profile {
         'white': white
       }
     });
-    console.log(ethnicity_data)
     // parse year data
     let dates = years.map(function(d) {
       return parse_time(d);

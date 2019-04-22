@@ -109,14 +109,7 @@ function start(data) {
 
   //Search Button for School Profile Page
     document.querySelector('#search_profiles_btn').addEventListener('click', function() {
-        if (this.innerHTML == 'Clear') {
-            document.querySelector('#search_profiles').value = '';
-            this.innerHTML = 'Search';
-            return;
-        }
-
-
-        // get search bar text
+         // get search bar text
         let search_text = document.querySelector('#search_profiles').value.toLowerCase();
 
         schools.forEach(function(d,i){
@@ -125,8 +118,7 @@ function start(data) {
             }
         });
 
-        // set button to clear search
-        this.innerHTML = 'Clear';
+
     });
 
   // cluster listeners
