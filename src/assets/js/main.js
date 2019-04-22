@@ -120,7 +120,6 @@ function start(data) {
         let search_text = document.querySelector('#search_profiles').value.toLowerCase();
 
         schools.forEach(function(d,i){
-            console.log(d,search_text)
             if (d.toLowerCase()==search_text){
                 $('#selection').val(i).trigger('change');
             }
