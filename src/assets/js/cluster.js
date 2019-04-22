@@ -29,12 +29,12 @@ class Cluster {
     self.color = d3.scaleSequential(d3.interpolateRainbow)
         .domain(d3.range(12));
 
-    self.radiusScale = d3.scalePow()
+    self.radius_scale = d3.scalePow()
       .exponent(0.5)
-      .range([0,20])
+      .range([0,25])
       .domain([0,120000]);
 
-    self.showClusterLegend();
+    //self.showClusterLegend();
 
     // initial force layout setup
     self.simulation = d3.forceSimulation()
@@ -42,13 +42,10 @@ class Cluster {
 
     self.change_mode('schools');
 
-    // // ramp up collision strength to provide smooth transition
-    // let transitionTime = 3000;
-    // let t = d3.timer(function (elapsed) {
-    //   let dt = elapsed / transitionTime;
-    //   self.simulation.force('collide').strength(Math.pow(dt, 2) * 0.7);
-    //   if (dt >= 1.0) t.stop();
-    // });
+    // global transition
+    self.t = d3.transition()
+      .duration(500)
+      .ease(d3.easeLinear);
 
     function tick() {
       self.circles
@@ -56,6 +53,9 @@ class Cluster {
         .attr('cy', function(d) { return d.y; })
         .attr('r', function(d) { return d.r; })
         .style('fill', function(d) { return self.color(d.color); })
+        .style('fill-opacity', 0.8)
+        .style('stroke', function(d) { return d.selected ? 'black' : self.color(d.color); })
+        .style('stroke-width', function(d) { return d.selected ? 3 : 2 });
     }
   }
 
@@ -102,13 +102,13 @@ class Cluster {
     var gHeight = self.height/3;
     gDiv.attr("transform", "translate("+self.width/1.1+","+0+")");
     gDiv.append("g").attr("transform", "translate(75," + (gHeight*0.15)+")").append("text").text("Total Enrollment")
-    gDiv.append("circle").attr("r", self.radiusScale(120000)).style("fill","grey").attr("cy",gHeight*0.4).attr("cx", 100);
+    gDiv.append("circle").attr("r", self.radius_scale(120000)).style("fill","grey").attr("cy",gHeight*0.4).attr("cx", 100);
     gDiv.append("g").attr("transform", "translate(125," + (gHeight*0.4)+")").append("text").text("120000")
-    gDiv.append("circle").attr("r", self.radiusScale(67500)).style("fill","grey").attr("cy",(gHeight*0.4)+40).attr("cx", 100);
+    gDiv.append("circle").attr("r", self.radius_scale(67500)).style("fill","grey").attr("cy",(gHeight*0.4)+40).attr("cx", 100);
     gDiv.append("g").attr("transform", "translate(125," + ((gHeight*0.4)+40)+")").append("text").text("67500")
-    gDiv.append("circle").attr("r", self.radiusScale(30000)).style("fill","grey").attr("cy",(gHeight*0.4)+70).attr("cx", 100);
+    gDiv.append("circle").attr("r", self.radius_scale(30000)).style("fill","grey").attr("cy",(gHeight*0.4)+70).attr("cx", 100);
     gDiv.append("g").attr("transform", "translate(125," + ((gHeight*0.4)+70)+")").append("text").text("30000")
-    gDiv.append("circle").attr("r", self.radiusScale(7500)).style("fill","grey").attr("cy",(gHeight*0.4)+90).attr("cx", 100);
+    gDiv.append("circle").attr("r", self.radius_scale(7500)).style("fill","grey").attr("cy",(gHeight*0.4)+90).attr("cx", 100);
     gDiv.append("g").attr("transform", "translate(125," + ((gHeight*0.4)+90)+")").append("text").text("7500")
   }
 
@@ -129,7 +129,7 @@ class Cluster {
     let self = this;
     let clusters = [];
     let alpha = 0.15;
-    let alphaTarget = 0;
+    let alphaTarget = 0.001;
     let force_group = 'cluster';
 
     // student mode
@@ -162,6 +162,7 @@ class Cluster {
     self.compute_clusters(clusters[0], clusters[1]);
     self.set_nodes(group);
     self.force_setup(force_group, alpha, alphaTarget);
+    self.label_generator(force_group);
 
     self.simulation.restart();
   }
@@ -178,17 +179,18 @@ class Cluster {
     if (mode == 'schools') {
       // show search bar
       document.querySelector('#search_bar').style.display = 'block';
-      document.querySelector('#legend').style.display = 'block';
+      //document.querySelector('#legend').style.display = 'block';
 
       // create schools nodes
       self.nodes = self.data['2018'].map(function(d,i) {
         let node = {
               data: d,
               cluster: [0, 0],
-              r: self.radiusScale(d.graduate_enroll+d.undergrad_enroll),
+              r: self.radius_scale(d.graduate_enroll+d.undergrad_enroll),
               color: 0.75,
               x: window.innerWidth*Math.random(),
-              y: window.innerHeight*Math.random()
+              y: window.innerHeight*Math.random(),
+              selected: false
             };
         return node;
       });
@@ -198,7 +200,7 @@ class Cluster {
     } else if (mode == 'students') {
       // hide search bar
       document.querySelector('#search_bar').style.display = 'none';
-      document.querySelector('#legend').style.display = 'none';
+      //document.querySelector('#legend').style.display = 'none';
 
       let node_data = [];
       let i = 0;
@@ -219,10 +221,11 @@ class Cluster {
         let node = {
               data: d.cluster,
               cluster: d.cluster,
-              r: 4,
+              r: 5,
               color: (d.cluster[0]+1)*(d.cluster[1]+1)/12,
               x: self.nodes[i%self.nodes.length].x,
-              y: self.nodes[i%self.nodes.length].y
+              y: self.nodes[i%self.nodes.length].y,
+              selected: false
             };
         return node;
       });
@@ -249,9 +252,9 @@ class Cluster {
     self.circles = self.g.selectAll('circle')
       .data(self.nodes);
 
-
+    let merge;
     if (mode == 'schools') {
-      self.circles.enter().append('circle')
+      merge = self.circles.enter().append('circle')
         .merge(self.circles)
           .on('click', function(d) {
              $('#selection').val(d.data.index).trigger('change');
@@ -269,21 +272,24 @@ class Cluster {
           
           //.append('svg:title').text(function(d) { return d.data.name; });
     } else {
-      self.circles.enter().append('circle')
+      merge = self.circles.enter().append('circle')
         .merge(self.circles)
           .on('click', null)
           .attr('id', null)
     }
 
     self.circles.exit().remove();
-
     self.circles = self.g.selectAll('circle');
+    self.circles.call(d3.drag()
+      .on("start", self.dragstarted())
+      .on("drag", self.dragged)
+      .on("end", self.dragended()));
   }
 
   compute_clusters(rows, cols) {
     let self = this;
 
-    let xpad = 100, ypad = 10; 
+    let xpad = self.width/8, ypad = self.height/8; 
     self.clusters = [];
     for (let i=0; i<rows; i++) {
       let row = [];
@@ -334,7 +340,7 @@ class Cluster {
 
     function cluster(alpha) {
       for (let i = 0, n = self.nodes.length; i < n; ++i) {
-        let k = alpha * 1;
+        let k = alpha * 0.7;
         let node = self.nodes[i];
         let cluster = self.clusters[node.cluster[0]][node.cluster[1]];
         node.vx -= (node.x - cluster.x) * k;
@@ -346,15 +352,17 @@ class Cluster {
       self.simulation
         .alpha(alpha).alphaTarget(alphaTarget).alphaMin(0)
         .force('cluster', cluster)
+        //.force('x', d3.forceX().x(function(d) { return self.clusters[d.cluster[0]][d.cluster[1]].x; }).strength(0.55))
+        //.force('y', d3.forceY().y(function(d) { return self.clusters[d.cluster[0]][d.cluster[1]].y; }).strength(0.55))
         .force('charge', d3.forceManyBody()
-          .strength(-30))
+          .strength(0))
         .force('collide', d3.forceCollide(function(d) { return d.r + self.padding; })
           .strength(0.6))
         .force('x', null)
         .force('y', null)
-        .nodes(self.nodes);
+        .nodes(self.nodes)
+      //self.smooth_motion(-30);
     } else if (group == 'beeswarm') {
-      self.circles.style('stroke', 'black').style('stroke-width', '1px')
       self.simulation
         .alpha(alpha).alphaTarget(alphaTarget).alphaMin(0)
         .force('cluster', null)
@@ -378,14 +386,15 @@ class Cluster {
     if (group == 'school') {
       self.nodes.forEach(function(d) {
         d.cluster = [0,0];
-        d.color = 0.2;
+        d.color = 11/12;
       });
+      self.label = 'All Schools'
     } else if (group == 'school_type') {
       self.nodes.forEach(function(d) {
         d.cluster = [0, d.data.type == 'PUBLIC' ? 0 : 1];
-        d.color = d.data.type == 'PUBLIC' ? 0.2 : 0.6;
+        d.color = d.data.type == 'PUBLIC' ? 0.2 : 0.7;
       });
-      self.labels = ['public', 'private'];
+      self.labels = ['Public', 'Private'];
     } else if (group == 'tuition') {
       
     }
@@ -402,11 +411,13 @@ class Cluster {
         d.cluster = [d.data[0],0];
         d.color = d.data[0]/2;
       });
+      self.labels = ['male','female'];
     } else if (group == 'ethnicity') {
       self.nodes.forEach(function(d) {
         d.cluster = [0,d.data[1]];
         d.color = d.data[1]/6;
       });
+      self.labels = ['black','asian','hispanic','native-american','white','other'];
     }
   }
 
@@ -419,6 +430,10 @@ class Cluster {
   label_generator(group) {
     let self = this;
 
+    // remove previous labels
+    self.g.selectAll('.label').remove();
+    self.g.selectAll('.x-axis').remove();
+
     if (group == 'beeswarm') {
       self.g.append("g")
         .attr("class", "x-axis")
@@ -429,16 +444,24 @@ class Cluster {
         self.g.append('text')
           .attr('x', self.clusters[0][0].x - self.width/4)
           .attr('y', self.clusters[0][0].y)
-          .text('Hello - ')
+          .attr('class', 'label')
+          .text(self.label)
       } else if (self.clusters.length == 1) {
         self.clusters[0].forEach(function(d,i) {
           self.g.append('text')
-          .attr('x', d.x)
-          .attr('y', d.y - self.width/4)
-          .text(self.labels[i])
+            .attr('x', d.x)
+            .attr('y', 0)
+            .attr('class', 'label')
+            .text(self.labels[i])
         });
       } else if (self.clusters[0].length == 1) {
-
+        self.clusters.forEach(function(d,i) {
+          self.g.append('text')
+            .attr('x', self.width/4)
+            .attr('y', d[0].y)
+            .attr('class', 'label')
+            .text(self.labels[i])
+        });
       } else {
         self.clusters.forEach(function(d,i) {
           // create top col labels
@@ -446,8 +469,7 @@ class Cluster {
             d.forEach(function(e,i) {
               self.g.append('text')
                 .attr('x', e.x)
-                .attr('y', -100)
-                .attr('font-size', '14px')
+                .attr('y', -120)
                 .attr('class', 'label')
                 .text(self.labels[0][i])
             });
@@ -455,13 +477,55 @@ class Cluster {
 
           // create row labels
           self.g.append('text')
-          .attr('x', -20)
+          .attr('x', 0)
           .attr('y', d[0].y)
-          .attr('font-size', '14px')
           .attr('class', 'label')
-          .text(self.labels[1][i] + ' -')
+          .text(self.labels[1][i])
         })
       }
+      // fade in new labels
+      self.g.selectAll('.label').transition(self.t).style('fill-opacity',1);
+    }
+  }
+
+  smooth_motion(threshold) {
+    let self = this;
+    let time = 1000;
+    //self.simulation.alpha(0.1);
+    let t = d3.timer(function(elapsed) {
+      let dt = elapsed / time;
+      //console.log((1-dt)**2);
+      //self.simulation.force('charge').strength(threshold*(1-dt)**2);
+      self.simulation.force('collide').strength(Math.pow(dt, 2) * 0.5 + 0.2);
+      if (dt >= 1.0) {
+        //self.simulation.alphaTarget(0);
+        t.stop();
+      }
+    });
+  }
+
+  dragstarted() {
+    let self = this;
+    return function(d) {
+      if (!d3.event.active) {
+        self.simulation.alphaTarget(0.3).restart();
+      }
+      d.fx = d.x;
+      d.fy = d.y;
+    }
+  }
+
+  dragged(d) {
+    d.fx = d3.event.x;
+    d.fy = d3.event.y;
+  }
+
+  dragended() {
+    let self = this;
+    return function(d) {
+      if (!d3.event.active) self.simulation.alphaTarget(0);
+      d.fx = null;
+      d.fy = null;
     }
   }
 }
