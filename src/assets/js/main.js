@@ -63,6 +63,11 @@ function start(data) {
           maxShowItems: 10
       });
 
+      $("#search_profiles").autocomplete({
+          source: schools,
+          maxShowItems: 10
+      });
+
       $("#school_1").autocomplete({
           source: schools,
           maxShowItems: 10
@@ -83,6 +88,7 @@ function start(data) {
       return;
     }
 
+
     // get search bar text
     let search_text = document.querySelector('#search').value.toLowerCase();
 
@@ -99,6 +105,29 @@ function start(data) {
     // set button to clear search
     this.innerHTML = 'Clear';
   });
+
+  //Search Button for School Profile Page
+    document.querySelector('#search_profiles_btn').addEventListener('click', function() {
+        if (this.innerHTML == 'Clear') {
+            document.querySelector('#search_profiles').value = '';
+            this.innerHTML = 'Search';
+            return;
+        }
+
+
+        // get search bar text
+        let search_text = document.querySelector('#search_profiles').value.toLowerCase();
+
+        schools.forEach(function(d,i){
+            console.log(d,search_text)
+            if (d.toLowerCase()==search_text){
+                $('#selection').val(i).trigger('change');
+            }
+        });
+
+        // set button to clear search
+        this.innerHTML = 'Clear';
+    });
 
   // cluster listeners
   let mode_options = {
