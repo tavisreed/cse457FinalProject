@@ -70,6 +70,10 @@ body {
   stroke: #fff;
 }
 
+.y-axis{
+  font-size: 8px
+}
+
 .axis path,
 .axis line {
   fill: none;
