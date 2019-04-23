@@ -34,7 +34,7 @@ class Cluster {
       .range([0,25])
       .domain([0,120000]);
 
-    //self.showClusterLegend();
+    self.showClusterLegend();
 
     // initial force layout setup
     self.simulation = d3.forceSimulation()
@@ -101,15 +101,15 @@ class Cluster {
     var gDiv =  self.svg.append("g").attr('id','legend');
     var gHeight = self.height/3;
     gDiv.attr("transform", "translate("+self.width/1.1+","+0+")");
-    gDiv.append("g").attr("transform", "translate(75," + (gHeight*0.15)+")").append("text").text("Total Enrollment")
-    gDiv.append("circle").attr("r", self.radius_scale(120000)).style("fill","grey").attr("cy",gHeight*0.4).attr("cx", 100);
-    gDiv.append("g").attr("transform", "translate(125," + (gHeight*0.4)+")").append("text").text("120000")
-    gDiv.append("circle").attr("r", self.radius_scale(67500)).style("fill","grey").attr("cy",(gHeight*0.4)+40).attr("cx", 100);
-    gDiv.append("g").attr("transform", "translate(125," + ((gHeight*0.4)+40)+")").append("text").text("67500")
-    gDiv.append("circle").attr("r", self.radius_scale(30000)).style("fill","grey").attr("cy",(gHeight*0.4)+70).attr("cx", 100);
-    gDiv.append("g").attr("transform", "translate(125," + ((gHeight*0.4)+70)+")").append("text").text("30000")
-    gDiv.append("circle").attr("r", self.radius_scale(7500)).style("fill","grey").attr("cy",(gHeight*0.4)+90).attr("cx", 100);
-    gDiv.append("g").attr("transform", "translate(125," + ((gHeight*0.4)+90)+")").append("text").text("7500")
+    gDiv.append("g").attr("transform", "translate(75," + (gHeight*0.15)+")").append("text").attr('class','legtitle').text("Total Enrollment")
+    gDiv.append("circle").attr("r", self.radius_scale(120000)).style("stroke","black").style('stroke-dasharray','2 1').style('fill','transparent').attr("cy",gHeight*0.4).attr("cx", 100);
+    gDiv.append("g").attr("transform", "translate(135," + (gHeight*0.4)+")").append("text").attr('class','legtext').text("120000")
+    gDiv.append("circle").attr("r", self.radius_scale(67500)).style("stroke","black").style('stroke-dasharray','2 1').style('fill','transparent').attr("cy",(gHeight*0.4)+25).attr("cx", 100);
+    gDiv.append("g").attr("transform", "translate(135," + ((gHeight*0.4)+25)+")").append("text").attr('class','legtext').text("67500")
+    gDiv.append("circle").attr("r", self.radius_scale(30000)).style("stroke","black").style('stroke-dasharray','2 1').style('fill','transparent').attr("cy",(gHeight*0.4)+48).attr("cx", 100);
+    gDiv.append("g").attr("transform", "translate(135," + ((gHeight*0.4)+48)+")").append("text").attr('class','legtext').text("30000")
+    gDiv.append("circle").attr("r", self.radius_scale(7500)).style("stroke","black").style('stroke-dasharray','2 1').style('fill','transparent').attr("cy",(gHeight*0.4)+60).attr("cx", 100);
+    gDiv.append("g").attr("transform", "translate(135," + ((gHeight*0.4)+62)+")").append("text").attr('class','legtext').text("7500")
   }
 
   /*
@@ -175,7 +175,7 @@ class Cluster {
     if (mode == 'schools') {
       // show search bar
       document.querySelector('#search_bar').style.display = 'block';
-      //document.querySelector('#legend').style.display = 'block';
+      document.querySelector('#legend').style.display = 'block';
 
       // create schools nodes
       self.nodes = self.data['2018'].map(function(d,i) {
@@ -196,7 +196,7 @@ class Cluster {
     } else if (mode == 'students') {
       // hide search bar
       document.querySelector('#search_bar').style.display = 'none';
-      //document.querySelector('#legend').style.display = 'none';
+      document.querySelector('#legend').style.display = 'none';
 
       let node_data = [];
       let i = 0;

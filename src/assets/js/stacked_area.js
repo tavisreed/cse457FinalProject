@@ -74,7 +74,7 @@ class StackedArea {
             .attr("class", "x-axis axis")
             .attr("transform", "translate(0," + vis.height + ")");
             
-        vis.svg.append('g').attr('transform',"translate("+(vis.width/2) +","+ (vis.height+25) +")").append('text').text("Year");
+        vis.svg.append('g').attr('transform',"translate("+(vis.width/2) +","+ (vis.height+30) +")").append('text').style('font-size',12).text("Year");
 
         vis.svg.append("defs").append("clipPath")
             .attr("id", "clip")
@@ -85,7 +85,7 @@ class StackedArea {
         vis.svg.append("g")
             .attr("class", "y-axis axis");
 
-        vis.svg.append('g').attr('transform',"translate(-47 ,"+ (vis.height/1.25) +") rotate(270)").append('text').text("Enrollment");
+        vis.svg.append('g').attr('transform',"translate(-47 ,"+ (vis.height/1.25) +") rotate(270)").append('text').style('font-size',12).text("Enrollment");
 
 
 

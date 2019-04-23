@@ -14,6 +14,17 @@ body {
   fill-opacity: 0;
 }
 
+.legtext {
+  dominant-baseline: middle;
+  fill: grey;
+  font-size: 12px;
+}
+
+.legtitle {
+  fill: grey;
+  font-size: 14px;
+}
+
 #search_bar {
   float: right;
 }
