@@ -70,6 +70,10 @@ body {
   stroke: #fff;
 }
 
+.y-axis{
+  font-size: 8px
+}
+
 .axis path,
 .axis line {
   fill: none;
@@ -104,16 +108,20 @@ body {
 
 }
 
-#outer_school_div{
-  column-count: 2;
-  column-rule-width: 4px;
 
-}
-
-#school_name_1, #school_name_2{
+.school_name_1, .school_name_2{
   text-decoration: underline;
-  position: absolute;
 }
+
+.school2{
+  float: right;
+}
+
+.school1{
+  float: left;
+}
+
+
 
 
 * { box-sizing: border-box; }
@@ -235,4 +243,13 @@ input[type=submit] {
   color: #fff;
   border-radius: 4px;
   font-size: 12px;
+}
+
+#comp_1{
+  position: absolute;
+  left: 150px;
+}
+#comp_2{
+  position: absolute;
+  right: 150px;
 }
