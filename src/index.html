@@ -215,66 +215,74 @@
 
         <div id="outer_school_div">
           <!-- School 1 -->
-          <div>
+          <div id="comp_1">
             <input id="school_1"  placeholder="Select a school...">
+            <button id ="school_1_btn" onclick="compSearch('1')">Confirm</button>
+
           </div>
-          <button id ="school_1_btn" onclick="compSearch('1')">Confirm</button>
+
+          <div id="comp_2">
+            <input id="school_2"  placeholder="Select a school...">
+            <button id ="school_2_btn" onclick="compSearch('2')">Confirm</button>
+          </div>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+
 
           <div id="school_1_div" class="school_div">
+            <div class="school1">
+              <h2 class="school_name_1 school1">School Name</h2>
+              <p id="type_1">Type of Institution:</p>
+              <br>
+              <p id="tuition_1">Tuition:</p>
+            </div>
 
-            <h3 id="school_name_1">School Name</h3>
+            <div class="school2">
+              <h2 class="school_name_2 school2" >School Name</h2>
+              <p id="type_2">Type of Institution:</p>
+              <br>
+              <p id="tuition_2">Tuition:</p>
+            </div>
             <br>
             <br>
-            <p id="type_1">Type of Institution:</p>
-            <p id="tuition_1">Tuition:</p>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
               <h3>Enrollment by Level</h3>
-              <p id="svg_school_level_1_selection">
-                <!-- Selection:  -->
-              </p>
-              <svg id='svg_school_level_1'></svg>
+              <svg id='svg_school_level_1' class="stacked_bar"></svg>
+
+              <h4 class="school_name_2" >School Name</h4>
+              <svg id='svg_school_level_2' class="stacked_bar"></svg>
+
+
+
+
               <h3>Enrollment by Gender</h3>
-              <p id="svg_school_gen_1_selection">
-                <!-- Selection:  -->
-              </p>
-              <svg id='svg_school_gen_1'></svg>
+              <h4 class="school_name_1" >School Name</h4>
+              <svg id='svg_school_gen_1' class="stacked_bar"></svg>
+              <h4 class="school_name_2" >School Name</h4>
+              <svg id='svg_school_gen_2' class="stacked_bar"></svg>
+
+
+
               <h3>Enrollment by Ethnicity</h3>
-              <p id="svg_school_eth_1_selection">
-                <!-- Selection:  -->
-              </p>
-              <svg id='svg_school_eth_1'></svg>
+              <h4 class="school_name_1" >School Name</h4>
+              <svg id='svg_school_eth_1' class="stacked_bar"></svg>
+              <h4 class="school_name_2" >School Name</h4>
+              <svg id='svg_school_eth_2' class="stacked_bar"></svg>
+
 
           </div>
 
           <!-- School 2 -->
-          <div>
-            <input id="school_2"  placeholder="Select a school...">
-          </div>
-          
-          <button id ="school_2_btn" onclick="compSearch('2')">Confirm</button>
-          <div id="school_2_div"  class="school_div">
 
 
-            <h3 id="school_name_2">School Name</h3>
-            <br>
-            <br>
-            <p id="type_2">Type of Institution:</p>
-            <p id="tuition_2">Tuition:</p>
-              <h3>Enrollment by Level</h3>
-              <p id="svg_school_level_2_selection">
-                <!-- Selection:  -->
-              </p>
-              <svg id='svg_school_level_2'></svg>
-              <h3>Enrollment by Gender</h3>
-              <p id="svg_school_gen_2_selection">
-                <!-- Selection:  -->
-              </p>
-              <svg id='svg_school_gen_2'></svg>
-              <h3>Enrollment by Ethnicity</h3>
-              <p id="svg_school_eth_2_selection">
-                <!-- Selection:  -->
-              </p>
-              <svg id='svg_school_eth_2'></svg>
-          </div>
 
           </div>
 

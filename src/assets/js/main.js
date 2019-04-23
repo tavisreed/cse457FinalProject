@@ -174,11 +174,15 @@ function compSearch(number) {
         indexes.push(i);
       }
     }
-    console.log(self.data[2018]);
-    console.log(self.data[2018][indexes[0]])
+
     //Set the school name
-    var name_id="#school_name_"+number;
-    document.querySelector(name_id).innerHTML =selected_schools[0];
+    var name_id=".school_name_"+number;
+    document.querySelectorAll(name_id).innerHTML =selected_schools[0];
+    var temp= document.querySelectorAll(name_id);
+    temp.forEach(function(d){
+        d.innerHTML=selected_schools[0];
+    })
+
     var type_id="#type_"+number;
     document.querySelector(type_id).innerHTML ="Type of Institution: "+self.data[2018][indexes[0]].type;
     var tuition_id="#tuition_"+number;

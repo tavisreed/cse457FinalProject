@@ -33,7 +33,7 @@ class StackedBar {
 
     var g = svg.append("g")//.attr("transform", "translate(" + self.width/2 + "," + self.height/2 + ")");
 
-    var rect_height = self.height*.9;
+    var rect_height = self.height;
 
     var max_value=0;
     for (var i=0;i<bar_data.length;i++){
@@ -43,7 +43,7 @@ class StackedBar {
     }
 
     var x_scale = d3.scaleLinear()
-      .rangeRound([0, self.width*.75])
+      .rangeRound([0, self.width])
       .domain([0,max_value]);
 
     // colors need to be updated
@@ -90,7 +90,6 @@ class StackedBar {
       .enter()
       .append("rect")
       .attr("fill", function(d,i){
-        console.log(d.name);
         return color_scale(i);
       })
       .attr("height", rect_height)
