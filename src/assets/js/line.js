@@ -82,14 +82,14 @@ class Line {
         .attr("transform", "translate(0," + self.height + ")")
         .call(d3.axisBottom(x));
  
-        g.append('g').attr('transform',"translate("+(self.width/2) +","+ (self.height+25) +")").append('text').text("Year");
+        g.append('g').attr('transform',"translate("+(self.width/2) +","+ (self.height+30) +")").append('text').style('font-size',12).text("Year");
     
      g.append("g")
         .attr("class", "y-axis")
         .attr("transform", "translate(0," + 0 + ")")
         .call(d3.axisLeft(y));
 
-    g.append('g').attr('transform',"translate(-47 ,"+ (self.height/1.25) +") rotate(270)").append('text').text("Enrollment");
+    g.append('g').attr('transform',"translate(-47 ,"+ (self.height/1.25) +") rotate(270)").append('text').style('font-size',12).text("Enrollment");
 
   }
 
