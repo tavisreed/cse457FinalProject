@@ -151,19 +151,15 @@ class Cluster {
       force_group = 'beeswarm';
       alpha = 0.5;
       alphaTarget = 0.1;
-      self.scale = d3.scaleLinear()
-        .domain([0,60000])
-        .range([0,self.width]);
-      self.yscale = d3.scaleLinear()
-        .domain([0,60000])
-        .range([self.height,0]);
     }
 
+    // cluster update pattern
     self.compute_clusters(clusters[0], clusters[1]);
     self.set_nodes(group);
     self.force_setup(force_group, alpha, alphaTarget);
     self.label_generator(force_group);
 
+    // restart simulation
     self.simulation.restart();
   }
 
@@ -235,9 +231,6 @@ class Cluster {
     }
 
     // update pattern on circles
-
-
-    
     var tip = d3.tip().attr('class', 'd3-tip')
         .html(function (d) {
             var tooltip_data = {
@@ -269,13 +262,14 @@ class Cluster {
           .attr('id', function(d) {
               return d.data.name.replace(/[ &.\-,']/g,'');
           });
-          
           //.append('svg:title').text(function(d) { return d.data.name; });
     } else {
       merge = self.circles.enter().append('circle')
         .merge(self.circles)
           .on('click', null)
           .attr('id', null)
+          .on('mouseover', null)
+          .on('mouseout', null);
     }
 
     self.circles.exit().remove();
@@ -363,13 +357,19 @@ class Cluster {
         .nodes(self.nodes)
       //self.smooth_motion(-30);
     } else if (group == 'beeswarm') {
+      self.xscale = d3.scaleLinear()
+        .domain([0, d3.max(self.nodes, function(d) { return d.data.tuition[0]; })])
+        .range([0,self.width]);
+      self.yscale = d3.scaleLinear()
+        .domain([0,60000])
+        .range([self.height,0]);
       self.simulation
         .alpha(alpha).alphaTarget(alphaTarget).alphaMin(0)
         .force('cluster', null)
         .force('charge', null)
         .force('collide', d3.forceCollide(function(d) { return d.r; })
           .strength(1))
-        .force('x', d3.forceX().x(function(d) { return self.scale(d.data.tuition[0]); })
+        .force('x', d3.forceX().x(function(d) { return self.xscale(d.data.tuition[0]); })
           .strength(1))
         .force('y', d3.forceY(self.height/2).strength(0.05))
           //d3.forceY(self.height/2).y(function(d) { return self.yscale(d.data.undergrad_enroll); })
@@ -405,7 +405,7 @@ class Cluster {
         d.cluster = [d.data[0],d.data[1]];
         d.color = (d.data[0]+1)*(d.data[1]+1)/12;
       });
-      self.labels = [['black','asian','hispanic','native-american','white','other'],['male','female']];
+      self.labels = [['Black','Asian','Hispanic','Native-American','White','Other'],['Male','Female']];
     } else if (group == 'gender') {
       self.nodes.forEach(function(d) {
         d.cluster = [d.data[0],0];
@@ -417,7 +417,7 @@ class Cluster {
         d.cluster = [0,d.data[1]];
         d.color = d.data[1]/6;
       });
-      self.labels = ['black','asian','hispanic','native-american','white','other'];
+      self.labels = ['Black','Asian','Hispanic','Native-American','White','Other'];
     }
   }
 
@@ -438,7 +438,7 @@ class Cluster {
       self.g.append("g")
         .attr("class", "x-axis")
         .attr("transform", "translate(0," + self.height + ")")
-        .call(d3.axisBottom(self.scale));
+        .call(d3.axisBottom(self.xscale));
     } else {
       if (self.clusters.length == 1 && self.clusters[0].length == 1) {
         self.g.append('text')
