@@ -803,6 +803,8 @@ class Profile {
     // create year chart for brushing
     let year_chart = new YearChart('year_chart', dates, event_handler);
 
+    console.log(tuition_data);
+
     // create tuition line chart
     let tuition_chart = new Line('tuition_line', tuition_data, tuition_data, 1);
 
@@ -811,6 +813,7 @@ class Profile {
 
     //Create enrollment by gender area chart
     let gender_chart = new StackedArea('Gender_chart', gender_data, ['freshM', 'freshF','sophM','sophF','juM','juF','senM','senF'],8);
+
     //Create enrollment by ethnicity area chart
     let ethnicity_chart = new StackedArea('Ethnicity_chart', ethnicity_data, ['asian', 'black','hispanic','native_american','other','white'],6);
 

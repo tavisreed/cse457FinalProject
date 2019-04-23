@@ -411,7 +411,7 @@ class Cluster {
         d.cluster = [d.data[0],0];
         d.color = d.data[0]/2;
       });
-      self.labels = ['male','female'];
+      self.labels = ['Male','Female'];
     } else if (group == 'ethnicity') {
       self.nodes.forEach(function(d) {
         d.cluster = [0,d.data[1]];
