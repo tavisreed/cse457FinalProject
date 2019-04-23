@@ -13,7 +13,7 @@ class StackedBar {
     let self = this;
 
     // initialize plot
-    self.margin = {top: 30, right: 30, bottom: 30, left: 60};
+    self.margin = {top: 30, right: 30, bottom: 30, left: 30};
     self.width = window.innerWidth/2.2 - self.margin.left - self.margin.right;
     self.height = 100 - self.margin.top - self.margin.bottom;
 
@@ -31,7 +31,7 @@ class StackedBar {
       .attr("width", self.width + self.margin.left + self.margin.right)
       .attr("height", self.height + self.margin.top + self.margin.bottom);
 
-    var g = svg.append("g")//.attr("transform", "translate(" + self.width/2 + "," + self.height/2 + ")");
+    var g = svg.append("g").attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
 
     var rect_height = self.height;
 

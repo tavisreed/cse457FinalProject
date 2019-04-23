@@ -231,7 +231,8 @@ function compSearch(number) {
     if(total && typeof total=="number"){
         let stackedBar_gen = new StackedBar(parent, [parseInt(per_grad),parseInt(per_ungrad)], ['Graduate Students','Undergraduate Students'],2);
     }
-
+    var enroll_id="#total_enroll_"+number;
+    document.querySelector(enroll_id).innerHTML = "Total Enrollment: " + total;
 
     //Get enrollment by gender numbers
     var male=0;
