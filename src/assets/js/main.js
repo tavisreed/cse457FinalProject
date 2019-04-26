@@ -163,7 +163,6 @@ function compSearch(number) {
     //source:https://www.w3schools.com/howto/howto_js_filter_lists.asp
     var input, filter,txtValue;
     input = document.getElementById(comparision_id);
-    console.log(input);
     filter = input.value.toUpperCase();
     var selected_schools=[];
     // Loop through all list items, and hide those who don't match the search query

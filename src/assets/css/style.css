@@ -123,17 +123,7 @@ body {
   text-decoration: underline;
 }
 
-.school2{
-  float: right;
-  position:relative;
 
-}
-
-.school1{
-  float: left;
-  position:  relative;
-
-}
 
 
 
@@ -266,4 +256,8 @@ input[type=submit] {
 #comp_2{
   position: absolute;
   right: 150px;
+}
+
+.centered-col{
+  text-align: center;
 }

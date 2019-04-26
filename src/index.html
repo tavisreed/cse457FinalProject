@@ -212,21 +212,19 @@
 
       <!-- School Comparison tab -->
       <div class="tab-pane fade" id="nav-comparison" role="tabpanel" aria-labelledby="nav-comparison-tab">
-
-        <div id="outer_school_div">
-          <!-- Search Button Containers -->
+         <!-- Search Button Containers -->
           <div class="container">
                 <div class="row">
 
-                    <div class="col-sm">
-                            <input id="school_1"  placeholder="Select a school...">
-                            <button class='btn btn-outline-primary btn-sm' id="school_1_btn" onclick="compSearch('1')">Confirm</button>
+                    <div class="col-md centered-col" >
+                      <br>
+                      <input id="school_1"  placeholder="Select a school...">
+                      <button class='btn btn-outline-primary btn-sm' id="school_1_btn" onclick="compSearch('1')">Confirm</button>
                     </div>
-                    <div class="col-sm">
-                    </div>
-                    <div class="col-sm">
-                            <input id="school_2"  placeholder="Select a school...">
-                            <button class='btn btn-outline-primary btn-sm' id="school_2_btn" onclick="compSearch('2')">Confirm</button>
+                    <div class="col-md centered-col">
+                      <br>
+                      <input id="school_2"  placeholder="Select a school...">
+                      <button class='btn btn-outline-primary btn-sm' id="school_2_btn" onclick="compSearch('2')">Confirm</button>
                     </div>
 
                 </div>
@@ -234,65 +232,64 @@
 
           <br>
 
-          <div id="school_1_div" class="school_div">
-            <div class="school1">
-              <h3 class="school_name_1 school1">School Name</h3>
-              <h5 id="type_1">Type of Institution:</h5>
-              <br>
-              <h5 id="tuition_1">Tuition:</h5>
-              <br>
-              <h5 id="total_enroll_1">Total Enrollment:</h5>
+          <!--Rest of the Page Contents -->
+          <div class="container">
+            <div class="row">
+              <div class="col-md centered-col">
+                <h3 class="school_name_1 school1">School Name</h3>
+                <br>
+                <h5 id="type_1">Type of Institution:</h5>
+                <br>
+                <h5 id="tuition_1">Tuition:</h5>
+                <br>
+                <h5 id="total_enroll_1">Total Enrollment:</h5>
+              </div>
+              <div class="col-md centered-col">
+                <h3 class="school_name_2 school2" >School Name</h3>
+                <br>
+                <h5 id="type_2">Type of Institution:</h5>
+                <br>
+                <h5 id="tuition_2">Tuition:</h5>
+                <br>
+                <h5 id="total_enroll_2">Total Enrollment:</h5>
+              </div>
             </div>
+            <div class="row">
+              <div class="col-md centered-col">
+                <br>
+                <h3>Enrollment by Level</h3>
+                <h4 class="school_name_1" >School Name</h4>
+                <svg id='svg_school_level_1' class="stacked_bar"></svg>
 
-            <div class="school2">
-              <h3 class="school_name_2 school2" >School Name</h3>
-              <h5 id="type_2">Type of Institution:</h5>
-              <br>
-              <h5 id="tuition_2">Tuition:</h5>
-              <br>
-              <h5 id="total_enroll_2">Total Enrollment:</h5>
+                <h4 class="school_name_2" >School Name</h4>
+                <svg id='svg_school_level_2' class="stacked_bar"></svg>
 
+
+                <h3>Enrollment by Gender</h3>
+                <h4 class="school_name_1" >School Name</h4>
+                <svg id='svg_school_gen_1' class="stacked_bar"></svg>
+                <h4 class="school_name_2" >School Name</h4>
+                <svg id='svg_school_gen_2' class="stacked_bar"></svg>
+
+
+                <h3>Enrollment by Ethnicity</h3>
+                <h4 class="school_name_1" >School Name</h4>
+                <svg id='svg_school_eth_1' class="stacked_bar"></svg>
+                <h4 class="school_name_2" >School Name</h4>
+                <svg id='svg_school_eth_2' class="stacked_bar"></svg>
+              </div>
             </div>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-              <h3>Enrollment by Level</h3>
-             <h4 class="school_name_1" >School Name</h4>
-             <svg id='svg_school_level_1' class="stacked_bar"></svg>
-
-              <h4 class="school_name_2" >School Name</h4>
-              <svg id='svg_school_level_2' class="stacked_bar"></svg>
-
-
-
-
-              <h3>Enrollment by Gender</h3>
-              <h4 class="school_name_1" >School Name</h4>
-              <svg id='svg_school_gen_1' class="stacked_bar"></svg>
-              <h4 class="school_name_2" >School Name</h4>
-              <svg id='svg_school_gen_2' class="stacked_bar"></svg>
-
-
-
-              <h3>Enrollment by Ethnicity</h3>
-              <h4 class="school_name_1" >School Name</h4>
-              <svg id='svg_school_eth_1' class="stacked_bar"></svg>
-              <h4 class="school_name_2" >School Name</h4>
-              <svg id='svg_school_eth_2' class="stacked_bar"></svg>
-
-
           </div>
+
+
+
+
+
+
+
+
+
+
 
         </div>
 
