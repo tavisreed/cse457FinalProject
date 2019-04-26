@@ -809,7 +809,6 @@ class Profile {
 
       }
 
-
         //Fix other data
       if (d<2010){
         other=0;
