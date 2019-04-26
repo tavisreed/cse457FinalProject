@@ -32,7 +32,6 @@ class Profile {
     // initialize school attributes
     let name = self.data['2018'][school_idx].name;
     let description = self.data['2018'][school_idx].description;
-
     // set html text
     document.querySelector('#profiles #name').innerHTML = name;
     //document.querySelector('#profiles #description').innerHTML = description;
@@ -152,6 +151,8 @@ class Profile {
       var juF=0;
       var senM=0;
       var senF=0;
+
+
       //Freshmen values
       if (self.data[d][school_idx].freshmen_enroll_table !="none"){
         freshM=self.data[d][school_idx].freshmen_enroll_table.gender.male;
@@ -162,13 +163,13 @@ class Profile {
               var preF=0;
               var nxtM=0;
               var nxtF=0;
-              if (d>2005){
+              if (d>2005 && self.data[d-1][school_idx].freshmen_enroll_table!="none"){
                   preM=self.data[d-1][school_idx].freshmen_enroll_table.gender.male;
                   nxtM=self.data[d-1][school_idx].freshmen_enroll_table.gender.male;
                   preF=self.data[d-1][school_idx].freshmen_enroll_table.gender.female;
                   nxtF=self.data[d-1][school_idx].freshmen_enroll_table.gender.female;
               }
-              if(d<2018){
+              if(d<2018 && self.data[d+1][school_idx].freshmen_enroll_table!="none"){
                   nxtM=self.data[d+1][school_idx].freshmen_enroll_table.gender.male;
                   nxtF=self.data[d+1][school_idx].freshmen_enroll_table.gender.female;
               }
@@ -206,13 +207,13 @@ class Profile {
           var preF=0;
           var nxtM=0;
           var nxtF=0;
-          if (d>2005){
+          if (d>2005 && self.data[d-1][school_idx].sophomore_enroll_table!="none"){
               preM=self.data[d-1][school_idx].sophomore_enroll_table.gender.male;
               nxtM=self.data[d-1][school_idx].sophomore_enroll_table.gender.male;
               preF=self.data[d-1][school_idx].sophomore_enroll_table.gender.female;
               nxtF=self.data[d-1][school_idx].sophomore_enroll_table.gender.female;
           }
-          if(d<2018){
+          if(d<2018 && self.data[d+1][school_idx].sophomore_enroll_table!="none"){
               nxtM=self.data[d+1][school_idx].sophomore_enroll_table.gender.male;
               nxtF=self.data[d+1][school_idx].sophomore_enroll_table.gender.female;
           }
@@ -250,13 +251,13 @@ class Profile {
           var preF=0;
           var nxtM=0;
           var nxtF=0;
-          if (d>2005){
+          if (d>2005 && self.data[d-1][school_idx].junior_enroll_table!="none"){
               preM=self.data[d-1][school_idx].junior_enroll_table.gender.male;
               nxtM=self.data[d-1][school_idx].junior_enroll_table.gender.male;
               preF=self.data[d-1][school_idx].junior_enroll_table.gender.female;
               nxtF=self.data[d-1][school_idx].junior_enroll_table.gender.female;
           }
-          if(d<2018){
+          if(d<2018 && self.data[d+1][school_idx].junior_enroll_table!="none"){
               nxtM=self.data[d+1][school_idx].junior_enroll_table.gender.male;
               nxtF=self.data[d+1][school_idx].junior_enroll_table.gender.female;
           }
@@ -294,13 +295,13 @@ class Profile {
           var preF=0;
           var nxtM=0;
           var nxtF=0;
-          if (d>2005){
+          if (d>2005 && self.data[d-1][school_idx].senior_enroll_table!="none"){
               preM=self.data[d-1][school_idx].senior_enroll_table.gender.male;
               nxtM=self.data[d-1][school_idx].senior_enroll_table.gender.male;
               preF=self.data[d-1][school_idx].senior_enroll_table.gender.female;
               nxtF=self.data[d-1][school_idx].senior_enroll_table.gender.female;
           }
-          if(d<2018){
+          if(d<2018 && self.data[d+1][school_idx].senior_enroll_table!="none"){
               nxtM=self.data[d+1][school_idx].senior_enroll_table.gender.male;
               nxtF=self.data[d+1][school_idx].senior_enroll_table.gender.female;
           }
@@ -374,7 +375,7 @@ class Profile {
           var nxtO=0;
           var nxtW=0;
 
-          if (d>2005){
+          if (d>2005 && self.data[d-1][school_idx].freshmen_enroll_table!="none"){
               preA=self.data[d-1][school_idx].freshmen_enroll_table.ethnicity.asian;
               nxtA=self.data[d-1][school_idx].freshmen_enroll_table.ethnicity.asian;
 
@@ -394,7 +395,7 @@ class Profile {
               nxtW=self.data[d-1][school_idx].freshmen_enroll_table.ethnicity.white;
 
           }
-          if(d<2018){
+          if(d<2018 && self.data[d+1][school_idx].freshmen_enroll_table!="none"){
               nxtA=self.data[d+1][school_idx].freshmen_enroll_table.ethnicity.asian;
               nxtB=self.data[d+1][school_idx].freshmen_enroll_table.ethnicity.black;
               nxtH=self.data[d+1][school_idx].freshmen_enroll_table.ethnicity.hispanic;
@@ -481,7 +482,7 @@ class Profile {
           var nxtO=0;
           var nxtW=0;
 
-          if (d>2005){
+          if (d>2005 && self.data[d-1][school_idx].sophomore_enroll_table!="none"){
               preA=self.data[d-1][school_idx].sophomore_enroll_table.ethnicity.asian;
               nxtA=self.data[d-1][school_idx].sophomore_enroll_table.ethnicity.asian;
 
@@ -501,7 +502,7 @@ class Profile {
               nxtW=self.data[d-1][school_idx].sophomore_enroll_table.ethnicity.white;
 
           }
-          if(d<2018){
+          if(d<2018 && self.data[d+1][school_idx].sophomore_enroll_table!="none"){
               nxtA=self.data[d+1][school_idx].sophomore_enroll_table.ethnicity.asian;
               nxtB=self.data[d+1][school_idx].sophomore_enroll_table.ethnicity.black;
               nxtH=self.data[d+1][school_idx].sophomore_enroll_table.ethnicity.hispanic;
@@ -588,7 +589,7 @@ class Profile {
           var nxtO=0;
           var nxtW=0;
 
-          if (d>2005){
+          if (d>2005 && self.data[d-1][school_idx].junior_enroll_table!="none"){
               preA=self.data[d-1][school_idx].junior_enroll_table.ethnicity.asian;
               nxtA=self.data[d-1][school_idx].junior_enroll_table.ethnicity.asian;
 
@@ -608,7 +609,7 @@ class Profile {
               nxtW=self.data[d-1][school_idx].junior_enroll_table.ethnicity.white;
 
           }
-          if(d<2018){
+          if(d<2018 && self.data[d+1][school_idx].junior_enroll_table!="none"){
               nxtA=self.data[d+1][school_idx].junior_enroll_table.ethnicity.asian;
               nxtB=self.data[d+1][school_idx].junior_enroll_table.ethnicity.black;
               nxtH=self.data[d+1][school_idx].junior_enroll_table.ethnicity.hispanic;
@@ -695,7 +696,7 @@ class Profile {
           var nxtO=0;
           var nxtW=0;
 
-          if (d>2005){
+          if (d>2005 && self.data[d-1][school_idx].senior_enroll_table!="none"){
               preA=self.data[d-1][school_idx].senior_enroll_table.ethnicity.asian;
               nxtA=self.data[d-1][school_idx].senior_enroll_table.ethnicity.asian;
 
@@ -715,7 +716,7 @@ class Profile {
               nxtW=self.data[d-1][school_idx].senior_enroll_table.ethnicity.white;
 
           }
-          if(d<2018){
+          if(d<2018 && self.data[d+1][school_idx].senior_enroll_table!="none"){
               nxtA=self.data[d+1][school_idx].senior_enroll_table.ethnicity.asian;
               nxtB=self.data[d+1][school_idx].senior_enroll_table.ethnicity.black;
               nxtH=self.data[d+1][school_idx].senior_enroll_table.ethnicity.hispanic;
