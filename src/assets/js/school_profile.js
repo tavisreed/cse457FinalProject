@@ -75,14 +75,14 @@ class Profile {
         'value':tuition
       }
     });
-    console.log(tuition_data)
 
     // get enrollment data for grad and under grad over the years;
     let enroll_data = years.map(function(d) {
       var graduate_enroll=self.data[d][school_idx].graduate_enroll;
       var undergrad_enroll=self.data[d][school_idx].undergrad_enroll;
+
       //Get an average for missing values
-      if (typeof graduate_enroll!="number"){
+      if (typeof graduate_enroll!="number" || isNaN(graduate_enroll)){
         var pre=0;
         var nxt=0;
         if (d>1999){
@@ -92,14 +92,14 @@ class Profile {
         if(d<2018){
           nxt=self.data[d+1][school_idx].graduate_enroll;
         }
-        if(typeof pre!="number"){
+        if(typeof pre!="number" || isNaN(pre)){
             pre=0;
             if (d>2000){
                 pre=self.data[d-2][school_idx].graduate_enroll;
                 nxt=self.data[d-2][school_idx].graduate_enroll;
             }
         }
-        if(typeof nxt!="number"){
+        if(typeof nxt!="number" || isNaN(nxt)){
             nxt=0;
               if (d<2017){
                   nxt=self.data[d+2][school_idx].graduate_enroll;
@@ -109,7 +109,7 @@ class Profile {
 
           graduate_enroll=(pre+nxt)/2;
       }
-      if (typeof undergrad_enroll!="number"){
+      if (typeof undergrad_enroll!="number" || isNaN(undergrad_enroll)){
         var pre=0;
         var nxt=0;
         if (d>1999){
@@ -119,14 +119,14 @@ class Profile {
         if(d<2018){
           nxt=self.data[d+1][school_idx].undergrad_enroll;
         }
-          if(typeof pre!="number"){
+          if(typeof pre!="number" || isNaN(pre)){
               pre=0;
               if (d>2000){
                   pre=self.data[d-2][school_idx].graduate_enroll;
                   nxt=self.data[d-2][school_idx].graduate_enroll;
               }
           }
-          if(typeof nxt!="number"){
+          if(typeof nxt!="number" || isNaN(nxt)){
               nxt=0;
               if (d<2017){
                   nxt=self.data[d+2][school_idx].graduate_enroll;
@@ -141,6 +141,7 @@ class Profile {
         'undergrad_enroll': undergrad_enroll
       }
     });
+
     // get enrollment by gender data
     let gender_data = years.map(function(d) {
       var freshM=0;
@@ -802,8 +803,6 @@ class Profile {
 
     // create year chart for brushing
     let year_chart = new YearChart('year_chart', dates, event_handler);
-
-    console.log(tuition_data);
 
     // create tuition line chart
     let tuition_chart = new Line('tuition_line', tuition_data, tuition_data, 1);
