@@ -44,7 +44,7 @@ class Profile {
     let tuition_data = years.map(function(d) {
       var tuition=self.data[d][school_idx].tuition[0];
       //Get an average for missing values
-      if (typeof tuition!="number"){
+      if (typeof tuition!="number" || isNaN(tuition)){
         var pre=0;
         var nxt=0;
         if (d>1999){
@@ -68,18 +68,21 @@ class Profile {
           }
 
         tuition=(pre+nxt)/2;
+
+         if (typeof tuition!="number" || isNaN(tuition)){
+             tuition=self.data[d-1][school_idx].tuition[0];
+         }
       }
       return {
         'date': parse_time(d),
         'value':tuition
       }
     });
-
     // get enrollment data for grad and under grad over the years;
     let enroll_data = years.map(function(d) {
       var graduate_enroll=self.data[d][school_idx].graduate_enroll;
       var undergrad_enroll=self.data[d][school_idx].undergrad_enroll;
-
+      console.log(d-1999, graduate_enroll, undergrad_enroll)
       //Get an average for missing values
       if (typeof graduate_enroll!="number" || isNaN(graduate_enroll)){
         var pre=0;
@@ -134,6 +137,20 @@ class Profile {
         undergrad_enroll=(pre+nxt)/2;
       }
 
+      if (typeof graduate_enroll!="number" || isNaN(graduate_enroll)){
+          var back_counter=1;
+          while(typeof graduate_enroll!="number" || isNaN(graduate_enroll)){
+              graduate_enroll=self.data[d-back_counter][school_idx].graduate_enroll;
+              back_counter=back_counter+1;
+          }
+      }
+      if (typeof undergrad_enroll!="number" || isNaN(undergrad_enroll)){
+          var back_counter=1;
+          while(typeof graduate_enroll!="number" || isNaN(undergrad_enroll)){
+              undergrad_enroll=self.data[d-back_counter][school_idx].undergrad_enroll;
+              back_counter=back_counter+1;
+          }
+      }
       return {
         'date': parse_time(d),
         'graduate_enroll': graduate_enroll,
