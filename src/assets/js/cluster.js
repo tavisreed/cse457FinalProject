@@ -356,7 +356,7 @@ class Cluster {
     if (group == 'cluster') {
       self.simulation
         .alpha(alpha).alphaTarget(alphaTarget).alphaMin(0)
-        .force('cluster', cluster().strength(0.6))
+        .force('cluster', cluster().strength(0.5))
         .force('collide', d3.forceCollide(function(d) { return d.r + self.padding; }).strength(0.45).iterations(10))
         .force('x', null)
         .force('y', null)
