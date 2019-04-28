@@ -261,9 +261,9 @@ input[type=submit] {
 
 #comp_1{
   position: absolute;
-  left: 150px;
+  /*left: 150px;*/
 }
 #comp_2{
   position: absolute;
-  right: 150px;
+  right: 0px;
 }
