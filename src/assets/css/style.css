@@ -123,21 +123,6 @@ body {
   text-decoration: underline;
 }
 
-.school2{
-  float: right;
-  position:relative;
-
-}
-
-.school1{
-  float: left;
-  position:  relative;
-
-}
-
-
-
-
 * { box-sizing: border-box; }
 
 body {
@@ -265,5 +250,9 @@ input[type=submit] {
 }
 #comp_2{
   position: absolute;
-  right: 0px;
+  right: 150px;
+}
+
+.centered-col{
+  text-align: center;
 }

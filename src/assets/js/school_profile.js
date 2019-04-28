@@ -32,7 +32,6 @@ class Profile {
     // initialize school attributes
     let name = self.data['2018'][school_idx].name;
     let description = self.data['2018'][school_idx].description;
-
     // set html text
     document.querySelector('#profiles #name').innerHTML = name;
     //document.querySelector('#profiles #description').innerHTML = description;
@@ -45,7 +44,7 @@ class Profile {
     let tuition_data = years.map(function(d) {
       var tuition=self.data[d][school_idx].tuition[0];
       //Get an average for missing values
-      if (typeof tuition!="number"){
+      if (typeof tuition!="number" || isNaN(tuition)){
         var pre=0;
         var nxt=0;
         if (d>1999){
@@ -69,20 +68,28 @@ class Profile {
           }
 
         tuition=(pre+nxt)/2;
+
+         if (typeof tuition!="number" || isNaN(tuition)){
+             if(d>1999){
+                 tuition=self.data[d-1][school_idx].tuition[0];
+             }
+            else{
+                 tuition=0;
+             }
+
+         }
       }
       return {
         'date': parse_time(d),
         'value':tuition
       }
     });
-    console.log(tuition_data)
-
     // get enrollment data for grad and under grad over the years;
     let enroll_data = years.map(function(d) {
       var graduate_enroll=self.data[d][school_idx].graduate_enroll;
       var undergrad_enroll=self.data[d][school_idx].undergrad_enroll;
       //Get an average for missing values
-      if (typeof graduate_enroll!="number"){
+      if (typeof graduate_enroll!="number" || isNaN(graduate_enroll)){
         var pre=0;
         var nxt=0;
         if (d>1999){
@@ -92,14 +99,14 @@ class Profile {
         if(d<2018){
           nxt=self.data[d+1][school_idx].graduate_enroll;
         }
-        if(typeof pre!="number"){
+        if(typeof pre!="number" || isNaN(pre)){
             pre=0;
             if (d>2000){
                 pre=self.data[d-2][school_idx].graduate_enroll;
                 nxt=self.data[d-2][school_idx].graduate_enroll;
             }
         }
-        if(typeof nxt!="number"){
+        if(typeof nxt!="number" || isNaN(nxt)){
             nxt=0;
               if (d<2017){
                   nxt=self.data[d+2][school_idx].graduate_enroll;
@@ -109,7 +116,7 @@ class Profile {
 
           graduate_enroll=(pre+nxt)/2;
       }
-      if (typeof undergrad_enroll!="number"){
+      if (typeof undergrad_enroll!="number" || isNaN(undergrad_enroll)){
         var pre=0;
         var nxt=0;
         if (d>1999){
@@ -119,14 +126,14 @@ class Profile {
         if(d<2018){
           nxt=self.data[d+1][school_idx].undergrad_enroll;
         }
-          if(typeof pre!="number"){
+          if(typeof pre!="number" || isNaN(pre)){
               pre=0;
               if (d>2000){
                   pre=self.data[d-2][school_idx].graduate_enroll;
                   nxt=self.data[d-2][school_idx].graduate_enroll;
               }
           }
-          if(typeof nxt!="number"){
+          if(typeof nxt!="number" || isNaN(nxt)){
               nxt=0;
               if (d<2017){
                   nxt=self.data[d+2][school_idx].graduate_enroll;
@@ -134,13 +141,36 @@ class Profile {
           }
         undergrad_enroll=(pre+nxt)/2;
       }
+      if (typeof graduate_enroll!="number" || isNaN(graduate_enroll)){
+          var back_counter=1;
+          while((typeof graduate_enroll!="number" || isNaN(graduate_enroll)) && d-back_counter>1999 ){
+              graduate_enroll=self.data[d-back_counter][school_idx].graduate_enroll;
+              back_counter=back_counter+1;
+          }
+          if (typeof graduate_enroll!="number" || isNaN(graduate_enroll)) {
+              graduate_enroll=0;
+          }
 
+          }
+      if (typeof undergrad_enroll!="number" || isNaN(undergrad_enroll)){
+          var back_counter=1;
+          while((typeof undergrad_enroll!="number" || isNaN(undergrad_enroll)) && d-back_counter>1999 ){
+              undergrad_enroll=self.data[d-back_counter][school_idx].undergrad_enroll;
+              back_counter=back_counter+1;
+          }
+          if (typeof undergrad_enroll!="number" || isNaN(undergrad_enroll)) {
+              undergrad_enroll=0;
+          }
+
+
+      }
       return {
         'date': parse_time(d),
         'graduate_enroll': graduate_enroll,
         'undergrad_enroll': undergrad_enroll
       }
     });
+
     // get enrollment by gender data
     let gender_data = years.map(function(d) {
       var freshM=0;
@@ -151,6 +181,8 @@ class Profile {
       var juF=0;
       var senM=0;
       var senF=0;
+
+
       //Freshmen values
       if (self.data[d][school_idx].freshmen_enroll_table !="none"){
         freshM=self.data[d][school_idx].freshmen_enroll_table.gender.male;
@@ -161,13 +193,13 @@ class Profile {
               var preF=0;
               var nxtM=0;
               var nxtF=0;
-              if (d>2005){
+              if (d>2005 && self.data[d-1][school_idx].freshmen_enroll_table!="none"){
                   preM=self.data[d-1][school_idx].freshmen_enroll_table.gender.male;
                   nxtM=self.data[d-1][school_idx].freshmen_enroll_table.gender.male;
                   preF=self.data[d-1][school_idx].freshmen_enroll_table.gender.female;
                   nxtF=self.data[d-1][school_idx].freshmen_enroll_table.gender.female;
               }
-              if(d<2018){
+              if(d<2018 && self.data[d+1][school_idx].freshmen_enroll_table!="none"){
                   nxtM=self.data[d+1][school_idx].freshmen_enroll_table.gender.male;
                   nxtF=self.data[d+1][school_idx].freshmen_enroll_table.gender.female;
               }
@@ -205,13 +237,13 @@ class Profile {
           var preF=0;
           var nxtM=0;
           var nxtF=0;
-          if (d>2005){
+          if (d>2005 && self.data[d-1][school_idx].sophomore_enroll_table!="none"){
               preM=self.data[d-1][school_idx].sophomore_enroll_table.gender.male;
               nxtM=self.data[d-1][school_idx].sophomore_enroll_table.gender.male;
               preF=self.data[d-1][school_idx].sophomore_enroll_table.gender.female;
               nxtF=self.data[d-1][school_idx].sophomore_enroll_table.gender.female;
           }
-          if(d<2018){
+          if(d<2018 && self.data[d+1][school_idx].sophomore_enroll_table!="none"){
               nxtM=self.data[d+1][school_idx].sophomore_enroll_table.gender.male;
               nxtF=self.data[d+1][school_idx].sophomore_enroll_table.gender.female;
           }
@@ -249,13 +281,13 @@ class Profile {
           var preF=0;
           var nxtM=0;
           var nxtF=0;
-          if (d>2005){
+          if (d>2005 && self.data[d-1][school_idx].junior_enroll_table!="none"){
               preM=self.data[d-1][school_idx].junior_enroll_table.gender.male;
               nxtM=self.data[d-1][school_idx].junior_enroll_table.gender.male;
               preF=self.data[d-1][school_idx].junior_enroll_table.gender.female;
               nxtF=self.data[d-1][school_idx].junior_enroll_table.gender.female;
           }
-          if(d<2018){
+          if(d<2018 && self.data[d+1][school_idx].junior_enroll_table!="none"){
               nxtM=self.data[d+1][school_idx].junior_enroll_table.gender.male;
               nxtF=self.data[d+1][school_idx].junior_enroll_table.gender.female;
           }
@@ -293,13 +325,13 @@ class Profile {
           var preF=0;
           var nxtM=0;
           var nxtF=0;
-          if (d>2005){
+          if (d>2005 && self.data[d-1][school_idx].senior_enroll_table!="none"){
               preM=self.data[d-1][school_idx].senior_enroll_table.gender.male;
               nxtM=self.data[d-1][school_idx].senior_enroll_table.gender.male;
               preF=self.data[d-1][school_idx].senior_enroll_table.gender.female;
               nxtF=self.data[d-1][school_idx].senior_enroll_table.gender.female;
           }
-          if(d<2018){
+          if(d<2018 && self.data[d+1][school_idx].senior_enroll_table!="none"){
               nxtM=self.data[d+1][school_idx].senior_enroll_table.gender.male;
               nxtF=self.data[d+1][school_idx].senior_enroll_table.gender.female;
           }
@@ -373,7 +405,7 @@ class Profile {
           var nxtO=0;
           var nxtW=0;
 
-          if (d>2005){
+          if (d>2005 && self.data[d-1][school_idx].freshmen_enroll_table!="none"){
               preA=self.data[d-1][school_idx].freshmen_enroll_table.ethnicity.asian;
               nxtA=self.data[d-1][school_idx].freshmen_enroll_table.ethnicity.asian;
 
@@ -393,7 +425,7 @@ class Profile {
               nxtW=self.data[d-1][school_idx].freshmen_enroll_table.ethnicity.white;
 
           }
-          if(d<2018){
+          if(d<2018 && self.data[d+1][school_idx].freshmen_enroll_table!="none"){
               nxtA=self.data[d+1][school_idx].freshmen_enroll_table.ethnicity.asian;
               nxtB=self.data[d+1][school_idx].freshmen_enroll_table.ethnicity.black;
               nxtH=self.data[d+1][school_idx].freshmen_enroll_table.ethnicity.hispanic;
@@ -480,7 +512,7 @@ class Profile {
           var nxtO=0;
           var nxtW=0;
 
-          if (d>2005){
+          if (d>2005 && self.data[d-1][school_idx].sophomore_enroll_table!="none"){
               preA=self.data[d-1][school_idx].sophomore_enroll_table.ethnicity.asian;
               nxtA=self.data[d-1][school_idx].sophomore_enroll_table.ethnicity.asian;
 
@@ -500,7 +532,7 @@ class Profile {
               nxtW=self.data[d-1][school_idx].sophomore_enroll_table.ethnicity.white;
 
           }
-          if(d<2018){
+          if(d<2018 && self.data[d+1][school_idx].sophomore_enroll_table!="none"){
               nxtA=self.data[d+1][school_idx].sophomore_enroll_table.ethnicity.asian;
               nxtB=self.data[d+1][school_idx].sophomore_enroll_table.ethnicity.black;
               nxtH=self.data[d+1][school_idx].sophomore_enroll_table.ethnicity.hispanic;
@@ -587,7 +619,7 @@ class Profile {
           var nxtO=0;
           var nxtW=0;
 
-          if (d>2005){
+          if (d>2005 && self.data[d-1][school_idx].junior_enroll_table!="none"){
               preA=self.data[d-1][school_idx].junior_enroll_table.ethnicity.asian;
               nxtA=self.data[d-1][school_idx].junior_enroll_table.ethnicity.asian;
 
@@ -607,7 +639,7 @@ class Profile {
               nxtW=self.data[d-1][school_idx].junior_enroll_table.ethnicity.white;
 
           }
-          if(d<2018){
+          if(d<2018 && self.data[d+1][school_idx].junior_enroll_table!="none"){
               nxtA=self.data[d+1][school_idx].junior_enroll_table.ethnicity.asian;
               nxtB=self.data[d+1][school_idx].junior_enroll_table.ethnicity.black;
               nxtH=self.data[d+1][school_idx].junior_enroll_table.ethnicity.hispanic;
@@ -694,7 +726,7 @@ class Profile {
           var nxtO=0;
           var nxtW=0;
 
-          if (d>2005){
+          if (d>2005 && self.data[d-1][school_idx].senior_enroll_table!="none"){
               preA=self.data[d-1][school_idx].senior_enroll_table.ethnicity.asian;
               nxtA=self.data[d-1][school_idx].senior_enroll_table.ethnicity.asian;
 
@@ -714,7 +746,7 @@ class Profile {
               nxtW=self.data[d-1][school_idx].senior_enroll_table.ethnicity.white;
 
           }
-          if(d<2018){
+          if(d<2018 && self.data[d+1][school_idx].senior_enroll_table!="none"){
               nxtA=self.data[d+1][school_idx].senior_enroll_table.ethnicity.asian;
               nxtB=self.data[d+1][school_idx].senior_enroll_table.ethnicity.black;
               nxtH=self.data[d+1][school_idx].senior_enroll_table.ethnicity.hispanic;
@@ -777,7 +809,6 @@ class Profile {
 
       }
 
-
         //Fix other data
       if (d<2010){
         other=0;
@@ -802,8 +833,6 @@ class Profile {
 
     // create year chart for brushing
     let year_chart = new YearChart('year_chart', dates, event_handler);
-
-    console.log(tuition_data);
 
     // create tuition line chart
     let tuition_chart = new Line('tuition_line', tuition_data, tuition_data, 1);

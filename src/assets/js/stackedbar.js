@@ -90,11 +90,17 @@ class StackedBar {
       .enter()
       .append("rect")
       .attr("fill", function(d,i){
-        return color_scale(i);
+        var index=0;
+        self.catagories.forEach(function(y,j){
+          if (y==d.name)
+          {
+            index=j;
+          }
+        })
+        return color_scale(index);
       })
       .attr("height", rect_height)
       .attr("width", function(d,i){
-        
         return (d.value/100)*(self.width);
       })
       .attr("y", 10)
