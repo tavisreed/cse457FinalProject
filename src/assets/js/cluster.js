@@ -101,7 +101,7 @@ class Cluster {
     var gDiv =  self.svg.append("g").attr('id','legend');
     var gHeight = self.height/3;
     gDiv.attr("transform", "translate("+self.width/1.1+","+0+")");
-    gDiv.append("g").attr("transform", "translate(75," + (gHeight*0.15)+")").append("text").attr('class','legtitle').text("Total Enrollment")
+    gDiv.append("g").attr("transform", "translate(75," + (gHeight*0.15)+")").append("text").attr('class','legtitle').text("Total enrollment");
     gDiv.append("circle").attr("r", self.radius_scale(120000)).style("stroke","black").style('stroke-dasharray','2 1').style('fill','transparent').attr("cy",gHeight*0.4).attr("cx", 100);
     gDiv.append("g").attr("transform", "translate(135," + (gHeight*0.4)+")").append("text").attr('class','legtext').text("120000")
     gDiv.append("circle").attr("r", self.radius_scale(67500)).style("stroke","black").style('stroke-dasharray','2 1').style('fill','transparent').attr("cy",(gHeight*0.4)+25).attr("cx", 100);
@@ -128,7 +128,7 @@ class Cluster {
   update(group) {
     let self = this;
     let clusters = [];
-    let alpha = 0.15;
+    let alpha = 0.25;
     let alphaTarget = 0.001;
     let force_group = 'cluster';
 
@@ -149,7 +149,7 @@ class Cluster {
     } else if (group == 'tuition') {
       clusters = [0,0];
       force_group = 'beeswarm';
-      alpha = 0.5;
+      alpha = 0.4;
       alphaTarget = 0.1;
     }
 
@@ -238,7 +238,7 @@ class Cluster {
                 "enrollment": d.data.undergrad_enroll+ d.data.graduate_enroll
             };
             return self.tooltip_render(tooltip_data);
-    });
+        });
 
     self.svg.call(tip);
 
@@ -332,30 +332,36 @@ class Cluster {
   force_setup(group, alpha=0.2, alphaTarget=0) {
     let self = this;
 
-    function cluster(alpha) {
-      for (let i = 0, n = self.nodes.length; i < n; ++i) {
-        let k = alpha * 0.7;
-        let node = self.nodes[i];
-        let cluster = self.clusters[node.cluster[0]][node.cluster[1]];
-        node.vx -= (node.x - cluster.x) * k;
-        node.vy -= (node.y - cluster.y) * k;
+    function cluster() {
+      let strength = 0.8;
+
+      function force(alpha) {
+        for (let i = 0, n = self.nodes.length; i < n; ++i) {
+          let k = alpha**1.1 * strength;
+          let node = self.nodes[i];
+          let cluster = self.clusters[node.cluster[0]][node.cluster[1]];
+          node.vx -= (node.x - cluster.x) * k;
+          node.vy -= (node.y - cluster.y) * k;
+        }
       }
+
+      force.strength = function(s) {
+        strength = (s == null) ? strength : s;
+        return force;
+      }
+
+      return force;
     }
 
     if (group == 'cluster') {
       self.simulation
         .alpha(alpha).alphaTarget(alphaTarget).alphaMin(0)
-        .force('cluster', cluster)
-        //.force('x', d3.forceX().x(function(d) { return self.clusters[d.cluster[0]][d.cluster[1]].x; }).strength(0.55))
-        //.force('y', d3.forceY().y(function(d) { return self.clusters[d.cluster[0]][d.cluster[1]].y; }).strength(0.55))
-        .force('charge', d3.forceManyBody()
-          .strength(0))
-        .force('collide', d3.forceCollide(function(d) { return d.r + self.padding; })
-          .strength(0.6))
+        .force('cluster', cluster().strength(0.6))
+        .force('collide', d3.forceCollide(function(d) { return d.r + self.padding; }).strength(0.45).iterations(10))
         .force('x', null)
         .force('y', null)
         .nodes(self.nodes)
-      //self.smooth_motion(-30);
+      //self.smooth_motion(0.4);
     } else if (group == 'beeswarm') {
       self.xscale = d3.scaleLinear()
         .domain([0, d3.max(self.nodes, function(d) { return d.data.tuition[0]; })])
@@ -368,7 +374,7 @@ class Cluster {
         .force('cluster', null)
         .force('charge', null)
         .force('collide', d3.forceCollide(function(d) { return d.r; })
-          .strength(1))
+          .strength(0.9))
         .force('x', d3.forceX().x(function(d) { return self.xscale(d.data.tuition[0]); })
           .strength(1))
         .force('y', d3.forceY(self.height/2).strength(0.05))
@@ -421,11 +427,11 @@ class Cluster {
     }
   }
 
-  tooltip_render (tooltip_data) {
+  tooltip_render(tooltip_data) {
     var vis = this;
-    var text = "<div> <p>" + tooltip_data.name + "</p><p>\nEnrollment: " + tooltip_data.enrollment + "</p> <p 'font-size = 10'>Click to Change Visualizations</p></div>";
+    var text = "<div><p>" + tooltip_data.name + "</p><p>Enrollment: " + tooltip_data.enrollment + "</p><p 'font-size=10'>Click to view school profile</p></div>";
     return text;
-}
+  }
 
   label_generator(group) {
     let self = this;
@@ -490,15 +496,13 @@ class Cluster {
 
   smooth_motion(threshold) {
     let self = this;
-    let time = 1000;
-    //self.simulation.alpha(0.1);
+    let time = 2000;
+    //self.simulation.alphaTarget(0.05);
     let t = d3.timer(function(elapsed) {
       let dt = elapsed / time;
-      //console.log((1-dt)**2);
-      //self.simulation.force('charge').strength(threshold*(1-dt)**2);
-      self.simulation.force('collide').strength(Math.pow(dt, 2) * 0.5 + 0.2);
+      self.simulation.force('cluster').strength(threshold*(1-dt));
       if (dt >= 1.0) {
-        //self.simulation.alphaTarget(0);
+        self.simulation.alphaTarget(0);
         t.stop();
       }
     });

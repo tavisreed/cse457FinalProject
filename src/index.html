@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html>
   <head>
-
-    
-    
     <!-- Load Google Font -->
     <link href='https://fonts.googleapis.com/css?family=Roboto:100,400,300,400italic,700' rel='stylesheet' type='text/css'>
 
@@ -34,27 +31,22 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Engineering Education Across the United States</h5>
+            <h4 class="modal-title">Engineering Education Across the United States</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <p>This visualization was created as a way to visually explore data related to engineering schools
-              in the United States. The main visualization is a force cluster chart that shows all the schools
-              that we have data on. Using the dropdown menu to select an attribute, you can split the cluster into multiple groups based off the 
-              selectedattribute. Use the search bar to highlight a specific school. Hovering over a circle will display the name of the school that
-              the circle represents. Clicking on a circle will display that school's profile. Within the school profile you can view how tuition,
-              enrollment by level, gender, and ethnicity have changed over time.</p>
+            <p>This application was created to help users visually explore data related to engineering schools in the United States.</p>
 
-            <p>Using the trends tab, one can view how tuition and enrollment by level, gender, and ethnicity have
+              <p>The entry point to the application is a force cluster chart that displays a node for each available school. The "Cluster by" dropdown menu can be used to split the nodes into clusters based on the selected attribute. The "Mode" buttons change the meaning of the nodes; click "What is this?" for more information related to each mode. Finally, use the search bar to highlight a specific school in the cluster. You may click on a node to view more in-depth data related to that particular school.</p>
+
+            <p>Use the trends tab to view how tuition and enrollment by level, gender, and ethnicity have
               changed over time for both public and private universities.</p>
 
-            <p>Using the school comparison tab, one can view how up to three universities differ.</p>
+            <p>Use the school comparison tab to easily compare statistics between two universities.</p>
 
-            <p>NOTE: The data was obtained from the American Society For Engineering Education (<a href="http://profiles.asee.org/">ASEE</a>),
-              which has profiles on most universities in the United States. The data was self-reported by each school to ASEE. Some schools
-              opted to not provide certain information, and others may have provided inaccurate data.</p>
+            <p>Please see the about page for more details on how to use this visualization and how our data were collected.</p>
           </div>
           <div class="modal-footer">
               <span id='loading-modal'>Loading data...</span>
@@ -103,6 +95,8 @@
                 </div>
               </form>
             </div>
+
+            <button type='button' class='btn btn-link' style="font-size: 10px">(What is this?)</button>
 
             <form class="form-inline my-2 my-lg-0" id='search_bar'>
               <input class="form-control form-control-sm mr-sm-2 ui-autocomplete-input" type="text" id="search" placeholder="Search for schools..">
@@ -226,30 +220,8 @@
                       <input id="school_2"  placeholder="Select a school...">
                       <button class='btn btn-outline-primary btn-sm' id="school_2_btn" onclick="compSearch('2')">Confirm</button>
                     </div>
-
-<<<<<<< HEAD
-        <div id="outer_school_div">
-          <!-- School 1 -->
-          <div id="comp_1">
-            <input id="school_1" class="form-control form-control-sm" placeholder="Select a school...">
-            <button class='btn btn-outline-primary btn-sm' id="school_1_btn" onclick="compSearch('1')">Confirm</button>
-
-          </div>
-
-          <div id="comp_2">
-            <input id="school_2" class="form-control form-control-sm" placeholder="Select a school...">
-            <button class='btn btn-outline-primary btn-sm' id="school_2_btn" onclick="compSearch('2')">Confirm</button>
-          </div>
-          <br>
-          <br>
-          <br>
-          <br>
-          <br>
-=======
                 </div>
             </div>
-
->>>>>>> 237a3d1ddbe176891268f461c2701eea0c6eafb2
           <br>
 
           <!--Rest of the Page Contents -->
@@ -300,17 +272,6 @@
               </div>
             </div>
           </div>
-
-
-
-
-
-
-
-
-
-
-
         </div>
 
       <!-- about tab -->
@@ -357,12 +318,7 @@
             opted to not provide certain information, and others may have provided inaccurate data. </p>
         </div>
       </div>
-
-
        </div>
-      
-
-
     </div>
 
     <!-- libraries -->

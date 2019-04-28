@@ -1,5 +1,26 @@
-body {
-  font-family: 'Roboto';
+@font-face { 
+  font-family: 'Akkurat-text';
+  src: url('../fonts/akkurat/akkurat.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face { 
+  font-family: 'Akkurat-text';
+  src: url('../fonts/akkurat/akkurat-bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face { 
+  font-family: 'Akkurat-text';
+  src: url('../fonts/akkurat/akkurat-italic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+* {
+  font-family: 'Akkurat-text';
 }
 
 .control_container {
@@ -25,6 +46,10 @@ body {
   font-size: 14px;
 }
 
+.modal-title {
+  font-weight: bold;
+}
+
 #search_bar {
   float: right;
 }
@@ -36,11 +61,7 @@ body {
   overflow-x: auto;
 }
 
-#profiles {
-  margin: 1em;
-}
-
-#trends {
+#profiles, #trends, #nav-about {
   margin: 1em;
 }
 
@@ -191,7 +212,7 @@ input[type=submit] {
 }
 
 .spinner > div {
-  background-color: #777;
+  background-color: #007bff;
   height: 100%;
   width: 6px;
   display: inline-block;
@@ -238,10 +259,12 @@ input[type=submit] {
 .d3-tip {
   line-height: 1;
   padding: 6px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  border-radius: 4px;
+  background: #fffffff2;
+  opacity: 0.4;
+  color: #000;
+  border-radius: 2px;
   font-size: 12px;
+  border: 1px solid black;
 }
 
 #comp_1{
