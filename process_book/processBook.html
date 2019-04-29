@@ -39,7 +39,7 @@
     <h3>Main visualization version 2</h3>
     <p>The idea with this version is to place each school on the map of the united states.
     If you click on a state you will zoom in on that state, which will allow you to better view the schools there
-    You can brush over states and compare schools within those selected states. Hovering over a school shows its
+    you can brush over states and compare schools within those selected states. Hovering over a school shows its
     information. The state will also be split into regions that va nbe highlighted. Map can show either
     a single year or a range of years</p>
     <img src="Version_2_example1.JPG" alt="Version 2"/>
@@ -52,7 +52,7 @@
         selected as a whole, rather than it being able to select specific dates in between. The year chart was then linked to the various area charts and line on the school profile
         visualization so that on selection, the data displayed will reflect the timespan selected. We have also implemented our main visualization, a cluster graph. The cluster is a force 
         chart with each node representing a school. The size of each node is representative of the total enrollment of each school. The size is determined using a D3 power scale with exponent 0.5. To help compare node size, a legend has also been implemented
-        A school can be searched by name using an input field equipped with auto complete functionality. The school is then highlighted with a black stroke. Clicking on a node will then switch tabs over to the school profile of the selected 
+        a school can be searched by name using an input field equipped with auto complete functionality. The school is then highlighted with a black stroke. Clicking on a node will then switch tabs over to the school profile of the selected
         school. Clicking on nodes is our main method of navigating to the the school profile. The main visualization also allows for the clustering of the nodes by specific attributes at the click of a button.
         The main visualization only represents the school data for the year 2018. Our third visualization, located under the trends tab, takes the aggregate data for all schools for a selected
         span of years, selected via year chart. The data represented includes area charts that show divisions of engineering schools gender breakdowns by class, engineering schools racial/ethnic makeup, 
@@ -60,38 +60,89 @@
         selected schools. The visualization displays the type of school (public or private) selected, the tuition of the school, and stacked bar graphs for type of enrollment (grad vs undergrad), enrollment by gender, and enrollment by ethnicity.
     </p>
 
-    <h2><u>Current Schedule</u></h2>
-    <p><del>Slashed out</del> == task completed</p>
-    <p><b>Week of March 17</b><br>
-        <del>-Project proposal (due Mar 18)</del><br>
-        <del>-Perform Web Scraping</del><br>
-        <del>-Create Data Processing function</del><br>
-        <del>-Start Process Book</del><br>
-        <b>Week of March 24</b><br>
-        <del>-Create first visualization</del><br>
-        <del>-Start working on other visualizations</del><br>
-        <b>Week of March 31</b><br>
-        <del>-Milestone I - a functional project prototype (due Apr 1)</del><br>
-       <del>-Fix data</del><br>
-        <del>-Start working on main visualization</del><br>
-       <del>-Complete prototype school profile visualization</del><br>
-        <b>Week of April 7</b><br>
-        <del>-Complete all prototype main visualization</del><br>
-        <b>Week of April 14</b><br>
-        <del>-Milestone II - a fully functional prototype (due Apr 15)</del><br>
-        -In-class user studies (Apr 18)<br>
-        -Improve visualizatoins based off user suggestions<br>
-        -Work on presentation<br>
-        -Work on hosting visualization on website<br>
-        <b>Week of April 21</b><br>
-        -Final project presentation (Apr 25)<br>
-        -Assess visualization<br>
-        -Complete all visualizations<br>
-        -Create Screen Caste going through visualization<br>
-        -Additional user testing<br>
-        <b>Week of April 28</b><br>
-        -Final project submission & peer evaluations (due Apr 29)<br>
+
+    <h2><u>4/15-4/29</u></h2>
+    <h3><u> What we did:</u></h3>
+    <p>
+        We started out with user testing. The questions we asked and people's responses can be seen below.
+        We decided to implement some of the feedback we got, but not all of it. We added labels in the clustering
+        so that it was easier for users to understand what each node and what each cluster represented.
+        We also added a tooltip when the stacked area chart and stacked bar charts are hovered over,
+        as a better way to display what each section represents. We labeled the axis of our charts as well
+        as picked a better color scheme for our charts. Users found navigating the page somewhat confusing, as they
+        kept hitting the back button, which took them out of the page as all the content is on a singular page. We updated
+        the order of the tabs and renamed a few, but overall keep navigation the same as if we had multiple pages to allow for
+        the use of a back button we would have had to load the data again, which takes a long time and
+        can disrupt the user experience. We also choose to make some changes that were not suggested during
+        user testing, but we felt would improve the overall user experience. These changes included reformatting
+        the school comparison tab, adding a search bar to the school profiles page, and interpolating to
+        estimate some missing values.
+
     </p>
+
+    <h4><b> User Study:</b></h4>
+
+    <ul>
+            <li><b>Session 1: Think Aloud Method</b></li>
+            <ul style="list-style-type: circle; padding-bottom: 0;">
+                <li>Give users 5-10 mins to explore visualization and talk about what they are doing as they do it.</li>
+            </ul>
+            <br>
+            <li><b>Session 2: Perform Specific tasks</b></li>
+            <ul style="list-style-type: circle; padding-bottom: 0;">
+                <li>Point out what schools have a large enrollment</li>
+                <li>Can you find WashU?</li>
+                <li>Are there more public or private schools?</li>
+                <li>What can you tell about the ethnic and gender overall trends in US engineering over time?</li>
+                <li>How does tuition change over time for a particular school?</li>
+                <li>What was the tuition in a particular year at a particular school?</li>
+                <li>Can you compare two schools and tell which ones have a more balanced ethnic and gender breakdown?</li>
+                <li>Where is the data from?</li>
+            </ul>
+            <br>
+            <li><b>Session 3: Feedback/Critique</b></li>
+            <ul style="list-style-type: circle; padding-bottom: 0;">
+
+                <li>Was it easy to understand?</li>
+                <li>Is there anything you would change?</li>
+                <ul style="list-style-type: square; padding-bottom: 0;">
+                    <li>Clustering needs to be more clear for the student tabs.</li>
+                    <li>Explain what is being clustered by</li>
+                    <li>Clarify what that the school directory tab is navigated from the home tab</li>
+                    <li>Put percentages/numbers of ethnicity in or around bars in school comparison</li>
+                    <li>Make highlighting more obvious</li>
+                    <li>Pop up that indicates clicking or a constant title that tells users to click on a node</li>
+                    <li>Label axes</li>
+                    <li>Hide selection on mouseoff hover for area charts</li>
+                    <li>Move about to first tab</li>
+                    <li>Add tooltip that shows enrollment</li>
+                </ul>
+                <li>What was your initial thoughts?</li>
+                <ul style="list-style-type: square; padding-bottom: 0;">
+                    <li>Routing was confusing (back button), labels necessary</li>
+                </ul>
+                <li>Did you like the color choices?</li>
+                <ul style="list-style-type: square; padding-bottom: 0;">
+                    <li>Mostly fine, as long as contrast between groups should be good</li>
+                </ul>
+                <li>Was there any feature that you expected that wasn’t there?</li>
+                <ul style="list-style-type: square; padding-bottom: 0;">
+                    <li>Good coverage, liked specific school search, and general school info</li>
+                </ul>
+                <li>Would this visualization be helpful in determining what university you wanted to attend?</li>
+                <ul style="list-style-type: square; padding-bottom: 0;">
+                    <li>Comparison tool would’ve likely been helpful</li>
+                </ul>
+            </ul>
+            <br>
+            <li><b>Session 4: Debrief</b></li>
+            <ul style="list-style-type: circle; padding-bottom: 0;">
+                <li>Tell them what the goal of the visualization was. Was the goal achieved?</li>
+                <li>Give source of data and disclaimer on accuracy.</li>
+            </ul>
+        </ul>
+
+
 
 
 </body>
