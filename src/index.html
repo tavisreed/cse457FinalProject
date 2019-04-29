@@ -278,32 +278,32 @@
       <div class="tab-pane fade" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
         <h1>About the Visualization</h1>
         <div>
-          <p>The purpose of visualization is to display aggregate data of Engineering Schools in the United States in a visually interesting and informative way. The visualization
-            reads data obtained from the American Society For Engineering Education (<a href="http://profiles.asee.org/">ASEE</a>), and then displays the data in four visualizations, each represented in its own tab:
+          <p>The purpose of these visualizations is to display aggregate data of Engineering Schools in the United States in a visually interesting and informative way. The visualizations
+            use data obtained from the American Society For Engineering Education (<a href="http://profiles.asee.org/">ASEE</a>), and then displays the data in four visualizations, each represented in its own tab:
             Home, School Directory, Trends, and School Comparison.
           </p>
           <h2>Home</h2>
 
           <p>As the title would suggest, the Home tab is the starting point of our visualization. The home tab consists of a cluster of circular nodes
-            each representative of an Engineering School in the United States. The size of each node is representative of the total enrollment of that university. A legend is present in the upper right corner
+            each representative of an Engineering School in the United States. Users can select from two modes: "Schools" and "Students". When "Schools" mode is active, the size of each node is representative of the total enrollment of that university. A legend is present in the upper right corner
             of the visualization as to assist in understanding how the sizing of a node compares to the actual population of the school in question. Above the legend, a search bar is present, which allows for autocomplete searching of
-            the data on file. Upon clicking the search button, the searched school name is highlighted. A select dropdown, found in the top left of the visualization allows for the clustering of the nodes based upon the selected attributes.
-            Adjacent buttons labled schools and students allows for the seamless transition between visualizing data pertaining to each school, and data pertaining to the average student body of the schools combined. Upon clicking on a node
-            The visualization will transition to the seconday School Directory Visualization.
+            the data on file. Upon clicking the search button, the searched school name is highlighted. Upon clicking on a node in this mode the visualization will transition to the secondary School Directory Visualization.
+            When "Students" mode is active, there are a total of 500 nodes, which are split into proportions that reflect the national percentages of certain attributes. A select dropdown, found in the top left of the visualization allows for the clustering of the nodes based upon the selected attributes.
+            The selectable attributes change based on the mode. For "Schools" mode, clusterable attributes are "By school", "By public vs. private", and "By tuition".
+            For "Students" Mode clusterable attributes are "By gender & ethnicity", "By gender", and "By gender and Ethnicity".
+
           </p>
 
           <h2>School Directory</h2>
 
-          <p>The School Directory tab showcases areacharts and linegraphs for the following categories: Tuition Over Time, Graduate vs. Undergraduate Enrollment, Enrollment by Ethnicity and Enrollment by Gender.
-            A year chart allows for focusing in on the data of select years. The graphs update upon selection to reflect the data for the selected years. A description of the school is also present in the profiles.
-            To select a new school, simply return to the home tab and click on the school's corresponding node.
+          <p>The School Directory tab showcases area charts and line graphs for the following categories: Tuition Over Time, Graduate vs. Undergraduate Enrollment, Enrollment by Ethnicity and Enrollment by Gender.
+            A year chart allows for focusing in on the data of select years. The graphs update upon selection to reflect the data for the selected years.
+            To select a new school, simply return to the home tab and click on the school's corresponding node, or use the search bar.
+            <br>
+            <br>
+            <b>Note:</b> The enrollment chart reflects the total number of students at the university, while the gender and ethnicity charts reflect only the total number of students in that university's school of engineering.
           </p>
 
-          <h2>Trends</h2>
-
-          <p>Similar to the School Directory Tab, the Trends tab consists of the average data of each school based on the same categories in the School Directory graphs. The average data is separated by public vs private schools.
-            A year chart allows for the viewing of specific data over a selected interval.
-          </p>
 
           <h2>School Comparison</h2>
 
@@ -313,10 +313,29 @@
             particular bar represents.
           </p>
 
-          <p>NOTE: The data was obtained from the American Society For Engineering Education (<a href="http://profiles.asee.org/">ASEE</a>),
-            which has profiles on most universities in the United States. The data was self-reported by each school to ASEE. Some schools
-            opted to not provide certain information, and others may have provided inaccurate data. </p>
+          <h2>Trends</h2>
+
+          <p>Similar to the School Directory Tab, the Trends tab consists of the average data of each school based on the same categories in the School Directory graphs. The average data is separated by public vs private schools.
+            A year chart allows for the viewing of specific data over a selected interval.
+            <br>
+            <br>
+            <b>Note:</b> The enrollment chart reflects the total number of students in universities, while the gender and ethnicity charts reflect only the total number of students in schools of engineering.
+          </p>
+
+          <h2>Video Tour</h2>
+          <p>A temporary video. I just wanted to make sure it was easy to embed a video</p>
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+          <h2>The Data</h2>
+          <p>The data was obtained from the American Society For Engineering Education (<a href="http://profiles.asee.org/">ASEE</a>),
+            which has profiles on most universities in the United States. The data was self-reported by each school to ASEE on a voluntary basis. Some schools
+            opted to not provide certain information, and others may have provided inaccurate data. Schools that did not report data for any year between 1999-2018 were
+            not included in the dataset visualization. When reasonable, some values were interpolated using available data from the school. If a school had what we deemed
+            to be an unreasonable amount of data missing (such that we could not fairly and accurately visualize the school) the school was removed from the data set.</p>
         </div>
+
+
+
       </div>
        </div>
     </div>
