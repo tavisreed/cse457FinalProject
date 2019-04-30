@@ -1,5 +1,3 @@
-let cluster;
-
 // data loading/prep sequence
 function load_data() {
   let q = queue();
@@ -37,7 +35,7 @@ function start(data) {
   // create main visualization objects
   let profile = new Profile('profiles', data);
   let trends = new Trends('trends', data);
-  cluster = new Cluster('cluster', data);
+  let cluster = new Cluster('cluster', data);
 
   // prep modal for start
   document.querySelector('#dismiss-modal').style.display = 'block';
@@ -79,6 +77,11 @@ function start(data) {
       });
   });
 
+  // cluster details button modal
+  document.querySelector('#cluster_details').addEventListener('click', function() {
+    $('#cluster_modal').modal('show');
+  })
+
   // on search click
   document.querySelector('#search_btn').addEventListener('click', function() {
     if (this.innerHTML == 'Clear') {
@@ -89,7 +92,6 @@ function start(data) {
       this.innerHTML = 'Search';
       return;
     }
-
 
     // get search bar text
     let search_text = document.querySelector('#search').value.toLowerCase();

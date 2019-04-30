@@ -96,6 +96,25 @@
               </form>
             </div>
 
+            <button type='button' class='btn btn-link' style="font-size: 11px" id='cluster_details'>(What is this?)</button>
+
+            <div class="modal fade" id="cluster_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Cluster Mode Details</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p><b>School Mode:</b> In this mode, each node in the cluster represents a single engineering school. The <i>cluster by</i> dropdown allows you to cluster the nodes by school type (public or private) and by tuition (beeswarm plot). Nodes can be clicked on to show additional information related to that particular school in the school profile tab.</p>
+
+                    <p><b>Student Mode:</b> In this mode, the gender and ethnic breakdowns of students across all schools in the U.S. are aggregated and we compute the percentage of the student population that each gender-ethnic group makes up. We then categorize 500 students according to these percentages, and display one node for each of the 500 hypothetical students. This provides an easy way to quickly compare the differences in sizes of groups. Nodes can then be clustered by either just gender or just ethnicity.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <form class="form-inline my-2 my-lg-0" id='search_bar'>
               <input class="form-control form-control-sm mr-sm-2 ui-autocomplete-input" type="text" id="search" placeholder="Search for schools..">
@@ -275,7 +294,10 @@
 
       <!-- about tab -->
       <div class="tab-pane fade" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
-        <h1>About the Visualization</h1>
+        <div style="margin-bottom:1em">
+          <h1>About the Visualization</h1>
+          <a href='https://washuvis.github.io/eduexploration/process_book/processBook.html'>(link to process book)</a>
+        </div>
         <div>
           <p>The purpose of these visualizations is to display aggregate data of Engineering Schools in the United States in a visually interesting and informative way. The visualizations
             use data obtained from the American Society For Engineering Education (<a href="http://profiles.asee.org/">ASEE</a>), and then displays the data in four visualizations, each represented in its own tab:
