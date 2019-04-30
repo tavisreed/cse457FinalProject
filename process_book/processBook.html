@@ -7,19 +7,120 @@
 <body>
     <h1>Process Book</h1>
 
-    <h2><u>3/18-4/1</u></h2>
-    <h3><u> What we did:</u></h3>
-    <p>Collecting the data turned out to be much more time consuming then expected, so the majority of these two weeks
-    was spent working on a scraper and the data wrangleing process. We sourced the data from
-        <a href="http://profiles.asee.org/">asee.org</a> which, was fairly standardized, but had some edge cases that made
-        the collection of some data more difficult to collect (mainly the enrollment by ethnicity, gender, and major). Currently
-        we have data on all schools from the years 1999-2018 that are present in all years. Most of the data we collected on
-        each school, once wrangled, is fine to use, but there still remains a number of schools that contain "messed up" data.
-        We are currently working on improving our scraper and/or our data wrangleing to be able to properly visualize these schools.
-        We have implemented some of the visualizations that will be present on the school profiles. We worked on
-        the school profiles instead of our main visualization because the school profiles can still work while some of the data
-        is "messed up". Our goal is to fix the data this week so we can begin working on the main visualization. We have been working on
-        different possible versions for our main visualization, which are shown below.
+    <h2><u>Basic Info:</u></h2>
+    <p><b>Project Title:</b> Engineering Education <br>
+            <b>Names/Email/IDs:</b><br>
+            Sam Griesemer, samgriesemer@wustl.edu, 457657<br>
+            Kedar Bell, kedar.kedar@wustl.edu, 455576<br>
+            Tavis Reed, tavisreed@wustl.edu, 450798<br>
+            <a href="https://github.com/washuvis/eduexploration">Link to project repository</a> </p>
+
+
+    <h2><u>Background and Motivation:</u></h2>
+        <p>Choosing a university to attend for an undergraduate or graduate degree can be very difficult. There are many
+            different things that one needs to consider, such as cost of tuition, program size, accreditation, research
+            specialties, diversity, and much more. Not only are there many things to consider about each individual school,
+            there are also hundreds of schools to consider. As students who have gone through this process, we have an appreciation for
+            the stressfulness of this process. Since we are all within the the school of engineering, we have decided to specifically
+            focus on making it easier for those interested in studying engineering to get an understanding of what schools in the U.S.
+            have to offer and easily comparing primary attributes across schools.</p>
+
+    <h2><u>Project Objectives:</u></h2>
+        <p>We are working on developing an exploratory tool that will allow an individual to get a better understanding of
+            higher education in engineering in the United States. We envision a user using this visualization either as a way
+            to help inform decisions regarding attending a particular institution or to compare one’s own institution to others.
+            We will be providing answers to questions like, how much the school cost to attend, what degree programs are available,
+            and diversity within the school, as well as how these numbers compare to other schools. Our visualization will answer
+            these questions by providing users with an interactive experience that allows them to easily and quickly view relevant
+            data on a particular school and compare it to a number of other schools.
+
+            In doing this project, we hope to learn trends within engineering education, such as gender and ethnic breakdowns
+            and popularity of different disciplines. We would like to achieve a visualization that allows users to quickly learn
+            new things about engineering education in the United States.
+
+            Some benefits of this visualization will be: Easily learn about trends in engineering education, and
+            Learn how a particular school compares to all other schools in the U.S.
+        </p>
+
+
+    <h2><u>Data:</u></h2>
+        <p>We will be scraping data from the American Society for Engineering Education (ASEE) website.
+            The website has a collection of profiles on most schools with schools of engineering
+            that are located in the United States. For some schools they have data from 1998 to 2018.
+            The data has been provided to the ASEE from the actual universities, so it should be fairly accurate.
+            Each profile contains both general data on that university's school of engineering and segmented data on the
+            undergraduate students and graduate students enrolled in the school of engineering. This data is both qualitative,
+            such as names of departments and student societies, and quantitative, such as tuition and number of students
+            enrolled in each degree program. Each profile contains a lot of data, some of which doesn't make sense to
+            visualize, so we will be focusing a subset of this data that will allow us to build a robust visualization
+            without overloading the user.
+            <br>
+            Link to data source: <a href="http://profiles.asee.org/">http://profiles.asee.org/</a> </p>
+
+    <h2><u>Data Processing:</u></h2>
+        <p>The data from ASEE is already organized in a standardized format, so extracting the data from the website
+            should be fairly simple. Since some of the information is qualitative, we may need to find a way to give
+            it a numeric value, depending on how we choose to encode this data into a visual element. Also, some schools
+            use different names for degrees that are essentially the same, so we will need to identify these and group them
+            together whenever necessary. We will need to compute averages, and standard deviations of values like enrollment
+            and tuition to aid in comparing a university to all other universities. Data clean up will be implemented within
+            in its own function that will run directly after we access that data from the .csv files. All the values that
+            need to be computed will also be done in this function, such that all necessary values will be ready to use for
+            our visualization functions.</p>
+
+    <h2><u>Visualization Design:</u></h2>
+    <p>We will visualize the data at different levels of detail. On a global scale we will visual trends between all
+        schools through either a force clustering or a bee swarm chart.
+        These clusters will provide marginalized information about the U.S.
+        schools as a whole, such as the groups of schools that have tuition in a particular range.
+        Clicking on one of these clusters zoom in will lead to a more indepth separation of this data,
+        for example showing by what percent there is more males than females for each school. At this level of zoom,
+        clicking on a specific school will lead to that school’s profile, where users will be able to visualize stats on
+        that specific school. At this level, users will also be able to view trends overtime in the data.
+    </p>
+
+    <h2><u>Must-Have Features:</u></h2>
+        <p>-Be able to filter schools by specific attributes (i.e. tuition, test scores, etc) <br>
+           -Each school has a school profile with statistics on the school and how they change over time<br>
+            -Have main overview that visualizes the collective data from all schools<br>
+            -User is able to navigate through the interaction with ease<br>
+        </p>
+
+    <h2><u>Optional Features:</u></h2>
+        <p>-Universities placed on a map<br>
+            -Visual trends in data over time
+        </p>
+
+    <h2><u>Project Schedule:</u></h2>
+<p><b>Week of March 17</b><br>
+        -Project proposal (due Mar 18)<br>
+        -Perform Web Scraping<br>
+        -Create Data Processing function<br>
+        -Start Process Book<br>
+    <b>Week of March 24</b><br>
+        -Create first visualization<br>
+        -Start working on other visualizations<br>
+    <b>Week of March 31</b><br>
+        -Milestone I - a functional project prototype (due Apr 1)<br>
+        -Assess visualization, pivot if needed<br>
+        -Continue working on other visualizations<br>
+        -Make any necessary improvements to the first complete visualization<br>
+    <b>Week of April 7</b><br>
+        -Complete all prototype of all visualizatoins<br>
+    <b>Week of April 14</b><br>
+        -Milestone II - a fully functional prototype (due Apr 15)<br>
+        -In-class user studies (Apr 18)<br>
+        -Improve visualizatoins based off user suggestions<br>
+        -Work on presentation<br>
+        -Work on hosting visualization on website<br>
+    <b>Week of April 21</b><br>
+        -Final project presentation (Apr 25)<br>
+        -Assess visualization<br>
+        -Complete all visualizations<br>
+        -Create Screen Caste going through visualization<br>
+        -Additional user testing<br>
+    <b>Week of April 28</b><br>
+        -Final project submission & peer evaluations (due Apr 29)<br>
     </p>
 
     <h3>Main visualization version 1:</h3>
@@ -43,9 +144,24 @@
     information. The state will also be split into regions that va nbe highlighted. Map can show either
     a single year or a range of years</p>
     <img src="Version_2_example1.JPG" alt="Version 2"/>
+
+    <h2><u>3/18-4/1 (Milestone 1 Update)</u></h2>
+    <h3><u> What we did:</u></h3>
+    <p>Collecting the data turned out to be much more time consuming then expected, so the majority of these two weeks
+    was spent working on a scraper and the data wrangleing process. We sourced the data from
+        <a href="http://profiles.asee.org/">asee.org</a> which, was fairly standardized, but had some edge cases that made
+        the collection of some data more difficult to collect (mainly the enrollment by ethnicity, gender, and major). Currently
+        we have data on all schools from the years 1999-2018 that are present in all years. Most of the data we collected on
+        each school, once wrangled, is fine to use, but there still remains a number of schools that contain "messed up" data.
+        We are currently working on improving our scraper and/or our data wrangleing to be able to properly visualize these schools.
+        We have implemented some of the visualizations that will be present on the school profiles. We worked on
+        the school profiles instead of our main visualization because the school profiles can still work while some of the data
+        is "messed up". Our goal is to fix the data this week so we can begin working on the main visualization. We have been working on
+        different possible versions for our main visualization, which are shown below.
+    </p>
     
 
-    <h2><u>4/1-4/15</u></h2>
+    <h2><u>4/1-4/15 (Milestone 2 Update)</u></h2>
     <h3><u> What we did:</u></h3>
     <p> After submitting our first prototype, the secondary school profile visualization, we implemented a year a year chart in this visualization, which 
         allows for the brush selection of the data between the years 1999 to 2018. Brushing has been implemented to snap to each year interval i.e. the interval between 2016 to 2017 os 
@@ -60,8 +176,24 @@
         selected schools. The visualization displays the type of school (public or private) selected, the tuition of the school, and stacked bar graphs for type of enrollment (grad vs undergrad), enrollment by gender, and enrollment by ethnicity.
     </p>
 
+    <div style="margin-bottom: 1.2em">
+      <img src="main.png" alt="main" width="1000"/>
+      <p>Application entry point, main clustering</p>
+    </div>
+    <div style="margin-bottom: 1.2em">
+      <img src="cluster.png" alt="cluster" width="1000"/>
+      <p>Second cluster mode, student gender and ethnic breakdown</p>
+    </div>
+    <div style="margin-bottom: 1.2em">
+      <img src="trends.png" alt="trends" width="1000"/>
+      <p>Trends tab for viewing aggregated data</p>
+    </div>
+    <div style="margin-bottom: 1.2em">
+      <img src="school_profile.png" alt="school profile" width="1000"/>
+      <p>School profile tab for in-depth data on each school</p>
+    </div>
 
-    <h2><u>4/15-4/29</u></h2>
+    <h2><u>4/15-4/29 (User Studies Update)</u></h2>
     <h3><u> What we did:</u></h3>
     <p>
         We started out with user testing. The questions we asked and people's responses can be seen below.
